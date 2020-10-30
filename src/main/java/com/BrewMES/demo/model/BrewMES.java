@@ -68,9 +68,9 @@ public class BrewMES implements iBrewMES {
 	public void setMachineVariables(int speed, BeerType beerType, int batchSize) {
 		throw new UnsupportedOperationException();
 	}
-
+	//Parsing the command to the current selected machine.
 	public void controlMachine(Command command) {
-
+		currentMachine.controlMachine(command);
 	}
 
 	public String getMachineVariables() {
