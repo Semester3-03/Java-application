@@ -46,7 +46,7 @@ public class Machine {
                     case ABORT:
                         connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(4))).get();
                     case CLEAR:
-                        connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(4))).get();
+                        connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(5))).get();
                 }
 
                 //Create NodeID for Command Change Request.
