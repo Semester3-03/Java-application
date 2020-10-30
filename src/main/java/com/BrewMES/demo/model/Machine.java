@@ -47,6 +47,10 @@ public class Machine {
                         connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(4))).get();
                     case CLEAR:
                         connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(5))).get();
+                        default:
+                            System.out.println("I did not understand that command :-)");
+
+
                 }
 
                 //Create NodeID for Command Change Request.
