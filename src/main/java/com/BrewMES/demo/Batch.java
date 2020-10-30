@@ -13,7 +13,7 @@ public class Batch {
 	private int totalProducts;
 	private int acceptableProducts;
 	private int defectProducts;
-	private List<int> timeInStates;
+	private List<Integer> timeInStates;
 	private Map<LocalDateTime,Double> temperature;
 	private Map<LocalDateTime,Double> vibration;
 	private Map<LocalDateTime,Double> humidity;
