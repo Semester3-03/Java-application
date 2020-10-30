@@ -46,4 +46,83 @@ public class Machine {
         throw new UnsupportedOperationException();
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public Batch getCurrentBatch() {
+        return currentBatch;
+    }
+
+    public double getOee() {
+        return oee;
+    }
+
+    public int getCurrentState() {
+        return currentState;
+    }
+
+    public int getTotalProducts() {
+        return totalProducts;
+    }
+
+    public int getAcceptableProducts() {
+        return acceptableProducts;
+    }
+
+    public int getDefectProducts() {
+        return defectProducts;
+    }
+
+    public double getTemperature() {
+        return temperature;
+    }
+
+    public double getVibration() {
+        return vibration;
+    }
+
+    public double getHumidity() {
+        return humidity;
+    }
+
+    public void setCurrentBatch(Batch currentBatch) {
+        this.currentBatch = currentBatch;
+    }
+
+    public void setOee(double oee) {
+        this.oee = oee;
+    }
+
+    public void setCurrentState(int currentState) {
+        this.currentState = currentState;
+    }
+
+    public void setTotalProducts(int totalProducts) {
+        this.totalProducts = totalProducts;
+    }
+
+    public void setAcceptableProducts(int acceptableProducts) {
+        this.acceptableProducts = acceptableProducts;
+    }
+
+    public void setDefectProducts(int defectProducts) {
+        this.defectProducts = defectProducts;
+    }
+
+    public void setTemperature(double temperature) {
+        this.temperature = temperature;
+    }
+
+    public void setVibration(double vibration) {
+        this.vibration = vibration;
+    }
+
+    public void setHumidity(double humidity) {
+        this.humidity = humidity;
+    }
 }

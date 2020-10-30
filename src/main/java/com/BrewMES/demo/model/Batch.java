@@ -35,4 +35,79 @@ public class Batch {
 
 	}
 
+	public int getId() {
+		return id;
+	}
+
+	public int getMachineId() {
+		return machineId;
+	}
+
+	public String getProductType() {
+		return productType;
+	}
+
+	public int getTotalProducts() {
+		return totalProducts;
+	}
+
+	public int getAcceptableProducts() {
+		return acceptableProducts;
+	}
+
+	public int getDefectProducts() {
+		return defectProducts;
+	}
+
+	public List<Integer> getTimeInStates() {
+		return timeInStates;
+	}
+
+	public Map<LocalDateTime, Double> getTemperature() {
+		return temperature;
+	}
+
+	public Map<LocalDateTime, Double> getVibration() {
+		return vibration;
+	}
+
+	public Map<LocalDateTime, Double> getHumidity() {
+		return humidity;
+	}
+
+	public double getMinTemp() {
+		return minTemp;
+	}
+
+	public double getMaxTemp() {
+		return maxTemp;
+	}
+
+	public double getAvgTemp() {
+		return avgTemp;
+	}
+
+	public void setTotalProducts(int totalProducts) {
+		this.totalProducts = totalProducts;
+	}
+
+	public void setAcceptableProducts(int acceptableProducts) {
+		this.acceptableProducts = acceptableProducts;
+	}
+
+	public void setDefectProducts(int defectProducts) {
+		this.defectProducts = defectProducts;
+	}
+
+	public void setMinTemp(double minTemp) {
+		this.minTemp = minTemp;
+	}
+
+	public void setMaxTemp(double maxTemp) {
+		this.maxTemp = maxTemp;
+	}
+
+	public void setAvgTemp(double avgTemp) {
+		this.avgTemp = avgTemp;
+	}
 }
