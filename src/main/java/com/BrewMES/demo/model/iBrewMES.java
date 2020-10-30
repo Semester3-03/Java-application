@@ -1,6 +1,6 @@
 package com.BrewMES.demo.model;
 
-public interface iSystem {
+public interface iBrewMES {
 
 	public abstract void controlMachine(Command command);
 
