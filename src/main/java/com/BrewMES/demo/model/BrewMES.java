@@ -2,7 +2,7 @@ package com.BrewMES.demo.model;
 
 import java.util.List;
 
-public class System implements iSystem {
+public class BrewMES implements iSystem {
 	private List<Machine> machines;
 	private Machine currentMachine;
 	private Batch selectedBatch;
