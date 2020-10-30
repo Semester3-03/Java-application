@@ -24,9 +24,9 @@ public class Machine {
     private double temperature;
     private double vibration;
     private double humidity;
-    private OpcUaClient connection;
 
     public Machine(String ipAddress,OpcUaClient connection) {
+        this.id = 0;
         this.ip = ipAddress;
         this.connection = connection;
     }

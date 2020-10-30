@@ -15,7 +15,6 @@ public class BrewMES implements iBrewMES {
 	private Batch selectedBatch;
 	private List<Batch> latestBatches;
 
-
 	public static void main(String[] args) {
 		throw new UnsupportedOperationException();
 	}
@@ -53,7 +52,7 @@ public class BrewMES implements iBrewMES {
 
 			//connecting machine
 			connection.connect().get();
-			if (machines.size() != 0) {
+			if (machines == null) {
 				machines = new HashMap<>();
 			}
 			Machine newMachine = new Machine(ipAddress, connection);
