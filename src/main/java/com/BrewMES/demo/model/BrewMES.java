@@ -27,6 +27,7 @@ public class BrewMES implements iBrewMES {
 	// picks based on MachineId
 	public void setCurrentMachine(int machineId) {
 		this.currentMachine = machines.get(machineId);
+
 	}
 
 	public Batch getBatch(int id) {
@@ -51,7 +52,7 @@ public class BrewMES implements iBrewMES {
 
 			//connecting machine
 			connection.connect().get();
-			if (machines.size() != 0) {
+			if (machines == null) {
 				machines = new HashMap<>();
 			}
 			Machine newMachine = new Machine(ipAddress, connection);
