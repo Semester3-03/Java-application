@@ -49,6 +49,7 @@ public class Machine {
 
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
+                Thread.currentThread().interrupt();
             }
     }
 
@@ -167,6 +168,7 @@ public class Machine {
 
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
+            Thread.currentThread().interrupt();
         }
     }
 }
