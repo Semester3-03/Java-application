@@ -6,6 +6,7 @@ import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.Variant;
 import java.util.concurrent.ExecutionException;
 import org.eclipse.milo.opcua.stack.core.types.enumerated.TimestampsToReturn;
+import java.util.concurrent.ExecutionException;
 
 public class Machine {
     private int id;
