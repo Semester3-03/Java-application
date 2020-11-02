@@ -44,12 +44,9 @@ public class Machine {
                     case CLEAR -> connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(5))).get();
                     default -> System.out.println("I did not understand that command :-)");
                 }
+                //request change
+                changeRequest();
 
-                //Create NodeID for Command Change Request.
-                NodeId cmdChangeRequest = new NodeId(6, "::Program:Cube.Command.CmdChangeRequest");
-
-                //write true to the machine, to pass the case from the switch statement.
-                connection.writeValue(cmdChangeRequest, DataValue.valueOnly(new Variant(true))).get();
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
@@ -158,5 +155,18 @@ public class Machine {
 
     public void setHumidity(double humidity) {
         this.humidity = humidity;
+    }
+
+    private void changeRequest(){
+        try {
+            //Create NodeID for Command Change Request.
+            NodeId cmdChangeRequest = new NodeId(6, "::Program:Cube.Command.CmdChangeRequest");
+
+            //write true to the machine, to pass the case from the switch statement.
+            connection.writeValue(cmdChangeRequest, DataValue.valueOnly(new Variant(true))).get();
+
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 }
