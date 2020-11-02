@@ -2,8 +2,6 @@ package com.BrewMES.demo.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,7 +13,10 @@ class MachineTest {
 
     @BeforeEach
     void setUp() {
-        machine = new Machine("opc.tcp://127.0.0.1:4840");
+        BrewMES brewMES = new BrewMES();
+        brewMES.connectMachine("opc.tcp://127.0.0.1:4840");
+        brewMES.setCurrentMachine(0);
+        machine = brewMES.getMachines().get(0);
     }
 
     //Only run when the machine is is not connected
@@ -27,8 +28,8 @@ class MachineTest {
     */
 
     @Test
-    void read_process_count_when_machine_is_running() {
-        assertTrue(machine.readProcessedCount() > 0);
+    void read_process_count() {
+        assertTrue(machine.readProcessedCount() >= 0);
     }
 
     @Test
