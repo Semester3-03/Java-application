@@ -6,12 +6,14 @@ import com.BrewMES.demo.model.Command;
 import com.BrewMES.demo.model.iBrewMES;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.print.attribute.standard.Media;
+import java.util.Objects;
 
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -91,5 +93,21 @@ public class BrewMESController {
         }
 
         return response;
+    }
+    //make this method return last 10 batches
+    @GetMapping(value = "/batches")
+    public ResponseEntity<Object> getBatches() {
+        return new ResponseEntity<>(new StringResponse("Not Implemented yet", HttpStatus.NOT_IMPLEMENTED.value()), HttpStatus.NOT_IMPLEMENTED);
+    }
+    //make this method return a batch based on it's id
+    @GetMapping(value = "/batches/{id}")
+    public ResponseEntity<Object> getBatch(@PathVariable("id") String id) {
+        return new ResponseEntity<>(new StringResponse("Not Implemented yet", HttpStatus.NOT_IMPLEMENTED.value()), HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    //make this method handle the make report and return and return json with it's location
+    @GetMapping(value = "/bathes/{id}/geneate")
+    public ResponseEntity<Object> makeBatchReport(@PathVariable("id") String id) {
+        return new ResponseEntity<>(new StringResponse("Not Implemented yet", HttpStatus.NOT_IMPLEMENTED.value()), HttpStatus.NOT_IMPLEMENTED);
     }
 }
