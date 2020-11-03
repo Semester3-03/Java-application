@@ -38,7 +38,7 @@ public class BrewMES implements iBrewMES {
 		throw new UnsupportedOperationException();
 	}
 
-	public UUID connectMachine(String ipAddress) {
+	public void connectMachine(String ipAddress) {
 		try {
 			//get all endpoints from the machine
 			List<EndpointDescription> endpoints = DiscoveryClient.getEndpoints(ipAddress).get();
@@ -57,11 +57,9 @@ public class BrewMES implements iBrewMES {
 			}
 			Machine newMachine = new Machine(ipAddress, connection);
 			machines.put(newMachine.getId(), newMachine);
-			return newMachine.getId();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
 	}
 
 	public void disconnectMachine(UUID id) {

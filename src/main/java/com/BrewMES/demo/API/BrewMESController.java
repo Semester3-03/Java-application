@@ -6,7 +6,6 @@ import com.BrewMES.demo.model.Command;
 import com.BrewMES.demo.model.iBrewMES;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +17,7 @@ import java.util.UUID;
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class BrewMESController {
     //TODO: make brewMes singleton
-    private iBrewMES brewMes = new BrewMES();
+    private final iBrewMES brewMes = new BrewMES();
 
     //Get all machines
     @RequestMapping(value = "/machines")
@@ -92,11 +91,13 @@ public class BrewMESController {
 
         return response;
     }
+
     //make this method return last 10 batches
     @GetMapping(value = "/batches")
     public ResponseEntity<Object> getBatches() {
         return new ResponseEntity<>(new StringResponse("Not Implemented yet", HttpStatus.NOT_IMPLEMENTED.value()), HttpStatus.NOT_IMPLEMENTED);
     }
+
     //make this method return a batch based on it's id
     @GetMapping(value = "/batches/{id}")
     public ResponseEntity<Object> getBatch(@PathVariable("id") UUID id) {

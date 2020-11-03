@@ -15,9 +15,10 @@ class MachineTest {
     @BeforeEach
     void setUp() {
         BrewMES brewMES = new BrewMES();
-        UUID id = brewMES.connectMachine("opc.tcp://127.0.0.1:4840");
-        brewMES.setCurrentMachine(id);
-        machine = brewMES.getMachines().get(id);
+        brewMES.connectMachine("opc.tcp://127.0.0.1:4840");
+        Machine[] machines = brewMES.getMachines().values().toArray(Machine[]::new);
+        brewMES.setCurrentMachine(machines[0].getId());
+        machine = brewMES.getMachines().get(machines[0].getId());
     }
 
     //Only run when the machine is is not connected
