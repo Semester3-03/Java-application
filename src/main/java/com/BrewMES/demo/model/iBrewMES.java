@@ -1,5 +1,7 @@
 package com.BrewMES.demo.model;
 
+import java.util.Map;
+
 public interface iBrewMES {
 
 	public abstract void controlMachine(Command command);
@@ -15,6 +17,8 @@ public interface iBrewMES {
 	public void disconnectMachine(int id);
 
 	public void connectMachine(String ipAddress);
+
+	public Map<Integer, Machine> getMachines();
 
 	public abstract String getMachineVariables();
 

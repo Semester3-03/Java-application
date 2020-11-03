@@ -1,6 +1,6 @@
 package com.BrewMES.demo.model;
 
-enum BeerType {
+public enum BeerType {
 	PILSNER,
 	WHEAT,
 	IPA,
