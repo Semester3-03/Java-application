@@ -1,15 +1,12 @@
 package com.BrewMES.demo.model;
 
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
-import org.eclipse.milo.opcua.sdk.client.api.config.OpcUaClientConfigBuilder;
-import org.eclipse.milo.opcua.stack.client.DiscoveryClient;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.Variant;
+import java.util.concurrent.ExecutionException;
 import org.eclipse.milo.opcua.stack.core.types.enumerated.TimestampsToReturn;
-import org.eclipse.milo.opcua.stack.core.types.structured.EndpointDescription;
-
-import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class Machine {
     private int id;
@@ -37,7 +34,26 @@ public class Machine {
 
 
     public void controlMachine(Command command) {
-        throw new UnsupportedOperationException();
+            try {
+                //Create nodeID for Control Command.
+                NodeId cntrlCmd = new NodeId(6, "::Program:Cube.Command.CntrlCmd");
+
+                // Switch on the enum, writing different values to the machine.
+                switch (command) {
+                    case RESET -> connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(1))).get();
+                    case START -> connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(2))).get();
+                    case STOP -> connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(3))).get();
+                    case ABORT -> connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(4))).get();
+                    case CLEAR -> connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(5))).get();
+                    default -> System.out.println("I did not understand that command :-)");
+                }
+                //request change
+                changeRequest();
+
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+                Thread.currentThread().interrupt();
+            }
     }
 
 
@@ -261,5 +277,19 @@ public class Machine {
 
     public void setHumidity(double humidity) {
         this.humidity = humidity;
+    }
+
+    private void changeRequest(){
+        try {
+            //Create NodeID for Command Change Request.
+            NodeId cmdChangeRequest = new NodeId(6, "::Program:Cube.Command.CmdChangeRequest");
+
+            //write true to the machine, to pass the case from the switch statement.
+            connection.writeValue(cmdChangeRequest, DataValue.valueOnly(new Variant(true))).get();
+
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            Thread.currentThread().interrupt();
+        }
     }
 }
