@@ -4,12 +4,14 @@ import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.Variant;
+
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import org.eclipse.milo.opcua.stack.core.types.enumerated.TimestampsToReturn;
 import java.util.concurrent.ExecutionException;
 
 public class Machine {
-    private int id;
+    private UUID id;
     private String ip;
     private OpcUaClient connection;
     private Batch currentBatch;
@@ -23,7 +25,7 @@ public class Machine {
     private double humidity;
 
     public Machine(String ipAddress,OpcUaClient connection) {
-        this.id = 0;
+        this.id = UUID.randomUUID();
         this.ip = ipAddress;
         this.connection = connection;
     }
@@ -199,7 +201,7 @@ public class Machine {
         throw new UnsupportedOperationException();
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 

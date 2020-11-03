@@ -12,8 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.attribute.standard.Media;
-import java.util.Objects;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -29,10 +28,9 @@ public class BrewMESController {
 
     //Get a specific machine based on it's id.
     @GetMapping(value = "/machines/{id}")
-    public ResponseEntity<Object> getMachine(@PathVariable("id") String id) {
-        int intId = Integer.parseInt(id);
-        if (brewMes.getMachines().containsKey(intId)) {
-            return new ResponseEntity<>(brewMes.getMachines().get(intId), HttpStatus.OK);
+    public ResponseEntity<Object> getMachine(@PathVariable("id") UUID id) {
+        if (brewMes.getMachines().containsKey(id)) {
+            return new ResponseEntity<>(brewMes.getMachines().get(id), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(new StringResponse("Sorry i do not know that machine :-)", HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
         }
@@ -40,15 +38,15 @@ public class BrewMESController {
 
     //Delete and disconnect a machine from the system by specifying it's id.
     @DeleteMapping(value = "/machines/{id}")
-    public ResponseEntity<Object> deleteMachine(@PathVariable("id") String id) {
-        brewMes.disconnectMachine(Integer.parseInt(id));
-        return new ResponseEntity<>("Machine is removed.", HttpStatus.OK);
+    public ResponseEntity<Object> deleteMachine(@PathVariable("id") UUID id) {
+        brewMes.disconnectMachine(id);
+        return new ResponseEntity<>(new StringResponse("Machine is removed", HttpStatus.OK.value()), HttpStatus.OK);
     }
 
     // Sends a command to the machine. The command is send via put request with a json object that is notated with e.g.
     // {'command': 'start'}
     @PutMapping(value = "machines/{id}/command")
-    public ResponseEntity<Object> updateMachineState(@PathVariable("id") String id, @RequestBody String input) {
+    public ResponseEntity<Object> updateMachineState(@PathVariable("id") UUID id, @RequestBody String input) {
         JsonObject o = JsonParser.parseString(input).getAsJsonObject();
         String s = o.get("command").getAsString();
         ResponseEntity<Object> response = new ResponseEntity<>(new StringResponse("command updated", HttpStatus.OK.value()), HttpStatus.OK);
@@ -75,13 +73,13 @@ public class BrewMESController {
 
     //set machine variables
     @PutMapping(value = "/machines/{id}/variables")
-    public ResponseEntity<Object> setMachineVariables(@PathVariable("id") String id, @RequestBody String input) {
+    public ResponseEntity<Object> setMachineVariables(@PathVariable("id") UUID id, @RequestBody String input) {
         JsonObject o = JsonParser.parseString(input).getAsJsonObject();
         int speed = o.get("speed").getAsInt();
         String beerType = o.get("beerType").getAsString();
         int batchSize = o.get("batchSize").getAsInt();
         ResponseEntity<Object> response = new ResponseEntity<>(new StringResponse("Variables set.", HttpStatus.OK.value()), HttpStatus.OK);
-        brewMes.setCurrentMachine(Integer.parseInt(id));
+        brewMes.setCurrentMachine(id);
         switch (beerType) {
             case "pilsner" -> brewMes.setMachineVariables(speed, BeerType.PILSNER, batchSize);
             case "wheat" -> brewMes.setMachineVariables(speed, BeerType.WHEAT, batchSize);
@@ -101,13 +99,13 @@ public class BrewMESController {
     }
     //make this method return a batch based on it's id
     @GetMapping(value = "/batches/{id}")
-    public ResponseEntity<Object> getBatch(@PathVariable("id") String id) {
+    public ResponseEntity<Object> getBatch(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(new StringResponse("Not Implemented yet", HttpStatus.NOT_IMPLEMENTED.value()), HttpStatus.NOT_IMPLEMENTED);
     }
 
     //make this method handle the make report and return and return json with it's location
     @GetMapping(value = "/bathes/{id}/geneate")
-    public ResponseEntity<Object> makeBatchReport(@PathVariable("id") String id) {
+    public ResponseEntity<Object> makeBatchReport(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(new StringResponse("Not Implemented yet", HttpStatus.NOT_IMPLEMENTED.value()), HttpStatus.NOT_IMPLEMENTED);
     }
 }

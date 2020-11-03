@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,9 +15,9 @@ class MachineTest {
     @BeforeEach
     void setUp() {
         BrewMES brewMES = new BrewMES();
-        brewMES.connectMachine("opc.tcp://127.0.0.1:4840");
-        brewMES.setCurrentMachine(0);
-        machine = brewMES.getMachines().get(0);
+        UUID id = brewMES.connectMachine("opc.tcp://127.0.0.1:4840");
+        brewMES.setCurrentMachine(id);
+        machine = brewMES.getMachines().get(id);
     }
 
     //Only run when the machine is is not connected

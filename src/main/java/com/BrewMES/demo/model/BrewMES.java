@@ -7,10 +7,11 @@ import org.eclipse.milo.opcua.stack.core.types.structured.EndpointDescription;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 
 public class BrewMES implements iBrewMES {
-	private Map<Integer, Machine> machines;
+	private Map<UUID, Machine> machines;
 	private Machine currentMachine;
 	private Batch selectedBatch;
 	private List<Batch> latestBatches;
@@ -19,13 +20,13 @@ public class BrewMES implements iBrewMES {
 		throw new UnsupportedOperationException();
 	}
 
-	public void setMachines(Map<Integer, Machine> machines) {
+	public void setMachines(Map<UUID, Machine> machines) {
 		this.machines = machines;
 	}
 
 
 	// picks based on MachineId
-	public void setCurrentMachine(int machineId) {
+	public void setCurrentMachine(UUID machineId) {
 		this.currentMachine = machines.get(machineId);
 	}
 
@@ -37,7 +38,7 @@ public class BrewMES implements iBrewMES {
 		throw new UnsupportedOperationException();
 	}
 
-	public void connectMachine(String ipAddress) {
+	public UUID connectMachine(String ipAddress) {
 		try {
 			//get all endpoints from the machine
 			List<EndpointDescription> endpoints = DiscoveryClient.getEndpoints(ipAddress).get();
@@ -56,12 +57,14 @@ public class BrewMES implements iBrewMES {
 			}
 			Machine newMachine = new Machine(ipAddress, connection);
 			machines.put(newMachine.getId(), newMachine);
+			return newMachine.getId();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 
-	public void disconnectMachine(int id) {
+	public void disconnectMachine(UUID id) {
 			machines.remove(id);
 	}
 
@@ -78,7 +81,7 @@ public class BrewMES implements iBrewMES {
 	}
 
 	@Override
-	public Map<Integer, Machine> getMachines() {
+	public Map<UUID, Machine> getMachines() {
 		return machines;
 	}
 
