@@ -123,4 +123,17 @@ class MachineTest {
         assertTrue(vibration >= -50.0 && vibration <= 50.0);
     }
 
+    @Test
+    void setVariables() {
+        int speed = 600;
+        BeerType beerType = BeerType.PILSNER;
+        int batchSize = 100;
+
+        machine.setVariables(speed, beerType, batchSize);
+        machine.controlMachine(Command.START);
+        assertEquals(speed, machine.readMachineSpeed());
+        assertEquals(BeerType.valueOf(beerType), machine.readBatchBeerType());
+        assertEquals(batchSize, machine.readBatchSize());
+    }
+
 }
