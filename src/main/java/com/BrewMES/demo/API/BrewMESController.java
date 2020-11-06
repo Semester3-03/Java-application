@@ -12,9 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
-@CrossOrigin(origins = "*")
+
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
+@CrossOrigin(origins = "*")
 public class BrewMESController {
     //TODO: make brewMes singleton
     private final iBrewMES brewMes = new BrewMES();
