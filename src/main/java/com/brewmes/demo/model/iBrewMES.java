@@ -1,4 +1,4 @@
-package com.BrewMES.demo.model;
+package com.brewmes.demo.model;
 
 import java.util.Map;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package com.BrewMES.demo;
+package com.brewmes.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package com.BrewMES.demo.model;
+package com.brewmes.demo.model;
 
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
@@ -8,7 +8,6 @@ import org.eclipse.milo.opcua.stack.core.types.builtin.Variant;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import org.eclipse.milo.opcua.stack.core.types.enumerated.TimestampsToReturn;
-import java.util.concurrent.ExecutionException;
 
 public class Machine {
     private UUID id;
@@ -44,7 +43,7 @@ public class Machine {
                 switch (command) {
                     case RESET -> connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(1))).get();
                     case START -> connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(2))).get();
-                    case STOP -> connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(3))).get();
+                    case STOP  -> connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(3))).get();
                     case ABORT -> connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(4))).get();
                     case CLEAR -> connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(5))).get();
                     default -> System.out.println("I did not understand that command :-)");
