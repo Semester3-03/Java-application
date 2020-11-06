@@ -73,10 +73,29 @@ public class BrewMESController {
     @PutMapping(value = "/machines/{id}/variables")
     public ResponseEntity<Object> setMachineVariables(@PathVariable("id") UUID id, @RequestBody String input) {
         JsonObject o = JsonParser.parseString(input).getAsJsonObject();
-        int speed = o.get("speed").getAsInt();
-        String beerType = o.get("beerType").getAsString();
-        int batchSize = o.get("batchSize").getAsInt();
-        ResponseEntity<Object> response = new ResponseEntity<>(new StringResponse("Variables set.", HttpStatus.OK.value()), HttpStatus.OK);
+        int speed;
+        String beerType;
+        int batchSize;
+        ResponseEntity<Object> response;
+        response = new ResponseEntity<>(new StringResponse("Variables set.", HttpStatus.OK.value()), HttpStatus.OK);
+        if (o.get("speed") == null) {
+            speed = 0;
+            response = new ResponseEntity<>(new StringResponse("Speed not present.", HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
+        } else {
+            speed = o.get("speed").getAsInt();
+        }
+        if (o.get("beerType") == null) {
+            beerType = "pilsner";
+            response = new ResponseEntity<>(new StringResponse("beerType not present.", HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
+        } else {
+            beerType = o.get("beerType").getAsString();
+        }
+        if (o.get("batchSize") == null) {
+            batchSize = 0;
+            response = new ResponseEntity<>(new StringResponse("BatchSize not present.", HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
+        } else {
+            batchSize = o.get("batchSize").getAsInt();
+        }
         brewMes.setCurrentMachine(id);
         switch (beerType) {
             case "pilsner" -> brewMes.setMachineVariables(speed, BeerType.PILSNER, batchSize);
@@ -85,9 +104,8 @@ public class BrewMESController {
             case "ipa" -> brewMes.setMachineVariables(speed, BeerType.IPA, batchSize);
             case "ale" -> brewMes.setMachineVariables(speed, BeerType.ALE, batchSize);
             case "alcohol_free" -> brewMes.setMachineVariables(speed, BeerType.ALCHOL_FREE, batchSize);
-            default -> new ResponseEntity<>(new StringResponse("I do not know that beer typer.", HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
-        }
-
+            default -> response = new ResponseEntity<>(new StringResponse("bad beerType", HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
+            }
         return response;
     }
 
