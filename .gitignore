@@ -33,3 +33,26 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+
+# REACT
+# dependencies
+/WebApplication/node_modules
+/WebApplication/.pnp
+WebApplication/.pnp.js
+
+# testing
+/WebApplication/coverage
+
+# production
+/WebApplication/build
+
+# misc
+WebApplication/.DS_Store
+WebApplication/.env.local
+WebApplication/.env.development.local
+WebApplication/.env.test.local
+WebApplication/.env.production.local
+
+WebApplication/npm-debug.log*
+WebApplication/yarn-debug.log*
+WebApplication/yarn-error.log*
