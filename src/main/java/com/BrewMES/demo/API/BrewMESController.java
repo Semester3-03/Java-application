@@ -17,7 +17,6 @@ import java.util.UUID;
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*")
 public class BrewMESController {
-    //TODO: make brewMes singleton
     private final iBrewMES brewMes = BrewMES.getInstance();
     //Get all machines
     @RequestMapping(value = "/machines")
