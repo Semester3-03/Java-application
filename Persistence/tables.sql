@@ -21,7 +21,7 @@ CREATE TABLE Humidity (
 CREATE TABLE Time_in_states (
     id SERIAL PRIMARY KEY,
     time_stamp TIME,
-    _state INT --bad naming but state is a reserved word
+    machine_state INT
 );
 
 CREATE TABLE Product_type (
