@@ -58,10 +58,10 @@ public class BrewMES implements iBrewMES {
 			}
 			Machine newMachine = new Machine(ipAddress, connection);
 			machines.put(newMachine.getId(), newMachine);
-		} catch (ExecutionException | InterruptedException e) {
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 			Thread.currentThread().interrupt();
-		} catch (UaException e) {
+		} catch (UaException | ExecutionException  e) {
 			e.printStackTrace();
 		}
 	}
