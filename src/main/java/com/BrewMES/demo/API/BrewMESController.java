@@ -19,7 +19,7 @@ import java.util.UUID;
 public class BrewMESController {
     private final iBrewMES brewMes = BrewMES.getInstance();
     //Get all machines
-    @RequestMapping(value = "/machines")
+    @GetMapping(value = "/machines")
     public ResponseEntity<Object> getMachines() {
         return new ResponseEntity<>(brewMes.getMachines().values().toArray(), HttpStatus.OK);
     }

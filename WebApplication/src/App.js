@@ -4,6 +4,7 @@ import Header from "./components/layout/Header";
 import About from './components/pages/About';
 import Sample1 from './components/Sample1';
 import Sample2 from './components/Sample2';
+import MachineList from './components/MachineList';
 
 import './App.css';
 
@@ -16,8 +17,7 @@ export class App extends Component {
 					<div className="container">
 						<Route exact path="/" render={props => (
 							<React.Fragment>
-								This is a comment
-								all your components go here
+								<MachineList />
 							</React.Fragment>
 						)} />
 						<Route exact path="/contact" render={props => (
@@ -28,8 +28,6 @@ export class App extends Component {
 						)} />
 
 						<Route path="/about" component={About} />
-
-
 
 					</div>
 				</div>
