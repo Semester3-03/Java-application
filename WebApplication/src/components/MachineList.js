@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route} from 'react-router-dom';
-import About from './pages/About';
 
 export class MachineList extends Component {
     //State contains all the variables of the class
@@ -25,9 +23,14 @@ export class MachineList extends Component {
     //When button is pressed we send the 
     selectMachineHandler = () => {
         //console.log(this.state.selectedMachine)
-        
-        fetch("http://localhost:8080/api/machines/" + this.state.selectedMachine, {
-            method: "PUT"
+        let data = {
+            id: this.state.selectedMachine
+        }
+
+        fetch("http://localhost:8080/api/currentmachine/", {
+            method: "PUT",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
         })
         .then(response => {
             if (response.status === 200) {

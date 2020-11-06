@@ -34,6 +34,7 @@ public class BrewMESController {
         }
     }
 
+    
     //Delete and disconnect a machine from the system by specifying it's id.
     @DeleteMapping(value = "/machines/{id}")
     public ResponseEntity<Object> deleteMachine(@PathVariable("id") UUID id) {
