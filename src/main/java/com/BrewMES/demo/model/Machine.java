@@ -34,21 +34,18 @@ public class Machine {
         this.ip = ipAddress;
     }
 
-
+    /**
+     * This sends a command to the connected machine.
+     * @param command the enum value to send to the machine.
+     */
     public void controlMachine(Command command) {
             try {
                 //Create nodeID for Control Command.
                 NodeId cntrlCmd = new NodeId(6, "::Program:Cube.Command.CntrlCmd");
 
                 // Switch on the enum, writing different values to the machine.
-                switch (command) {
-                    case RESET -> connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(1))).get();
-                    case START -> connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(2))).get();
-                    case STOP -> connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(3))).get();
-                    case ABORT -> connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(4))).get();
-                    case CLEAR -> connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(5))).get();
-                    default -> System.out.println("I did not understand that command :-)");
-                }
+                connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(command.label))).get();
+
                 //request change
                 changeRequest();
 
