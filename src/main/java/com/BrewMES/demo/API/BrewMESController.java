@@ -34,6 +34,13 @@ public class BrewMESController {
         }
     }
 
+    //Set a machine as the currently selected machine
+    @PutMapping(value = "machines/{id}")
+    public ResponseEntity<Object> setCurrentMachine(@PathVariable("id") UUID id){
+        brewMes.setCurrentMachine(id);
+        return new ResponseEntity<>(new StringResponse("Machine is set as current machine", HttpStatus.OK.value()), HttpStatus.OK);
+    }
+
     //Delete and disconnect a machine from the system by specifying it's id.
     @DeleteMapping(value = "/machines/{id}")
     public ResponseEntity<Object> deleteMachine(@PathVariable("id") UUID id) {
