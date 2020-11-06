@@ -18,8 +18,7 @@ import java.util.UUID;
 @CrossOrigin(origins = "*")
 public class BrewMESController {
     //TODO: make brewMes singleton
-    private final iBrewMES brewMes = new BrewMES();
-
+    private final iBrewMES brewMes = BrewMES.getInstance();
     //Get all machines
     @RequestMapping(value = "/machines")
     public ResponseEntity<Object> getMachines() {
