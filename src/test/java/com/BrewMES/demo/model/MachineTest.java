@@ -132,7 +132,7 @@ class MachineTest {
         machine.setVariables(speed, beerType, batchSize);
         machine.controlMachine(Command.START);
         assertEquals(speed, machine.readMachineSpeed());
-        assertEquals(BeerType.valueOf(beerType), machine.readBatchBeerType());
+        assertEquals(beerType.label, machine.readBatchBeerType());
         assertEquals(batchSize, machine.readBatchSize());
     }
 

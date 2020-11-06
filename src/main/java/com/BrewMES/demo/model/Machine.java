@@ -203,7 +203,7 @@ public class Machine {
         try{
             //Set beertype on the machine
             NodeId SetBeerType = new NodeId(6, "::Program:Cube.Command.Parameter[1].Value");
-            connection.writeValue(SetBeerType, DataValue.valueOnly(new Variant(BeerType.valueOf(beerType)))).get();
+            connection.writeValue(SetBeerType, DataValue.valueOnly(new Variant(beerType.label))).get();
 
             //Set speed on the machine
             NodeId SetSpeed = new NodeId(6, "::Program:Cube.Command.MachSpeed");
