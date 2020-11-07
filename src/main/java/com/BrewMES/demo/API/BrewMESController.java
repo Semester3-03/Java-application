@@ -19,7 +19,7 @@ import java.util.UUID;
 public class BrewMESController {
     private final iBrewMES brewMes = BrewMES.getInstance();
     //Get all machines
-    @RequestMapping(value = "/machines")
+    @GetMapping(value = "/machines")
     public ResponseEntity<Object> getMachines() {
         return new ResponseEntity<>(brewMes.getMachines().values().toArray(), HttpStatus.OK);
     }
@@ -42,6 +42,12 @@ public class BrewMESController {
         UUID id = UUID.fromString(s);
         brewMes.setCurrentMachine(id);
         return new ResponseEntity<>(new StringResponse("Machine is set as current machine", HttpStatus.OK.value()), HttpStatus.OK);
+
+  
+    //Get the current machine
+    @GetMapping(value = "/currentmachine")
+    public ResponseEntity<Object> getCurrentMachine() {
+        return new ResponseEntity<>(brewMes.getCurrentMachine(), HttpStatus.OK);
     }
 
     //Delete and disconnect a machine from the system by specifying it's id.
