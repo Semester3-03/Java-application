@@ -11,6 +11,8 @@ public interface iBrewMES {
 
 	public void setCurrentMachine(UUID machine);
 
+	public Machine getCurrentMachine();
+
 	public Batch getBatch(int id);
 
 	public void getReport(Batch batch);

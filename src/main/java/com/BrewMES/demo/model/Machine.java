@@ -34,21 +34,18 @@ public class Machine {
         this.ip = ipAddress;
     }
 
-
+    /**
+     * This sends a command to the connected machine.
+     * @param command the enum value to send to the machine.
+     */
     public void controlMachine(Command command) {
             try {
                 //Create nodeID for Control Command.
                 NodeId cntrlCmd = new NodeId(6, "::Program:Cube.Command.CntrlCmd");
 
                 // Switch on the enum, writing different values to the machine.
-                switch (command) {
-                    case RESET -> connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(1))).get();
-                    case START -> connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(2))).get();
-                    case STOP -> connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(3))).get();
-                    case ABORT -> connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(4))).get();
-                    case CLEAR -> connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(5))).get();
-                    default -> System.out.println("I did not understand that command :-)");
-                }
+                connection.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(command.label))).get();
+
                 //request change
                 changeRequest();
 
@@ -193,8 +190,29 @@ public class Machine {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * This writes the variables to the machine. The machine will not be started automatically.
+     * @param speed the speed of the machine.
+     * @param beerType the beer type for the machine.
+     * @param batchSize the amount of beer to produce until stopping
+     */
     public void setVariables(int speed, BeerType beerType, int batchSize) {
-        throw new UnsupportedOperationException();
+        try{
+            //Set beertype on the machine
+            NodeId SetBeerType = new NodeId(6, "::Program:Cube.Command.Parameter[1].Value");
+            connection.writeValue(SetBeerType, DataValue.valueOnly(new Variant(beerType.label))).get();
+
+            //Set speed on the machine
+            NodeId SetSpeed = new NodeId(6, "::Program:Cube.Command.MachSpeed");
+            connection.writeValue(SetSpeed, DataValue.valueOnly(new Variant(speed))).get();
+
+            //Set batch size on the machine
+            NodeId SetBatchSize = new NodeId(6, "::Program:Cube.Status.Parameter[2].Value");
+            connection.writeValue(SetBatchSize, DataValue.valueOnly(new Variant(batchSize))).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            Thread.currentThread().interrupt();
+        }
     }
 
     public String makeJsonVariables() {
