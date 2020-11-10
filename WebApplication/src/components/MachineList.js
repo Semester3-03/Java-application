@@ -36,6 +36,7 @@ export class MachineList extends Component {
         this.props.setCurrentMachine(this.state.selectedMachine)
     }
 
+    //Handler for the selection of a new machine in the list
     change = (e) => {
         let selectedJSON = JSON.parse(e.target.value)
 
@@ -45,8 +46,7 @@ export class MachineList extends Component {
         }})
     }
     
-
-    //Contains everything we wish to render to the user
+    //Contains the HTML that is to be rendered for the user
     render() {
         return (
             <div>
@@ -77,6 +77,7 @@ export class MachineList extends Component {
     }
 }
 
+//Styling of the button
 const btnStyle = {
     backgroundColor: "#696969",
     border: "1px solid #000",

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 
 export class Header extends Component {
 
+    //Styling for the text displaying currentMachine
     textStyle = () => {
         return {
             color: this.props.machine.ip === "none" ? 
@@ -10,6 +11,7 @@ export class Header extends Component {
         }
     }
     
+    //Contains the HTML that is to be rendered for the user
     render() {
         return (
             <header style={headerStyle}>
@@ -21,13 +23,14 @@ export class Header extends Component {
     }
 }
 
-
+//Styling for the header
 const headerStyle = {
     background: "#444444",
     color: "#ffffff",
     textAlign: "center",
 }
 
+//Styling of the links
 const linkStyle = {
     color: "#ffffff",
     textDecoration: "underline",

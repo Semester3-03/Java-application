@@ -2,11 +2,14 @@ import React, { Component } from 'react'
 
 export class Control extends Component {
 
+    //Handler method for the buttons.
     buttonPress = (e) => {
+        //Created a JSON object with "command: {the command stored on the respective button}"
         let data = {
             command: e.target.value
         }
 
+        //Sends the HTTP request to the API
         fetch("http://localhost:8080/api/machines/" + this.props.currentMachine.id + "/command", {
             method: "PUT",
             headers: {'Content-Type': 'application/json'},
@@ -14,6 +17,7 @@ export class Control extends Component {
         })
     }
 
+    //Contains the HTML that is to be rendered for the user
     render() {
         return (
             <div>
@@ -57,6 +61,7 @@ export class Control extends Component {
     }
 }
 
+//Styling for the buttons
 const btnStyle = {
     backgroundColor: "#696969",
     border: "1px solid #000",

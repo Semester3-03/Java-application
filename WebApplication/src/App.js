@@ -6,6 +6,7 @@ import Control from './components/Control';
 import './App.css';
 
 export class App extends Component {
+	//This is the global state that contains variables relevant to multiple components
 	state = { 
 		currentMachine: {
 			ip: "none",
@@ -13,11 +14,13 @@ export class App extends Component {
 		}
     };
 
-
+	//Function to save the newly selected currentMachine in the state.
 	setCurrentMachine = (machine) => {
 		this.setState({ currentMachine: machine });
 	}
 
+	//Contains the HTML that is to be rendered for the user
+	//This really just contains references to all the different components
 	render() {
 		return (
 			<Router>
