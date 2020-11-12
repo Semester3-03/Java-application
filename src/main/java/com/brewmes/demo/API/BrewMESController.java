@@ -1,9 +1,9 @@
-package com.BrewMES.demo.API;
+package com.brewmes.demo.API;
 
-import com.BrewMES.demo.model.BeerType;
-import com.BrewMES.demo.model.BrewMES;
-import com.BrewMES.demo.model.Command;
-import com.BrewMES.demo.model.iBrewMES;
+import com.brewmes.demo.model.BeerType;
+import com.brewmes.demo.model.BrewMES;
+import com.brewmes.demo.model.Command;
+import com.brewmes.demo.model.iBrewMES;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.springframework.http.HttpStatus;
@@ -18,6 +18,7 @@ import java.util.UUID;
 @CrossOrigin(origins = "*")
 public class BrewMESController {
     private final iBrewMES brewMes = BrewMES.getInstance();
+
     //Get all machines
     @GetMapping(value = "/machines")
     public ResponseEntity<Object> getMachines() {
@@ -43,7 +44,7 @@ public class BrewMESController {
         brewMes.setCurrentMachine(id);
         return new ResponseEntity<>(new StringResponse("Machine is set as current machine", HttpStatus.OK.value()), HttpStatus.OK);
     }
-  
+
     //Get the current machine
     @GetMapping(value = "/currentmachine")
     public ResponseEntity<Object> getCurrentMachine() {
