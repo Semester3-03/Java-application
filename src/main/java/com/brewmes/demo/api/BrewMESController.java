@@ -1,4 +1,4 @@
-package com.brewmes.demo.API;
+package com.brewmes.demo.api;
 
 import com.brewmes.demo.model.BeerType;
 import com.brewmes.demo.model.BrewMES;
