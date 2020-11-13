@@ -1,10 +1,14 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
 export class MachineList extends Component {
     //State contains all the variables of the class
     state = { 
         machines: [],
-        selectedMachine: "default"
+        selectedMachine: {
+            ip: "default",
+            id: "default"
+        }
     };
 
 
@@ -13,37 +17,36 @@ export class MachineList extends Component {
         fetch('http://localhost:8080/api/machines')
         .then(response => response.json())
         .then(data => {
+            //Loops through and add all machines to the list of machines
             data.forEach(element => {
                 this.setState({ machines: [...this.state.machines, {label: element.ip, value: element.id}] });
             });
-            console.log(this.state)
+
+            //Sets first machine as default as the list will have it selected initially
+            this.setState({selectedMachine: {
+                ip: this.state.machines[0].label,
+                id: this.state.machines[0].value
+            }})
         });
     }
 
     //When button is pressed we send the 
     selectMachineHandler = () => {
-        //console.log(this.state.selectedMachine)
-        let data = {
-            id: this.state.selectedMachine
-        }
-
-        fetch("http://localhost:8080/api/currentmachine/", {
-            method: "PUT",
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(data)
-        })
-        .then(response => {
-            if (response.status === 200) {
-                window.location.href = '/about';
-            }
-        })
+        //Sends the current machine to App.js
+        this.props.setCurrentMachine(this.state.selectedMachine)
     }
 
+    //Handler for the selection of a new machine in the list
     change = (e) => {
-        this.setState({selectedMachine: e.target.value})
-    }
+        let selectedJSON = JSON.parse(e.target.value)
 
-    //Contains everything we wish to render to the user
+        this.setState({selectedMachine: {
+            ip: selectedJSON.label,
+            id: selectedJSON.value
+        }})
+    }
+    
+    //Contains the HTML that is to be rendered for the user
     render() {
         return (
             <div>
@@ -51,13 +54,11 @@ export class MachineList extends Component {
 
                 <select 
                         size="10"
-                        value={this.state.selectedMachine}
-                        onChange={(e) => this.setState({selectedMachine: e.target.value})}
+                        onChange={this.change}
                 >
-                    <option disabled selected value value="default"> -- select an option -- </option>
                     {this.state.machines.map((option) => (
                         <option 
-                            value={option.value}
+                            value={JSON.stringify(option)}
                             key={option.value}
                         >
                             {option.label} 
@@ -66,13 +67,28 @@ export class MachineList extends Component {
                 </select>
 
                 <br></br>
-                <button onClick={this.selectMachineHandler}>Select machine</button>
+
+                <Link to="/control">
+                    <button onClick={this.selectMachineHandler} style={btnStyle}>Connect</button>
+                </Link> 
+                
             </div>
         )
     }
 }
 
-
-
+//Styling of the button
+const btnStyle = {
+    backgroundColor: "#696969",
+    border: "1px solid #000",
+    display: "inline-block",
+    color: "#fff",
+    fontSize: "14px",
+    fontWeight: "bold",
+    padding: "8px 12px",
+    margin: "0px 5px",
+    textDecoration: "none",
+    width: "10%"
+}
 
 export default MachineList

@@ -1,41 +1,31 @@
-package com.brewmes.demo.model;
+package com.BrewMES.demo.model;
 
+import com.BrewMES.demo.Persistence.MachineRepository;
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.sdk.client.api.config.OpcUaClientConfigBuilder;
 import org.eclipse.milo.opcua.stack.client.DiscoveryClient;
 import org.eclipse.milo.opcua.stack.core.UaException;
 import org.eclipse.milo.opcua.stack.core.types.structured.EndpointDescription;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import javax.transaction.Transactional;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
-
+@Service
+@Transactional
 public class BrewMES implements iBrewMES {
-    private static BrewMES instance;
+
+    //Repository injected by Spring
+    @Autowired
+    private MachineRepository repo;
+
+
     private Map<UUID, Machine> machines;
     private Machine currentMachine;
     private Batch selectedBatch;
     private List<Batch> latestBatches;
-
-    //private constructor avoids others to create instances.
-    private BrewMES() {
-
-    }
-
-    public static void main(String[] args) {
-        throw new UnsupportedOperationException();
-    }
-
-    //Singleton method to get the BrewMes instance.
-    public static BrewMES getInstance() {
-        if (instance == null) {
-            instance = new BrewMES();
-        }
-        return instance;
-    }
 
     public Batch getBatch(int id) {
         throw new UnsupportedOperationException();
@@ -45,6 +35,11 @@ public class BrewMES implements iBrewMES {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Connects a machine to our OPC-UA client and saves it in the machines map as well as in the database.
+     *
+     * @param ipAddress a String representation of the ip of the machine you wish to connect.
+     */
     public void connectMachine(String ipAddress) {
         try {
             //get all endpoints from the machine
@@ -63,6 +58,7 @@ public class BrewMES implements iBrewMES {
                 machines = new HashMap<>();
             }
             Machine newMachine = new Machine(ipAddress, connection);
+            repo.save(newMachine);
             machines.put(newMachine.getId(), newMachine);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -72,8 +68,14 @@ public class BrewMES implements iBrewMES {
         }
     }
 
+    /**
+     * Removes and deletes from both the machine map and the database.
+     *
+     * @param id the UUID of the machine you wish to delete.
+     */
     public void disconnectMachine(UUID id) {
         machines.remove(id);
+        repo.deleteById(id);
     }
 
     public void setMachineVariables(int speed, BeerType beerType, int batchSize) {
@@ -89,8 +91,21 @@ public class BrewMES implements iBrewMES {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Finds all machines in the database and updates the Map machines.
+     *
+     * @return the updated map of machines.
+     */
     @Override
     public Map<UUID, Machine> getMachines() {
+        if (machines == null) {
+            machines = new HashMap<>();
+        }
+        repo.findAll().forEach(machine -> {
+            if (!machines.containsKey(machine.getId())) {
+                machines.put(machine.getId(), machine);
+            }
+        });
         return machines;
     }
 
@@ -122,5 +137,5 @@ public class BrewMES implements iBrewMES {
     public void setLatestBatches(List<Batch> latestBatches) {
         this.latestBatches = latestBatches;
     }
-}
 
+}

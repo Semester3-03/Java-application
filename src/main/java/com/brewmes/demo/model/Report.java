@@ -1,4 +1,4 @@
-package com.brewmes.demo.model;
+package com.BrewMES.demo.model;
 
 import java.io.File;
 

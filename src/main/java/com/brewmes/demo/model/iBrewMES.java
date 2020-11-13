@@ -1,28 +1,28 @@
-package com.brewmes.demo.model;
+package com.BrewMES.demo.model;
 
 import java.util.Map;
 import java.util.UUID;
 
 public interface iBrewMES {
 
-    void controlMachine(Command command);
+    public abstract void controlMachine(Command command);
 
-    void setMachineVariables(int speed, BeerType beerType, int batchSize);
+    public abstract void setMachineVariables(int speed, BeerType beerType, int batchSize);
 
-    Machine getCurrentMachine();
+    public Machine getCurrentMachine();
 
-    void setCurrentMachine(UUID machine);
+    public void setCurrentMachine(UUID machine);
 
-    Batch getBatch(int id);
+    public Batch getBatch(int id);
 
-    void getReport(Batch batch);
+    public void getReport(Batch batch);
 
-    void disconnectMachine(UUID id);
+    public void disconnectMachine(UUID id);
 
-    void connectMachine(String ipAddress);
+    public void connectMachine(String ipAddress);
 
-    Map<UUID, Machine> getMachines();
+    public Map<UUID, Machine> getMachines();
 
-    String getMachineVariables();
+    public abstract String getMachineVariables();
 
 }
