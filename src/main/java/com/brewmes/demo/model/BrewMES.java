@@ -52,7 +52,7 @@ public class BrewMES implements iBrewMES {
      *
      * @param ipAddress a String representation of the ip of the machine you wish to connect.
      */
-    public void connectMachine(String ipAddress) {
+    public boolean connectMachine(String ipAddress) {
         try {
             //get all endpoints from the machine
             List<EndpointDescription> endpoints = DiscoveryClient.getEndpoints(ipAddress).get();
@@ -72,12 +72,14 @@ public class BrewMES implements iBrewMES {
             Machine newMachine = new Machine(ipAddress, connection);
             machineRepo.save(newMachine);
             machines.put(newMachine.getId(), newMachine);
+            return true;
         } catch (InterruptedException e) {
             e.printStackTrace();
             Thread.currentThread().interrupt();
         } catch (UaException | ExecutionException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     /**

@@ -8,12 +8,21 @@ export class MachineList extends Component {
         selectedMachine: {
             ip: "default",
             id: "default"
-        }
+        },
+        machineIP: "",
+        success: true,
+        statusMessage: ""
     };
 
 
     //Is forced to complete before render()
     componentDidMount() {
+        this.updateMachineList();
+    }
+
+    updateMachineList = () =>{
+        this.setState({machines: []})
+
         fetch('http://localhost:8080/api/machines')
         .then(response => response.json())
         .then(data => {
@@ -28,6 +37,30 @@ export class MachineList extends Component {
                 id: this.state.machines[0].value
             }})
         });
+    }
+
+    addMachineHandler = (e) =>{
+        let data = {ip: this.state.machineIP};
+
+        fetch("http://localhost:8080/api/machines/",{
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        }).then(response => {
+            if(response.status !== 200){
+                this.setState({success: false});
+            }else{
+                this.setState({success: true});
+                this.updateMachineList();
+            }
+
+            return response.text();
+        }).then(data => JSON.parse(data))
+        .then(json => this.setState({statusMessage: json.response, machineIP: ""}));
+    }
+
+    ipChanged = (e) =>{
+        this.setState({machineIP: e.target.value});
     }
 
     //When button is pressed we send the 
@@ -48,8 +81,22 @@ export class MachineList extends Component {
     
     //Contains the HTML that is to be rendered for the user
     render() {
+        let errorMessage;
+
+        if(this.state.success){
+            errorMessage = <p></p>
+        }else{
+            errorMessage = <p>{this.state.statusMessage}</p>
+        }
+
         return (
             <div>
+                <form>
+                    <input placeholder = "ip" value = {this.state.machineIP} onChange = {this.ipChanged}></input>
+                </form>
+                <button onClick={this.addMachineHandler} style={btnStyle}>Add machine</button>
+                {errorMessage}
+
                 <h1>Machines:</h1>
 
                 <select 

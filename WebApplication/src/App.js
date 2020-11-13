@@ -11,8 +11,13 @@ export class App extends Component {
 		currentMachine: {
 			ip: "none",
 			id: ""
-		}
-    };
+		},
+		updated: false
+	};
+	
+	updateMachineList = () => {
+		this.setState({updated: true});
+	}
 
 	//Function to save the newly selected currentMachine in the state.
 	setCurrentMachine = (machine) => {
@@ -33,7 +38,8 @@ export class App extends Component {
 						<Route exact path="/" render={props => (
 							<React.Fragment>
 								<MachineList 
-									setCurrentMachine={this.setCurrentMachine}
+									setCurrentMachine = {this.setCurrentMachine}
+									updated = {this.state.updated}
 								/>
 							</React.Fragment>
 						)} />

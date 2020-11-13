@@ -85,8 +85,13 @@ public class BrewMESController {
     public ResponseEntity<Object> AddMachine(@RequestBody String input) {
         JsonObject o = JsonParser.parseString(input).getAsJsonObject();
         String ip = o.get("ip").getAsString();
-        brewMes.connectMachine(ip);
-        return new ResponseEntity<>(new StringResponse("Succes", HttpStatus.OK.value()), HttpStatus.OK);
+        boolean success = brewMes.connectMachine(ip);
+
+        if(success){
+            return new ResponseEntity<>(new StringResponse("Success", HttpStatus.OK.value()), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(new StringResponse("Failed, not a valid ip", HttpStatus.NOT_ACCEPTABLE.value()), HttpStatus.NOT_ACCEPTABLE);
+        }
     }
 
     //set machine variables
