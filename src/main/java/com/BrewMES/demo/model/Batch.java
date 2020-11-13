@@ -67,7 +67,7 @@ public class Batch {
 	@Column(name = "max_temp")
 	private double maxTemp;
 
-	@Column(name = "avg_temp")
+	@Transient
 	private double avgTemp;
 
 	@Column(name = "min_humidity")
@@ -76,7 +76,7 @@ public class Batch {
 	@Column(name = "max_humidity")
 	private double maxHumidity;
 
-	@Column(name = "avg_humidity")
+	@Transient
 	private double avgHumidity;
 
 	@Column(name = "min_vibration")
@@ -85,7 +85,7 @@ public class Batch {
 	@Column(name = "max_vibration")
 	private double maxVibration;
 
-	@Column(name = "avg_vibration")
+	@Transient
 	private double avgVibration;
 
 	public void addTemperature(LocalDateTime time, double temp) {
@@ -102,6 +102,24 @@ public class Batch {
 
 	public void setTimeInState(int index, int seconds) {
 
+	}
+
+	private double findAvgTemp(){
+		return (double) temperature.values().stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+	}
+
+	private double findAvgHumidity(){
+		return (double) humidity.values().stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+	}
+
+	private double findAvgVibration(){
+		return (double) vibration.values().stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+	}
+
+	public void setAverages(){
+		setAvgHumidity(findAvgHumidity());
+		setAvgTemp(findAvgTemp());
+		setAvgVibration(findAvgVibration());
 	}
 
 	public UUID getId() {
