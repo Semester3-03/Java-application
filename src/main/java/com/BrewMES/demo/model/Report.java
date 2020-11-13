@@ -59,37 +59,21 @@ public class Report{
 
 			// Add bar chart over time in states
 			addTimeSection(document);
+			// Add a new page
+			document.newPage();
 
 			// Add Humidity graph and table
 			addHumiditySection(document);
+			// Add a new page
+			document.newPage();
 
 			// Add Vibration as header
 			addVibrationSection(document);
-			// Create the table for vibration
-			PdfPTable table3 = new PdfPTable(3);
-			table3.addCell("Minimum");
-			table3.addCell("Maximum");
-			table3.addCell("Average");
-			table3.addCell("?");
-			table3.addCell("?");
-			table3.addCell("?");
-			// Add table to document
-			document.add(table3);
-			// Add graph for vibration
+			// Add a new page
+			document.newPage();
 
 			// Add Temperature as header
 			addTemperatureSection(document);
-			// Create the table for temperature
-			PdfPTable table4 = new PdfPTable(3);
-			table4.addCell("Minimum");
-			table4.addCell("Maximum");
-			table4.addCell("Average");
-			table4.addCell("?");
-			table4.addCell("?");
-			table4.addCell("?");
-			// Add table to document
-			document.add(table4);
-			// Add graph for temperature
 
 			document.close();
 		} catch (DocumentException e) {
@@ -152,23 +136,99 @@ public class Report{
 		table.addCell("?");
 		table.addCell("?");
 		// Add table to document underneath the graph
-
-		document.add(table);
+		addEmptyLine(humidity,1);
+		humidity.add(table);
 
 		document.add(humidity);
 	}
 
 	public static void addVibrationSection(Document document) throws DocumentException {
 		Paragraph vibration = new Paragraph();
-		vibration.add(new Paragraph("Vibration", subFont));
 		addEmptyLine(vibration, 1);
+
+		int width = 500;
+		int height = 400;
+
+		// Add line chart
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		dataset.addValue(1.0,"vibration", "1.3");
+		dataset.addValue(1.7,"vibration", "2.9");
+		dataset.addValue(3,"vibration", "3.4");
+		dataset.addValue(0.3,"vibration", "4.2");
+		dataset.addValue(2.4,"vibration", "5.0");
+		JFreeChart lineChart = ChartFactory.createLineChart("Vibration", "Time","Vibration"
+				,dataset,PlotOrientation.VERTICAL, true,true,false);
+		CategoryPlot plot = lineChart.getCategoryPlot();
+		CategoryAxis xAis = lineChart.getCategoryPlot().getDomainAxis();
+		xAis.setCategoryLabelPositions(CategoryLabelPositions.UP_90);
+
+		PdfContentByte contentByte = pdfWriter.getDirectContent();
+		PdfTemplate template = contentByte.createTemplate(width, height);
+		Graphics2D graphics2d = template.createGraphics(width, height, new DefaultFontMapper());
+		Rectangle2D rectangle2d = new Rectangle2D.Double(0 ,0,width, height);
+
+		lineChart.draw(graphics2d, rectangle2d);
+		graphics2d.dispose();
+		Image chartImage = Image.getInstance(template);
+		vibration.add(chartImage);
+
+		// Create the table for vibration
+		PdfPTable table = new PdfPTable(3);
+		table.addCell("Minimum");
+		table.addCell("Maximum");
+		table.addCell("Average");
+		table.addCell("?");
+		table.addCell("?");
+		table.addCell("?");
+		// Add table to document underneath the graph
+		addEmptyLine(vibration,1);
+		vibration.add(table);
+
 		document.add(vibration);
 	}
 
 	public static void addTemperatureSection(Document document) throws DocumentException {
 		Paragraph temperature = new Paragraph();
-		temperature.add(new Paragraph("Temperature", subFont));
 		addEmptyLine(temperature, 1);
+
+		int width = 500;
+		int height = 400;
+
+		// Add line chart
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		dataset.addValue(1.0,"temperature", "1.3");
+		dataset.addValue(1.7,"temperature", "2.9");
+		dataset.addValue(3,"temperature", "3.4");
+		dataset.addValue(0.3,"temperature", "4.2");
+		dataset.addValue(2.4,"temperature", "5.0");
+		JFreeChart lineChart = ChartFactory.createLineChart("Temperature", "Time","Temperature"
+				,dataset,PlotOrientation.VERTICAL, true,true,false);
+		CategoryPlot plot = lineChart.getCategoryPlot();
+		CategoryAxis xAis = lineChart.getCategoryPlot().getDomainAxis();
+		xAis.setCategoryLabelPositions(CategoryLabelPositions.UP_90);
+
+		PdfContentByte contentByte = pdfWriter.getDirectContent();
+		PdfTemplate template = contentByte.createTemplate(width, height);
+		Graphics2D graphics2d = template.createGraphics(width, height, new DefaultFontMapper());
+		Rectangle2D rectangle2d = new Rectangle2D.Double(0 ,0,width, height);
+
+		lineChart.draw(graphics2d, rectangle2d);
+		graphics2d.dispose();
+		Image chartImage = Image.getInstance(template);
+		temperature.add(chartImage);
+
+		// Create the table for temperature
+		PdfPTable table = new PdfPTable(3);
+		table.addCell("Minimum");
+		table.addCell("Maximum");
+		table.addCell("Average");
+		table.addCell("?");
+		table.addCell("?");
+		table.addCell("?");
+		// Add table to document underneath the graph
+		addEmptyLine(temperature,1);
+		temperature.add(table);
+
 		document.add(temperature);
 	}
 
@@ -216,8 +276,6 @@ public class Report{
 
 		document.add(timeState);
 	}
-
-
 
 	// Add line space in text
 	private static void addEmptyLine(Paragraph paragraph, int number) {
