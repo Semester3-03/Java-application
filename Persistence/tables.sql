@@ -21,7 +21,13 @@ CREATE TABLE Batch (
     total_products INT,
     min_temp FLOAT,
     max_temp FLOAT,
-    avg_temp FLOAT
+    avg_temp FLOAT,
+    min_humidity FLOAT,
+    max_humidity FLOAT,
+    avg_humidity FLOAT,
+    min_vibration FLOAT,
+    max_vibration FLOAT,
+    avg_vibration FLOAT
 );
 
 CREATE TABLE Vibration (
