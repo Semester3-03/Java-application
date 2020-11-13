@@ -70,6 +70,14 @@ public class Batch {
 	@Column(name = "avg_temp")
 	private double avgTemp;
 
+	private double minHumidity;
+	private double maxHumidity;
+	private double avgHumidity;
+
+	private double minVibration;
+	private double maxVibration;
+	private double avgVibration;
+
 	public void addTemperature(LocalDateTime time, double temp) {
 
 	}
@@ -138,6 +146,30 @@ public class Batch {
 		return avgTemp;
 	}
 
+	public double getMinHumidity() {
+		return minHumidity;
+	}
+
+	public double getMaxHumidity() {
+		return maxHumidity;
+	}
+
+	public double getAvgHumidity() {
+		return avgHumidity;
+	}
+
+	public double getMinVibration() {
+		return minVibration;
+	}
+
+	public double getMaxVibration() {
+		return maxVibration;
+	}
+
+	public double getAvgVibration() {
+		return avgVibration;
+	}
+
 	public void setTotalProducts(int totalProducts) {
 		this.totalProducts = totalProducts;
 	}
@@ -160,5 +192,29 @@ public class Batch {
 
 	public void setAvgTemp(double avgTemp) {
 		this.avgTemp = avgTemp;
+	}
+
+	public void setMinHumidity(double minHumidity) {
+		this.minHumidity = minHumidity;
+	}
+
+	public void setMaxHumidity(double maxHumidity) {
+		this.maxHumidity = maxHumidity;
+	}
+
+	public void setAvgHumidity(double avgHumidity) {
+		this.avgHumidity = avgHumidity;
+	}
+
+	public void setMinVibration(double minVibration) {
+		this.minVibration = minVibration;
+	}
+
+	public void setMaxVibration(double maxVibration) {
+		this.maxVibration = maxVibration;
+	}
+
+	public void setAvgVibration(double avgVibration) {
+		this.avgVibration = avgVibration;
 	}
 }
