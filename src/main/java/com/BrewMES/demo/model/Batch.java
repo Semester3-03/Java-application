@@ -70,12 +70,22 @@ public class Batch {
 	@Column(name = "avg_temp")
 	private double avgTemp;
 
+	@Column(name = "min_humidity")
 	private double minHumidity;
+
+	@Column(name = "max_humidity")
 	private double maxHumidity;
+
+	@Column(name = "avg_humidity")
 	private double avgHumidity;
 
+	@Column(name = "min_vibration")
 	private double minVibration;
+
+	@Column(name = "max_vibration")
 	private double maxVibration;
+
+	@Column(name = "avg_vibration")
 	private double avgVibration;
 
 	public void addTemperature(LocalDateTime time, double temp) {
