@@ -61,7 +61,7 @@ public class BrewMESController {
     // Sends a command to the machine. The command is send via put request with a json object that is notated with e.g.
     // {'command': 'start'}
     @PutMapping(value = "machines/{id}/command")
-    public ResponseEntity<Object> updateMachineState(@PathVariable("id") UUID id, @RequestBody String input) {
+    public ResponseEntity<Object> controlMachine(@PathVariable("id") UUID id, @RequestBody String input) {
         JsonObject o = JsonParser.parseString(input).getAsJsonObject();
         String s = o.get("command").getAsString();
         ResponseEntity<Object> response = new ResponseEntity<>(new StringResponse("command updated", HttpStatus.OK.value()), HttpStatus.OK);
