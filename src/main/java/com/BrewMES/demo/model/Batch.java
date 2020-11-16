@@ -67,8 +67,26 @@ public class Batch {
 	@Column(name = "max_temp")
 	private double maxTemp;
 
-	@Column(name = "avg_temp")
+	@Transient
 	private double avgTemp;
+
+	@Column(name = "min_humidity")
+	private double minHumidity;
+
+	@Column(name = "max_humidity")
+	private double maxHumidity;
+
+	@Transient
+	private double avgHumidity;
+
+	@Column(name = "min_vibration")
+	private double minVibration;
+
+	@Column(name = "max_vibration")
+	private double maxVibration;
+
+	@Transient
+	private double avgVibration;
 
 	public void addTemperature(LocalDateTime time, double temp) {
 
@@ -86,8 +104,22 @@ public class Batch {
 
 	}
 
-	public void setAverages(){
+	private double findAvgTemp(){
+		return (double) temperature.values().stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+	}
 
+	private double findAvgHumidity(){
+		return (double) humidity.values().stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+	}
+
+	private double findAvgVibration(){
+		return (double) vibration.values().stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+	}
+
+	public void setAverages(){
+		setAvgHumidity(findAvgHumidity());
+		setAvgTemp(findAvgTemp());
+		setAvgVibration(findAvgVibration());
 	}
 
 	public UUID getId() {
@@ -142,6 +174,30 @@ public class Batch {
 		return avgTemp;
 	}
 
+	public double getMinHumidity() {
+		return minHumidity;
+	}
+
+	public double getMaxHumidity() {
+		return maxHumidity;
+	}
+
+	public double getAvgHumidity() {
+		return avgHumidity;
+	}
+
+	public double getMinVibration() {
+		return minVibration;
+	}
+
+	public double getMaxVibration() {
+		return maxVibration;
+	}
+
+	public double getAvgVibration() {
+		return avgVibration;
+	}
+
 	public void setTotalProducts(int totalProducts) {
 		this.totalProducts = totalProducts;
 	}
@@ -164,5 +220,29 @@ public class Batch {
 
 	public void setAvgTemp(double avgTemp) {
 		this.avgTemp = avgTemp;
+	}
+
+	public void setMinHumidity(double minHumidity) {
+		this.minHumidity = minHumidity;
+	}
+
+	public void setMaxHumidity(double maxHumidity) {
+		this.maxHumidity = maxHumidity;
+	}
+
+	public void setAvgHumidity(double avgHumidity) {
+		this.avgHumidity = avgHumidity;
+	}
+
+	public void setMinVibration(double minVibration) {
+		this.minVibration = minVibration;
+	}
+
+	public void setMaxVibration(double maxVibration) {
+		this.maxVibration = maxVibration;
+	}
+
+	public void setAvgVibration(double avgVibration) {
+		this.avgVibration = avgVibration;
 	}
 }
