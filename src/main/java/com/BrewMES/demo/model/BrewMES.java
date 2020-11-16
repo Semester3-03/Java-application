@@ -1,4 +1,5 @@
 package com.BrewMES.demo.model;
+import com.BrewMES.demo.Persistence.BatchRepository;
 import com.BrewMES.demo.Persistence.MachineRepository;
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.sdk.client.api.config.OpcUaClientConfigBuilder;
@@ -18,8 +19,10 @@ public class BrewMES implements iBrewMES {
 
 	//Repository injected by Spring
 	@Autowired
-	private MachineRepository repo;
+	private MachineRepository machineRepo;
 
+	@Autowired
+	private BatchRepository batchRepo;
 
 	private Map<UUID, Machine> machines;
 	private Machine currentMachine;
@@ -37,8 +40,14 @@ public class BrewMES implements iBrewMES {
 		this.currentMachine = machines.get(machineId);
 	}
 
-	public Batch getBatch(int id) {
-		throw new UnsupportedOperationException();
+	public Batch getBatch(UUID id) {
+		Batch batch = batchRepo.findById(id).orElse(null);
+
+		if(batch != null){
+			batch.setAverages();
+		}
+
+		return batch;
 	}
 
 	public void getReport(Batch batch) {
@@ -67,7 +76,7 @@ public class BrewMES implements iBrewMES {
 				machines = new HashMap<>();
 			}
 			Machine newMachine = new Machine(ipAddress, connection);
-			repo.save(newMachine);
+			machineRepo.save(newMachine);
 			machines.put(newMachine.getId(), newMachine);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -83,7 +92,7 @@ public class BrewMES implements iBrewMES {
 	 */
 	public void disconnectMachine(UUID id) {
 			machines.remove(id);
-			repo.deleteById(id);
+			machineRepo.deleteById(id);
 	}
 
 	public void setMachineVariables(int speed, BeerType beerType, int batchSize) {
@@ -108,7 +117,7 @@ public class BrewMES implements iBrewMES {
 		if (machines == null) {
 			machines = new HashMap<>();
 		}
-		repo.findAll().forEach(machine -> {
+		machineRepo.findAll().forEach(machine -> {
 			if (!machines.containsKey(machine.getId())) {
 				machines.put(machine.getId(), machine);
 			}
