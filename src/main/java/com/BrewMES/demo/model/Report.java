@@ -25,8 +25,6 @@ import java.util.Date;
 
 public class Report{
 	private static Font titleFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
-	private static Font subFont = new Font(Font.FontFamily.TIMES_ROMAN, 14, Font.BOLD);
-	private static Font textFont = new Font(Font.FontFamily.TIMES_ROMAN, 12);
 	private static Font textFontBold = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
 	private static PdfWriter pdfWriter;
 
@@ -38,10 +36,11 @@ public class Report{
 			pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(file));
 			document.open();
 
+			// Add title and timestamp
 			addTitlePage(document);
 
+			// Create a table with 5 columns
 			PdfPTable table = new PdfPTable(5);
-
 			// Create the table content
 			table.addCell("Beer type");
 			table.addCell("Amount to produce");
@@ -55,7 +54,6 @@ public class Report{
 			table.addCell(batch.getDefectProducts() + "");
 			// Add table to document
 			document.add(table);
-			// addEmptyLine(document, 1);
 
 			// Add bar chart over time in states
 			addTimeSection(document);
@@ -67,12 +65,12 @@ public class Report{
 			// Add a new page
 			document.newPage();
 
-			// Add Vibration as header
+			// Add Vibration graph and table
 			addVibrationSection(document);
 			// Add a new page
 			document.newPage();
 
-			// Add Temperature as header
+			// Add Temperature graph and table
 			addTemperatureSection(document);
 
 			document.close();
@@ -104,7 +102,7 @@ public class Report{
 		int width = 500;
 		int height = 400;
 
-		// Add line chart
+		// Create line chart of humidity over time
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		dataset.addValue(1.0,"humidity", "1.3");
 		dataset.addValue(1.7,"humidity", "2.9");
@@ -149,7 +147,7 @@ public class Report{
 		int width = 500;
 		int height = 400;
 
-		// Add line chart
+		// Create line chart of vibration over time
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		dataset.addValue(1.0,"vibration", "1.3");
 		dataset.addValue(1.7,"vibration", "2.9");
@@ -194,7 +192,7 @@ public class Report{
 		int width = 500;
 		int height = 400;
 
-		// Add line chart
+		// Create line chart of temperature over time
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		dataset.addValue(1.0,"temperature", "1.3");
 		dataset.addValue(1.7,"temperature", "2.9");
@@ -239,7 +237,7 @@ public class Report{
 		int width = 500;
 		int height = 400;
 
-		// Create the method for bar chart over time in states
+		// Create the bar chart for time in states
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		dataset.setValue(2,"state","Deactivated");
 		dataset.setValue(1,"state","Clearing");
