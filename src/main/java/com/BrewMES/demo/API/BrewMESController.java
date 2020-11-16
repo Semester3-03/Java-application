@@ -118,12 +118,7 @@ public class BrewMESController {
     //make this method return a batch based on it's id
     @GetMapping(value = "/batches/{id}")
     public ResponseEntity<Object> getBatch(@PathVariable("id") UUID id) {
-
-        if(brewMes.getBatch(id) != null){
-            return new ResponseEntity<>(brewMes.getBatch(id), HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(new StringResponse("No batch found with that ID", HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(new StringResponse("Not Implemented yet", HttpStatus.NOT_IMPLEMENTED.value()), HttpStatus.NOT_IMPLEMENTED);
     }
 
     //make this method handle the make report and return and return json with it's location
