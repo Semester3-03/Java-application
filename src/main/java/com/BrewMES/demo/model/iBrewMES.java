@@ -13,7 +13,7 @@ public interface iBrewMES {
 
 	public Machine getCurrentMachine();
 
-	public Batch getBatch(UUID id);
+	public Batch getBatch(int id);
 
 	public void getReport(Batch batch);
 

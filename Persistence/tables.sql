@@ -15,6 +15,7 @@ CREATE TABLE Batch (
     id UUID PRIMARY KEY,
     product_type_id INT REFERENCES Product_type(id),
     machine_id UUID REFERENCES Machine(id),
+    time_in_states_id INT REFERENCES Time_in_states(id),
     acceptable_products INT,
     defect_products INT,
     total_products INT,
@@ -50,6 +51,6 @@ CREATE TABLE Humidity (
 CREATE TABLE Time_in_states (
     id SERIAL PRIMARY KEY,
     machine_state INT,
-    time FLOAT,
+    time DOUBLE,
     batch_id UUID references Batch(id)
 );
