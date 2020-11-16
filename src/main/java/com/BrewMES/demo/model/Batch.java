@@ -1,8 +1,10 @@
 package com.BrewMES.demo.model;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Batch {
 	private int id;
@@ -28,7 +30,10 @@ public class Batch {
 	}
 
 	public void addHumidity(LocalDateTime time, double humidity) {
-
+		if (this.humidity == null) {
+			this.humidity = new TreeMap<>();
+		}
+		this.humidity.put(time, humidity);
 	}
 
 	public void setTimeInState(int index, int seconds) {

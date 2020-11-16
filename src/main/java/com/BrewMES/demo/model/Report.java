@@ -21,15 +21,22 @@ import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Date;
+import java.util.Set;
 
 public class Report{
 	private static Font titleFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
 	private static Font textFontBold = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
 	private static PdfWriter pdfWriter;
+	private static Batch currentBatch;
 
 	public static void generatePDF(Batch batch){
 		try {
+			currentBatch = batch;
 			String destination = "test.pdf";
 			File file = new File(destination);
 			Document document = new Document();
@@ -104,11 +111,15 @@ public class Report{
 
 		// Create line chart of humidity over time
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		dataset.addValue(1.0,"humidity", "1.3");
-		dataset.addValue(1.7,"humidity", "2.9");
-		dataset.addValue(3,"humidity", "3.4");
-		dataset.addValue(0.3,"humidity", "4.2");
-		dataset.addValue(2.4,"humidity", "5.0");
+		currentBatch.getHumidity().keySet().forEach(localDateTime -> {
+			dataset.addValue(currentBatch.getHumidity().get(localDateTime), "humidity", localDateTime.toEpochSecond(ZoneOffset.MAX)+"");
+		});
+
+//		dataset.addValue(1.0,"humidity", "1.3");
+//		dataset.addValue(1.7,"humidity", "2.9");
+//		dataset.addValue(3,"humidity", "3.4");
+//		dataset.addValue(0.3,"humidity", "4.2");
+//		dataset.addValue(2.4,"humidity", "5.0");
 		JFreeChart lineChart = ChartFactory.createLineChart("Humidity", "Time","Humidity"
 				,dataset,PlotOrientation.VERTICAL, true,true,false);
 		CategoryPlot plot = lineChart.getCategoryPlot();
