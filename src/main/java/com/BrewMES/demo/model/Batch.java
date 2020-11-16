@@ -22,11 +22,17 @@ public class Batch {
 	private double avgTemp;
 
 	public void addTemperature(LocalDateTime time, double temp) {
-
+		if (this.temperature == null) {
+			this.temperature = new TreeMap<>();
+		}
+		this.temperature.put(time, temp);
 	}
 
 	public void addVibration(LocalDateTime time, double vibration) {
-
+		if (this.vibration == null) {
+			this.vibration = new TreeMap<>();
+		}
+		this.vibration.put(time, vibration);
 	}
 
 	public void addHumidity(LocalDateTime time, double humidity) {
