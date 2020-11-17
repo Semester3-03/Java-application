@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -116,17 +117,29 @@ public class BrewMESController {
         return new ResponseEntity<>(new StringResponse("Not Implemented yet", HttpStatus.NOT_IMPLEMENTED.value()), HttpStatus.NOT_IMPLEMENTED);
     }
 
+    /**
+     *  returns ResponseEntity containing
+     * @param filename the name of the file to expose
+     * @return ResponseEntity with InputStreamResource containing the file
+     */
     @GetMapping(value = "/get-file/{filename}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity<Object> getBatchReport(@PathVariable String filename) throws IOException {
+    public ResponseEntity<Object> getBatchReport(@PathVariable String filename)  {
         String fileName = filename + ".pdf";
         File file = new File(fileName);
-        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-        HttpHeaders headers = new HttpHeaders();
+        InputStreamResource resource = null;
+        try {
+            resource = new InputStreamResource(new FileInputStream(file));
 
-        headers.add("Content-Disposition", String.format("attachment; filename=\"%s\"", file.getName()));
-        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
-        headers.add("Pragma", "no-cache");
-        headers.add("Expires", "0");
-        return ResponseEntity.ok().headers(headers).contentLength(file.length()).contentType(MediaType.parseMediaType("application/pdf")).body(resource);
+            HttpHeaders headers = new HttpHeaders();
+
+            headers.add("Content-Disposition", String.format("attachment; filename=\"%s\"", file.getName()));
+            headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+            headers.add("Pragma", "no-cache");
+            headers.add("Expires", "0");
+            return ResponseEntity.ok().headers(headers).contentLength(file.length()).contentType(MediaType.parseMediaType("application/pdf")).body(resource);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(new StringResponse("File not found " + fileName, HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
+        }
     }
 }

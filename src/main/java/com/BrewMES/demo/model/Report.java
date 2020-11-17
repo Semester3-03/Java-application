@@ -118,12 +118,6 @@ public class Report {
             }
         }
 
-
-//		dataset.addValue(1.0,"humidity", "1.3");
-//		dataset.addValue(1.7,"humidity", "2.9");
-//		dataset.addValue(3,"humidity", "3.4");
-//		dataset.addValue(0.3,"humidity", "4.2");
-//		dataset.addValue(2.4,"humidity", "5.0");
         JFreeChart lineChart = ChartFactory.createLineChart("Humidity", "Time", "Humidity"
                 , dataset, PlotOrientation.VERTICAL, true, true, false);
         CategoryPlot plot = lineChart.getCategoryPlot();
@@ -173,13 +167,6 @@ public class Report {
 						Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - time.toEpochSecond(ZoneOffset.MAX)) + "");
 			}
 		}
-
-
-//        dataset.addValue(1.0, "vibration", "1.3");
-//        dataset.addValue(1.7, "vibration", "2.9");
-//        dataset.addValue(3, "vibration", "3.4");
-//        dataset.addValue(0.3, "vibration", "4.2");
-//        dataset.addValue(2.4, "vibration", "5.0");
         JFreeChart lineChart = ChartFactory.createLineChart("Vibration", "Time", "Vibration"
                 , dataset, PlotOrientation.VERTICAL, true, true, false);
         CategoryPlot plot = lineChart.getCategoryPlot();
@@ -229,11 +216,6 @@ public class Report {
 						Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - time.toEpochSecond(ZoneOffset.MAX)) + "");
 			}
 		}
-//        dataset.addValue(1.0, "temperature", "1.3");
-//        dataset.addValue(1.7, "temperature", "2.9");
-//        dataset.addValue(3, "temperature", "3.4");
-//        dataset.addValue(0.3, "temperature", "4.2");
-//        dataset.addValue(2.4, "temperature", "5.0");
         JFreeChart lineChart = ChartFactory.createLineChart("Temperature", "Time", "Temperature"
                 , dataset, PlotOrientation.VERTICAL, true, true, false);
         CategoryPlot plot = lineChart.getCategoryPlot();
