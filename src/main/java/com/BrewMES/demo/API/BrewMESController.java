@@ -6,11 +6,16 @@ import com.BrewMES.demo.model.Command;
 import com.BrewMES.demo.model.iBrewMES;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.UUID;
 
 @RestController
@@ -91,6 +96,8 @@ public class BrewMESController {
         return response;
     }
 
+
+
     //make this method return last 10 batches
     @GetMapping(value = "/batches")
     public ResponseEntity<Object> getBatches() {
@@ -107,5 +114,19 @@ public class BrewMESController {
     @GetMapping(value = "/bathes/{id}/generate")
     public ResponseEntity<Object> makeBatchReport(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(new StringResponse("Not Implemented yet", HttpStatus.NOT_IMPLEMENTED.value()), HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    @GetMapping(value = "/get-file/{filename}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<Object> getBatchReport(@PathVariable String filename) throws IOException {
+        String fileName = filename + ".pdf";
+        File file = new File(fileName);
+        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.add("Content-Disposition", String.format("attachment; filename=\"%s\"", file.getName()));
+        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        headers.add("Pragma", "no-cache");
+        headers.add("Expires", "0");
+        return ResponseEntity.ok().headers(headers).contentLength(file.length()).contentType(MediaType.parseMediaType("application/pdf")).body(resource);
     }
 }
