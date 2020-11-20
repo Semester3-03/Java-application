@@ -10,11 +10,16 @@ import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.CategoryAxis;
-import org.jfree.chart.axis.CategoryLabelPositions;
+import org.jfree.chart.axis.*;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
+
+import org.jfree.chart.axis.NumberTickUnit;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -34,6 +39,9 @@ public class Report {
     public static void generatePDF(Batch batch) {
         try {
             currentBatch = batch;
+            batch.setMinimums();
+            batch.setMaxes();
+            batch.setAverages();
             String destination = "batch_report.pdf";
             File file = new File(destination);
             Document document = new Document();
@@ -52,10 +60,10 @@ public class Report {
             table.addCell("Acceptable products");
             table.addCell("Defect products");
             table.addCell(batch.getProductType());
-            table.addCell("?");
-            table.addCell(batch.getTotalProducts() + "");
-            table.addCell(batch.getAcceptableProducts() + "");
-            table.addCell(batch.getDefectProducts() + "");
+            table.addCell(String.valueOf(batch.getTotalProducts()));
+            table.addCell(String.valueOf(batch.getTotalProducts()));
+            table.addCell(String.valueOf(batch.getAcceptableProducts()));
+            table.addCell(String.valueOf(batch.getDefectProducts()));
             // Add table to document
             document.add(table);
 
@@ -112,20 +120,25 @@ public class Report {
         int height = 400;
 
         // Create line chart of humidity over time
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        XYSeries series = new XYSeries("humidity");
+        long totalTime = 0L;
         if (currentBatch.getHumidity().keySet().stream().findFirst().isPresent()) {
             LocalDateTime startTime;
             startTime = currentBatch.getHumidity().keySet().stream().findFirst().get();
 
             for (LocalDateTime time : currentBatch.getHumidity().keySet()) {
-                dataset.addValue(currentBatch.getHumidity().get(time), "humidity",
-                        Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - time.toEpochSecond(ZoneOffset.MAX)) + "");
+                long timeElapsed = Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - time.toEpochSecond(ZoneOffset.MAX));
+                if (totalTime < timeElapsed) {
+                    totalTime = timeElapsed;
+                }
+                series.add((Number) Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - time.toEpochSecond(ZoneOffset.MAX)), currentBatch.getHumidity().get(time));
             }
         }
-
-        JFreeChart lineChart = ChartFactory.createLineChart("Humidity", "Time", "Humidity"
+        dataset.addSeries(series);
+        JFreeChart lineChart = ChartFactory.createXYLineChart("Humidity", "Time", "Humidity"
                 , dataset, PlotOrientation.VERTICAL, true, true, false);
-        makeTables(document, humidity, width, height, lineChart);
+        makeTables(document, humidity, width, height, lineChart, currentBatch.getAvgHumidity(), currentBatch.getMinHumidity(), currentBatch.getMaxHumidity(), totalTime);
     }
 
     public static void addVibrationSection(Document document) throws DocumentException {
@@ -136,23 +149,35 @@ public class Report {
         int height = 400;
 
         // Create line chart of vibration over time
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        XYSeries series = new XYSeries("Vibration");
+        long totalTime = 0L;
 		if (currentBatch.getVibration().keySet().stream().findFirst().isPresent()) {
 			LocalDateTime startTime;
 			startTime = currentBatch.getVibration().keySet().stream().findFirst().get();
-
 			for (LocalDateTime time : currentBatch.getVibration().keySet()) {
-				dataset.addValue(currentBatch.getVibration().get(time), "vibration",
-						Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - time.toEpochSecond(ZoneOffset.MAX)) + "");
+			    long timeElapsed = Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - time.toEpochSecond(ZoneOffset.MAX));
+                if (totalTime < timeElapsed) {
+                    totalTime = timeElapsed;
+                }
+
+				series.add((Number)(Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - time.toEpochSecond(ZoneOffset.MAX))), currentBatch.getVibration().get(time));
 			}
 		}
-        JFreeChart lineChart = ChartFactory.createLineChart("Vibration", "Time", "Vibration"
+		dataset.addSeries(series);
+        JFreeChart lineChart = ChartFactory.createXYLineChart("Vibration", "Time", "Vibration"
                 , dataset, PlotOrientation.VERTICAL, true, true, false);
-        makeTables(document, vibration, width, height, lineChart);
+        makeTables(document, vibration, width, height, lineChart, currentBatch.getAvgVibration(), currentBatch.getMinVibration(), currentBatch.getMaxVibration(), totalTime);
     }
 
-    private static void makeTables(Document document, Paragraph paragraph, int width, int height, JFreeChart lineChart) throws DocumentException {
-        lineChart.getCategoryPlot().getDomainAxis().setCategoryLabelPositions(CategoryLabelPositions.UP_90);
+    private static void makeTables(Document document, Paragraph paragraph, int width, int height, JFreeChart lineChart, double average, double min, double max, long totalTime) throws DocumentException {
+
+        NumberAxis domain = (NumberAxis) lineChart.getXYPlot().getDomainAxis();
+        NumberAxis range = (NumberAxis) lineChart.getXYPlot().getRangeAxis();
+        domain.setTickUnit(new NumberTickUnit(totalTime/10));
+        domain.setRange(0, totalTime);
+        range.setRange(0, max);
+        range.setTickUnit(new NumberTickUnit(max/2));
 
         PdfContentByte contentByte = pdfWriter.getDirectContent();
         PdfTemplate template = contentByte.createTemplate(width, height);
@@ -169,9 +194,9 @@ public class Report {
         table.addCell("Minimum");
         table.addCell("Maximum");
         table.addCell("Average");
-        table.addCell("?");
-        table.addCell("?");
-        table.addCell("?");
+        table.addCell(String.valueOf(min));
+        table.addCell(String.valueOf(max));
+        table.addCell(String.valueOf(average));
         // Add table to document underneath the graph
         addEmptyLine(paragraph, 1);
         paragraph.add(table);
@@ -186,20 +211,24 @@ public class Report {
         int width = 500;
         int height = 400;
 
-        // Create line chart of temperature over time
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        XYSeries series = new XYSeries("Temperature");
+        long totalTime = 0;
 		if (currentBatch.getTemperature().keySet().stream().findFirst().isPresent()) {
 			LocalDateTime startTime;
 			startTime = currentBatch.getTemperature().keySet().stream().findFirst().get();
-
 			for (LocalDateTime time : currentBatch.getTemperature().keySet()) {
-				dataset.addValue(currentBatch.getTemperature().get(time), "Temperature",
-						Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - time.toEpochSecond(ZoneOffset.MAX)) + "");
+                long timeElapsed = Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - time.toEpochSecond(ZoneOffset.MAX));
+                if (totalTime < timeElapsed) {
+                    totalTime = timeElapsed;
+                }
+				series.add((Number) Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - time.toEpochSecond(ZoneOffset.MAX)), currentBatch.getTemperature().get(time));
 			}
 		}
-        JFreeChart lineChart = ChartFactory.createLineChart("Temperature", "Time", "Temperature"
+		dataset.addSeries(series);
+        JFreeChart lineChart = ChartFactory.createXYLineChart("Temperature", "Time", "Temperature"
                 , dataset, PlotOrientation.VERTICAL, true, true, false);
-        makeTables(document, temperature, width, height, lineChart);
+        makeTables(document, temperature, width, height, lineChart, currentBatch.getAvgTemp(), currentBatch.getMinTemp(), currentBatch.getMaxTemp(), totalTime);
     }
 
     public static void addTimeSection(Document document) throws DocumentException {
@@ -211,28 +240,17 @@ public class Report {
 
         // Create the bar chart for time in states
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        dataset.setValue(2, "state", "Deactivated");
-        dataset.setValue(1, "state", "Clearing");
-        dataset.setValue(1, "state", "Stopped");
-        dataset.setValue(4, "state", "Starting");
-        dataset.setValue(0, "state", "Idle");
-        dataset.setValue(0, "state", "Suspended");
-        dataset.setValue(7, "state", "Execute");
-        dataset.setValue(10, "state", "Stopping");
-        dataset.setValue(2, "state", "Aborting");
-        dataset.setValue(2, "state", "Aborted");
-        dataset.setValue(2, "state", "Holding");
-        dataset.setValue(5, "state", "Resetting");
-        dataset.setValue(2, "state", "Completing");
-        dataset.setValue(2, "state", "Complete");
-        dataset.setValue(2, "state", "Deactivating");
-        dataset.setValue(8, "state", "Activating");
+        if (currentBatch.getTimeInStates().keySet().stream().findFirst().isPresent()) {
+
+            for (int state : currentBatch.getTimeInStates().keySet()) {
+                dataset.addValue(currentBatch.getTimeInStates().get(state), "states",
+                        String.valueOf(state));
+            }
+        }
+
+
         JFreeChart chart = ChartFactory.createBarChart("Time in states", "State",
                 "Time", dataset, PlotOrientation.VERTICAL, false, true, false);
-        CategoryPlot plot = chart.getCategoryPlot();
-        CategoryAxis xAis = chart.getCategoryPlot().getDomainAxis();
-        xAis.setCategoryLabelPositions(CategoryLabelPositions.UP_90);
-
 
         PdfContentByte contentByte = pdfWriter.getDirectContent();
         PdfTemplate template = contentByte.createTemplate(width, height);

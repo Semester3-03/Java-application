@@ -1,5 +1,6 @@
 package com.brewmes.demo.api;
 
+import com.brewmes.demo.model.Report;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.springframework.core.io.InputStreamResource;
