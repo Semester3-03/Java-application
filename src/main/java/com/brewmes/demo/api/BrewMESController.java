@@ -1,9 +1,9 @@
-package com.BrewMES.demo.API;
+package com.brewmes.demo.API;
 
-import com.BrewMES.demo.model.BeerType;
-import com.BrewMES.demo.model.BrewMES;
-import com.BrewMES.demo.model.Command;
-import com.BrewMES.demo.model.iBrewMES;
+import com.brewmes.demo.model.BeerType;
+import com.brewmes.demo.model.BrewMES;
+import com.brewmes.demo.model.Command;
+import com.brewmes.demo.model.iBrewMES;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.springframework.core.io.InputStreamResource;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.UUID;
 
 @RestController
