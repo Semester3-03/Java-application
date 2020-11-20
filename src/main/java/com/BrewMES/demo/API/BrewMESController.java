@@ -118,9 +118,12 @@ public class BrewMESController {
     }
 
     /**
-     *  returns ResponseEntity containing
+     *  returns ResponseEntity containing a InputStreamResource with the pdf file
+     *  coresponding to the filename.
+     *
      * @param filename the name of the file to expose
      * @return ResponseEntity with InputStreamResource containing the file
+     * @exception FileNotFoundException if thrown, return a ResponseEntity with 404 not found.
      */
     @GetMapping(value = "/get-file/{filename}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<Object> getBatchReport(@PathVariable String filename)  {
@@ -128,7 +131,7 @@ public class BrewMESController {
         File file = new File(fileName);
         InputStreamResource resource = null;
         try {
-            resource = new InputStreamResource(new FileInputStream(file));
+            resource = new InputStreamResource(new FileInputStream(filename));
 
             HttpHeaders headers = new HttpHeaders();
 
