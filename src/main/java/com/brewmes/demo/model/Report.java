@@ -34,7 +34,7 @@ public class Report {
     public static void generatePDF(Batch batch) {
         try {
             currentBatch = batch;
-            String destination = "test.pdf";
+            String destination = "batch_report.pdf";
             File file = new File(destination);
             Document document = new Document();
             pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(file));

@@ -44,7 +44,7 @@ public class BrewMES implements iBrewMES {
 		this.currentMachine = machines.get(machineId);
 	}
 
-	public Batch getBatch(int id) {
+	public Batch getBatch(UUID id) {
 		throw new UnsupportedOperationException();
 	}
 

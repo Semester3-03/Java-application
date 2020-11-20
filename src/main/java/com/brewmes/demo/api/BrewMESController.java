@@ -1,9 +1,6 @@
 package com.brewmes.demo.api;
 
-import com.brewmes.demo.model.BeerType;
-import com.brewmes.demo.model.BrewMES;
-import com.brewmes.demo.model.Command;
-import com.brewmes.demo.model.iBrewMES;
+import com.brewmes.demo.model.*;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.springframework.core.io.InputStreamResource;
@@ -110,27 +107,23 @@ public class BrewMESController {
         return new ResponseEntity<>(new StringResponse("Not Implemented yet", HttpStatus.NOT_IMPLEMENTED.value()), HttpStatus.NOT_IMPLEMENTED);
     }
 
-    //make this method handle the make report and return and return json with it's location
-    @GetMapping(value = "/bathes/{id}/generate")
-    public ResponseEntity<Object> makeBatchReport(@PathVariable("id") UUID id) {
-        return new ResponseEntity<>(new StringResponse("Not Implemented yet", HttpStatus.NOT_IMPLEMENTED.value()), HttpStatus.NOT_IMPLEMENTED);
-    }
 
     /**
      *  returns ResponseEntity containing a InputStreamResource with the pdf file
      *  coresponding to the filename.
      *
-     * @param filename the name of the file to expose
+     * @param id the id on the id to be generated
      * @return ResponseEntity with InputStreamResource containing the file
      * @exception FileNotFoundException if thrown, return a ResponseEntity with 404 not found.
      */
-    @GetMapping(value = "/get-file/{filename}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity<Object> getBatchReport(@PathVariable String filename)  {
-        String fileName = filename + ".pdf";
+    @GetMapping(value = "batches/{id}/get-report", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<Object> getBatchReport(@PathVariable UUID id)  {
+        Report.generatePDF(brewMes.getBatch(id));
+        String fileName =  "batch_report.pdf";
         File file = new File(fileName);
         InputStreamResource resource = null;
         try {
-            resource = new InputStreamResource(new FileInputStream(filename));
+            resource = new InputStreamResource(new FileInputStream(fileName));
 
             HttpHeaders headers = new HttpHeaders();
 
