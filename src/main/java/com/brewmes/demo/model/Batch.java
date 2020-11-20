@@ -60,28 +60,28 @@ public class Batch {
     @Column(name = "humidity")
     private Map<LocalDateTime, Double> humidity;
 
-    @Column(name = "min_temp")
+    @Transient
     private double minTemp;
 
-    @Column(name = "max_temp")
+    @Transient
     private double maxTemp;
 
     @Transient
     private double avgTemp;
 
-    @Column(name = "min_humidity")
+    @Transient
     private double minHumidity;
 
-    @Column(name = "max_humidity")
+    @Transient
     private double maxHumidity;
 
     @Transient
     private double avgHumidity;
 
-    @Column(name = "min_vibration")
+    @Transient
     private double minVibration;
 
-    @Column(name = "max_vibration")
+    @Transient
     private double maxVibration;
 
     @Transient
