@@ -19,7 +19,7 @@ export class Control extends Component {
             //Set variables as json
             let variables = {
                 beerType: this.state.beerType,
-                batchsize: this.state.batchSize,
+                batchSize: this.state.batchSize,
                 speed: this.state.speed
             }
 

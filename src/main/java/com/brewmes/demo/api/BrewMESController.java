@@ -110,7 +110,7 @@ public class BrewMESController {
             case "ipa" -> brewMes.setMachineVariables(speed, BeerType.IPA, batchSize);
             case "ale" -> brewMes.setMachineVariables(speed, BeerType.ALE, batchSize);
             case "alcohol_free" -> brewMes.setMachineVariables(speed, BeerType.ALCHOL_FREE, batchSize);
-            default -> new ResponseEntity<>(new StringResponse("I do not know that beer typer.", HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
+            default -> new ResponseEntity<>(new StringResponse("I do not know that beer type.", HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
         }
 
         return response;

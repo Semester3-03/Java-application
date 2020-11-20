@@ -117,7 +117,7 @@ public class BrewMES implements iBrewMES {
         }
         machineRepo.findAll().forEach(machine -> {
             if (!machines.containsKey(machine.getId())) {
-                machines.put(machine.getId(), machine);
+                connectMachine(machine.getIp());
             }
         });
         return machines;
