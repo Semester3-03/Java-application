@@ -8,6 +8,7 @@ import org.eclipse.milo.opcua.sdk.client.api.config.OpcUaClientConfigBuilder;
 import org.eclipse.milo.opcua.stack.client.DiscoveryClient;
 import org.eclipse.milo.opcua.stack.core.UaException;
 import org.eclipse.milo.opcua.stack.core.types.structured.EndpointDescription;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -124,7 +125,7 @@ public class BrewMES implements iBrewMES {
         return machines;
     }
 
-    public Gson getLiveData(Machine machine) {
+    public JSONObject getLiveData(Machine machine) {
         return machine.makeJsonVariables();
     }
 

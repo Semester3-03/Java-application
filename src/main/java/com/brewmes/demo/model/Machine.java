@@ -6,6 +6,7 @@ import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.Variant;
 import org.eclipse.milo.opcua.stack.core.types.enumerated.TimestampsToReturn;
+import org.json.JSONObject;
 
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -40,7 +41,7 @@ public class Machine {
     @Transient
     private double vibration;
     @Transient
-    private double humidity
+    private double humidity;
 
     public Machine(String ipAddress, OpcUaClient connection) {
         this.id = UUID.randomUUID();
@@ -238,18 +239,30 @@ public class Machine {
         }
     }
 
-    public Gson makeJsonVariables() {
+    public JSONObject makeJsonVariables() {
+        JSONObject result = new JSONObject();
         //humidity
+        result.put("humidity", readHumidity());
         //temperature
+        result.put("Temperatue", readTemperature());
         //ingredients
+        result.put("Ingredients",);
         //batch size
+        result.put("Batch Size", readBatchSize());
         //produced
+        result.put("Produced", readProcessedCount())
         //acceptable
+        result.put("Acceptable",readProcessedCount() - readDefectiveCount());
         //defect
+        result.put("Defect", readDefectiveCount());
         //batch id
+        result.put("Batch ID", readBatchCurrentId());
         //speed
+        result.put("Speed", readNormalizedMachineSpeed());
         //beer type
-        throw new UnsupportedOperationException();
+        result.put("Beer Type", readBatchBeerType());
+
+        return result;
     }
 
 

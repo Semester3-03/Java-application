@@ -1,6 +1,7 @@
 package com.brewmes.demo.model;
 
 import com.google.gson.Gson;
+import org.json.JSONObject;
 
 import java.util.Map;
 import java.util.UUID;
@@ -27,6 +28,6 @@ public interface iBrewMES {
 
     public abstract String getMachineVariables();
 
-    public Gson getLiveData(Machine machine);
+    public JSONObject getLiveData(Machine machine);
 
 }
