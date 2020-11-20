@@ -1,7 +1,6 @@
 package com.brewmes.demo.model;
 
 import com.itextpdf.awt.DefaultFontMapper;
-import com.itextpdf.awt.PdfPrinterGraphics2D;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.*;
@@ -85,6 +84,11 @@ public class Report {
             e.printStackTrace();
         }
     }
+    private Report() {
+
+    }
+
+
 
     private static void addTitlePage(Document document) throws DocumentException {
         Paragraph preface = new Paragraph();
