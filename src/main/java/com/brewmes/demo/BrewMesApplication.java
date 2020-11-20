@@ -1,5 +1,6 @@
 package com.brewmes.demo;
 
+import com.brewmes.demo.model.Batch;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

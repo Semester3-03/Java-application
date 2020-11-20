@@ -1,9 +1,11 @@
 package com.brewmes.demo.model;
 
 import javax.persistence.*;
+import java.math.MathContext;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
+import java.math.BigDecimal;
 
 
 @Entity
@@ -19,6 +21,9 @@ public class Batch {
 
     @Column(name = "machine_id")
     private UUID machineId;
+
+    @Column(name = "machine_speed")
+    private double machineSpeed;
 
     @Column(name = "product_type_id")
     private int productType;
@@ -250,9 +255,20 @@ public class Batch {
 
     public double calculateOee() {
         double goodCount = this.acceptableProducts;
-        double idealCycleTime = 1 / BeerType.valueOfLabel(this.productType).maxSpeed;
-        double plannedProductionTime = 0;
+        double idealCycleTime = 1.0 / (double)BeerType.valueOfLabel(this.productType).maxSpeed;
+        double plannedProductionTime = 1.0/ (this.machineSpeed / (double)totalProducts);
 
-
+        BigDecimal bd = new BigDecimal((((goodCount * idealCycleTime) / plannedProductionTime)*100));
+        bd = bd.round(new MathContext(5));
+        return bd.doubleValue();
     }
+
+    public Batch(int acceptableProducts, int productType, double machineSpeed, int totalProducts){
+        this.acceptableProducts = acceptableProducts;
+        this.productType = productType;
+        this.machineSpeed = machineSpeed;
+        this.totalProducts = totalProducts;
+    }
+
+    public Batch(){}
 }
