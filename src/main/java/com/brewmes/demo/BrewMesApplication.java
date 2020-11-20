@@ -16,7 +16,7 @@ public class BrewMesApplication {
 		sys.connectMachine("opc.tcp://127.0.0.1:4840");
 		sys.connectMachine("opc.tcp://127.0.0.1:4840");
 		sys.connectMachine("opc.tcp://127.0.0.1:4840");
-
+*/
 	}
 
 }
