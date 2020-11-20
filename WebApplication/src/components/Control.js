@@ -30,6 +30,7 @@ export class Control extends Component {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(variables)
             })
+            //Gets the response and sets a variable true or false depending on it
             .then(response => {
                 if (response.status !== 200) {
                     this.setState({validInput: false});
@@ -46,6 +47,10 @@ export class Control extends Component {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(data)
         })
+
+        //Reset input fields
+        this.setState({speed: ""});
+        this.setState({batchSize: ""});
     }
 
     changeBeerType = (e) => {
@@ -62,6 +67,7 @@ export class Control extends Component {
 
     //Contains the HTML that is to be rendered for the user
     render() {
+        //Set an error message depending on a state variable
         let invalidInputMessage;
 
         if(this.state.validInput){
