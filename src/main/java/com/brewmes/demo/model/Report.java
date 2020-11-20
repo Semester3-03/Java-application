@@ -120,33 +120,7 @@ public class Report {
 
         JFreeChart lineChart = ChartFactory.createLineChart("Humidity", "Time", "Humidity"
                 , dataset, PlotOrientation.VERTICAL, true, true, false);
-        CategoryPlot plot = lineChart.getCategoryPlot();
-        CategoryAxis xAis = lineChart.getCategoryPlot().getDomainAxis();
-        xAis.setCategoryLabelPositions(CategoryLabelPositions.UP_90);
-
-        PdfContentByte contentByte = pdfWriter.getDirectContent();
-        PdfTemplate template = contentByte.createTemplate(width, height);
-        Graphics2D graphics2d = template.createGraphics(width, height, new DefaultFontMapper());
-        Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, width, height);
-
-        lineChart.draw(graphics2d, rectangle2d);
-        graphics2d.dispose();
-        Image chartImage = Image.getInstance(template);
-        humidity.add(chartImage);
-
-        // Create the table for Humidity
-        PdfPTable table = new PdfPTable(3);
-        table.addCell("Minimum");
-        table.addCell("Maximum");
-        table.addCell("Average");
-        table.addCell("?");
-        table.addCell("?");
-        table.addCell("?");
-        // Add table to document underneath the graph
-        addEmptyLine(humidity, 1);
-        humidity.add(table);
-
-        document.add(humidity);
+        makeTables(document, humidity, width, height, lineChart);
     }
 
     public static void addVibrationSection(Document document) throws DocumentException {
@@ -169,9 +143,11 @@ public class Report {
 		}
         JFreeChart lineChart = ChartFactory.createLineChart("Vibration", "Time", "Vibration"
                 , dataset, PlotOrientation.VERTICAL, true, true, false);
-        CategoryPlot plot = lineChart.getCategoryPlot();
-        CategoryAxis xAis = lineChart.getCategoryPlot().getDomainAxis();
-        xAis.setCategoryLabelPositions(CategoryLabelPositions.UP_90);
+        makeTables(document, vibration, width, height, lineChart);
+    }
+
+    private static void makeTables(Document document, Paragraph vibration, int width, int height, JFreeChart lineChart) throws DocumentException {
+        lineChart.getCategoryPlot().getDomainAxis().setCategoryLabelPositions(CategoryLabelPositions.UP_90);
 
         PdfContentByte contentByte = pdfWriter.getDirectContent();
         PdfTemplate template = contentByte.createTemplate(width, height);
@@ -183,7 +159,7 @@ public class Report {
         Image chartImage = Image.getInstance(template);
         vibration.add(chartImage);
 
-        // Create the table for vibration
+        // Create the table for minimu, maximum and average.
         PdfPTable table = new PdfPTable(3);
         table.addCell("Minimum");
         table.addCell("Maximum");
@@ -218,33 +194,7 @@ public class Report {
 		}
         JFreeChart lineChart = ChartFactory.createLineChart("Temperature", "Time", "Temperature"
                 , dataset, PlotOrientation.VERTICAL, true, true, false);
-        CategoryPlot plot = lineChart.getCategoryPlot();
-        CategoryAxis xAis = lineChart.getCategoryPlot().getDomainAxis();
-        xAis.setCategoryLabelPositions(CategoryLabelPositions.UP_90);
-
-        PdfContentByte contentByte = pdfWriter.getDirectContent();
-        PdfTemplate template = contentByte.createTemplate(width, height);
-        Graphics2D graphics2d = template.createGraphics(width, height, new DefaultFontMapper());
-        Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, width, height);
-
-        lineChart.draw(graphics2d, rectangle2d);
-        graphics2d.dispose();
-        Image chartImage = Image.getInstance(template);
-        temperature.add(chartImage);
-
-        // Create the table for temperature
-        PdfPTable table = new PdfPTable(3);
-        table.addCell("Minimum");
-        table.addCell("Maximum");
-        table.addCell("Average");
-        table.addCell("?");
-        table.addCell("?");
-        table.addCell("?");
-        // Add table to document underneath the graph
-        addEmptyLine(temperature, 1);
-        temperature.add(table);
-
-        document.add(temperature);
+        makeTables(document, temperature, width, height, lineChart);
     }
 
     public static void addTimeSection(Document document) throws DocumentException {
