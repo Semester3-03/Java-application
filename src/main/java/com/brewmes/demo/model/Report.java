@@ -1,6 +1,7 @@
 package com.brewmes.demo.model;
 
 import com.itextpdf.awt.DefaultFontMapper;
+import com.itextpdf.awt.PdfPrinterGraphics2D;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.*;
@@ -146,7 +147,7 @@ public class Report {
         makeTables(document, vibration, width, height, lineChart);
     }
 
-    private static void makeTables(Document document, Paragraph vibration, int width, int height, JFreeChart lineChart) throws DocumentException {
+    private static void makeTables(Document document, Paragraph paragraph, int width, int height, JFreeChart lineChart) throws DocumentException {
         lineChart.getCategoryPlot().getDomainAxis().setCategoryLabelPositions(CategoryLabelPositions.UP_90);
 
         PdfContentByte contentByte = pdfWriter.getDirectContent();
@@ -157,9 +158,9 @@ public class Report {
         lineChart.draw(graphics2d, rectangle2d);
         graphics2d.dispose();
         Image chartImage = Image.getInstance(template);
-        vibration.add(chartImage);
+        paragraph.add(chartImage);
 
-        // Create the table for minimu, maximum and average.
+        // Create the table for minimum, maximum and average.
         PdfPTable table = new PdfPTable(3);
         table.addCell("Minimum");
         table.addCell("Maximum");
@@ -168,10 +169,10 @@ public class Report {
         table.addCell("?");
         table.addCell("?");
         // Add table to document underneath the graph
-        addEmptyLine(vibration, 1);
-        vibration.add(table);
+        addEmptyLine(paragraph, 1);
+        paragraph.add(table);
 
-        document.add(vibration);
+        document.add(paragraph);
     }
 
     public static void addTemperatureSection(Document document) throws DocumentException {
@@ -246,17 +247,6 @@ public class Report {
     private static void addEmptyLine(Paragraph paragraph, int number) {
         for (int i = 0; i < number; i++) {
             paragraph.add(new Paragraph("\n"));
-        }
-    }
-
-    // Add line space in document
-    private static void addEmptyLine(Document document, int number) {
-        for (int i = 0; i < number; i++) {
-            try {
-                document.add(new Paragraph("\n"));
-            } catch (DocumentException e) {
-                e.printStackTrace();
-            }
         }
     }
 }
