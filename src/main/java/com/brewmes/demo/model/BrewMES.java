@@ -1,4 +1,4 @@
-package com.BrewMES.demo.model;
+package com.brewmes.demo.model;
 
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.sdk.client.api.config.OpcUaClientConfigBuilder;

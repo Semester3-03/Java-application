@@ -1,12 +1,7 @@
-package com.BrewMES.demo;
+package com.brewmes.demo;
 
-import com.BrewMES.demo.model.Batch;
-import com.BrewMES.demo.model.Report;
-import org.apache.tomcat.jni.Time;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.time.LocalDateTime;
 
 
 @SpringBootApplication

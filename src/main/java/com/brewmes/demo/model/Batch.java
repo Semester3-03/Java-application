@@ -1,7 +1,6 @@
-package com.BrewMES.demo.model;
+package com.brewmes.demo.model;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;

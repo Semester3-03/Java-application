@@ -1,4 +1,4 @@
-package com.BrewMES.demo.model;
+package com.brewmes.demo.model;
 
 import com.itextpdf.awt.DefaultFontMapper;
 import com.itextpdf.text.Font;

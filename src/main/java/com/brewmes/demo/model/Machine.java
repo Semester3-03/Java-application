@@ -1,4 +1,4 @@
-package com.BrewMES.demo.model;
+package com.brewmes.demo.model;
 
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
@@ -8,7 +8,6 @@ import org.eclipse.milo.opcua.stack.core.types.builtin.Variant;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import org.eclipse.milo.opcua.stack.core.types.enumerated.TimestampsToReturn;
-import java.util.concurrent.ExecutionException;
 
 public class Machine {
     private UUID id;
