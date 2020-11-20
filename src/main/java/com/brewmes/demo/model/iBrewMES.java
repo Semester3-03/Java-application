@@ -5,22 +5,24 @@ import java.util.UUID;
 
 public interface iBrewMES {
 
-	public abstract void controlMachine(Command command);
+    public abstract void controlMachine(Command command);
 
-	public abstract void setMachineVariables(int speed, BeerType beerType, int batchSize);
+    public abstract void setMachineVariables(int speed, BeerType beerType, int batchSize);
 
-	public void setCurrentMachine(UUID machine);
+    public Machine getCurrentMachine();
 
-	public Batch getBatch(int id);
+    public void setCurrentMachine(UUID machine);
 
-	public void getReport(Batch batch);
+	public Batch getBatch(UUID id);
 
-	public void disconnectMachine(UUID id);
+    public void getReport(Batch batch);
 
-	public void connectMachine(String ipAddress);
+    public void disconnectMachine(UUID id);
 
-	public Map<UUID, Machine> getMachines();
+    public boolean connectMachine(String ipAddress);
 
-	public abstract String getMachineVariables();
+    public Map<UUID, Machine> getMachines();
+
+    public abstract String getMachineVariables();
 
 }

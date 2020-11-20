@@ -10,6 +10,13 @@ public class BrewMesApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BrewMesApplication.class, args);
+		/*
+		BrewMES sys = new BrewMES();
+		sys.connectMachine("opc.tcp://127.0.0.1:4840");
+		sys.connectMachine("opc.tcp://127.0.0.1:4840");
+		sys.connectMachine("opc.tcp://127.0.0.1:4840");
+		sys.connectMachine("opc.tcp://127.0.0.1:4840");
+
 	}
 
 }

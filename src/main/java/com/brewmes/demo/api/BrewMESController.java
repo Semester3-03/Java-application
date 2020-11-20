@@ -1,11 +1,13 @@
 package com.brewmes.demo.api;
 
 import com.brewmes.demo.model.BeerType;
-import com.brewmes.demo.model.BrewMES;
+
 import com.brewmes.demo.model.Command;
 import com.brewmes.demo.model.iBrewMES;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +19,12 @@ import java.util.UUID;
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*")
 public class BrewMESController {
-    private final iBrewMES brewMes = BrewMES.getInstance();
+    //allow spring to inject bean to field
+    @Autowired
+    private iBrewMES brewMes;
+
     //Get all machines
-    @RequestMapping(value = "/machines")
+    @GetMapping(value = "/machines")
     public ResponseEntity<Object> getMachines() {
         return new ResponseEntity<>(brewMes.getMachines().values().toArray(), HttpStatus.OK);
     }
@@ -34,6 +39,22 @@ public class BrewMESController {
         }
     }
 
+    //Set a machine as the currently selected machine
+    @PutMapping(value = "/currentmachine")
+    public ResponseEntity<Object> setCurrentMachine(@RequestBody String input) {
+        JsonObject o = JsonParser.parseString(input).getAsJsonObject();
+        String s = o.get("id").getAsString();
+        UUID id = UUID.fromString(s);
+        brewMes.setCurrentMachine(id);
+        return new ResponseEntity<>(new StringResponse("Machine is set as current machine", HttpStatus.OK.value()), HttpStatus.OK);
+    }
+
+    //Get the current machine
+    @GetMapping(value = "/currentmachine")
+    public ResponseEntity<Object> getCurrentMachine() {
+        return new ResponseEntity<>(brewMes.getCurrentMachine(), HttpStatus.OK);
+    }
+
     //Delete and disconnect a machine from the system by specifying it's id.
     @DeleteMapping(value = "/machines/{id}")
     public ResponseEntity<Object> deleteMachine(@PathVariable("id") UUID id) {
@@ -44,7 +65,7 @@ public class BrewMESController {
     // Sends a command to the machine. The command is send via put request with a json object that is notated with e.g.
     // {'command': 'start'}
     @PutMapping(value = "machines/{id}/command")
-    public ResponseEntity<Object> updateMachineState(@PathVariable("id") UUID id, @RequestBody String input) {
+    public ResponseEntity<Object> controlMachine(@PathVariable("id") UUID id, @RequestBody String input) {
         JsonObject o = JsonParser.parseString(input).getAsJsonObject();
         String s = o.get("command").getAsString();
         ResponseEntity<Object> response = new ResponseEntity<>(new StringResponse("command updated", HttpStatus.OK.value()), HttpStatus.OK);
@@ -65,8 +86,14 @@ public class BrewMESController {
     public ResponseEntity<Object> AddMachine(@RequestBody String input) {
         JsonObject o = JsonParser.parseString(input).getAsJsonObject();
         String ip = o.get("ip").getAsString();
-        brewMes.connectMachine(ip);
-        return new ResponseEntity<>(new StringResponse("Succes", HttpStatus.OK.value()), HttpStatus.OK);
+
+        boolean success = brewMes.connectMachine(ip);
+
+        if(success){
+            return new ResponseEntity<>(new StringResponse("Success", HttpStatus.OK.value()), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(new StringResponse("Failed, not a valid ip", HttpStatus.NOT_ACCEPTABLE.value()), HttpStatus.NOT_ACCEPTABLE);
+        }
     }
 
     //set machine variables
@@ -100,7 +127,12 @@ public class BrewMESController {
     //make this method return a batch based on it's id
     @GetMapping(value = "/batches/{id}")
     public ResponseEntity<Object> getBatch(@PathVariable("id") UUID id) {
-        return new ResponseEntity<>(new StringResponse("Not Implemented yet", HttpStatus.NOT_IMPLEMENTED.value()), HttpStatus.NOT_IMPLEMENTED);
+
+        if(brewMes.getBatch(id) != null){
+            return new ResponseEntity<>(brewMes.getBatch(id), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(new StringResponse("No batch found with that ID", HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
+        }
     }
 
     //make this method handle the make report and return and return json with it's location
