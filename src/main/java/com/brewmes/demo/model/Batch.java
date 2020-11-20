@@ -21,7 +21,7 @@ public class Batch {
     private UUID machineId;
 
     @Column(name = "product_type_id")
-    private String productType;
+    private int productType;
 
     @Column(name = "total_products")
     private int totalProducts;
@@ -128,8 +128,12 @@ public class Batch {
         return machineId;
     }
 
-    public String getProductType() {
+    public int getProductType() {
         return productType;
+    }
+
+    public void setProductType(int productType) {
+        this.productType = productType;
     }
 
     public int getTotalProducts() {
@@ -242,5 +246,13 @@ public class Batch {
 
     public void setAvgVibration(double avgVibration) {
         this.avgVibration = avgVibration;
+    }
+
+    public double calculateOee() {
+        double goodCount = this.acceptableProducts;
+        double idealCycleTime = 1 / BeerType.valueOfLabel(this.productType).maxSpeed;
+        double plannedProductionTime = 0;
+
+
     }
 }
