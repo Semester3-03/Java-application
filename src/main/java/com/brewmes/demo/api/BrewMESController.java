@@ -134,7 +134,7 @@ public class BrewMESController {
     }
 
     //make this method handle the make report and return and return json with it's location
-    @GetMapping(value = "/bathes/{id}/generate")
+    @GetMapping(value = "/batches/{id}/generate")
     public ResponseEntity<Object> makeBatchReport(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(new StringResponse("Not Implemented yet", HttpStatus.NOT_IMPLEMENTED.value()), HttpStatus.NOT_IMPLEMENTED);
     }
