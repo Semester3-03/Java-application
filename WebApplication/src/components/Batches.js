@@ -15,12 +15,10 @@ export class Batches extends Component {
                 let json = response.json();
                 json.then(data => {
                     if (response.status === 200) {
-                        console.log("Inside 200 ok if");
                         this.setState({ selectedBatchID: data.id, selectSuccess: true, errorMessage: "" });
                     } else if (response.status === 400) {
                         this.setState({ selectedBatchID: "", selectSuccess: false, errorMessage: "Something went wrong, have you entered a valid UUID?" })
                     } else {
-                        console.log(data.response)
                         this.setState({ selectedBatchID: "", selectSuccess: false, errorMessage: data.response });
                     }
                 })
@@ -31,8 +29,6 @@ export class Batches extends Component {
 
     generatePDF = (e) => {
         fetch('http://localhost:8080/api/batches/' + this.state.selectedBatchID + '/generate')
-        //.then(response => response.json())
-        //.then(data => console.log(data))
     }
 
     render() {
