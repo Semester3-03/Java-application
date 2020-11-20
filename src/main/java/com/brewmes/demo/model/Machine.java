@@ -205,6 +205,45 @@ public class Machine {
     }
     //endregion
 
+    //region READ INGREDIENT ADDRESSES
+
+    public double readBarley() {
+        // Reads the current Barley amount
+        // Ns: 6
+        // ::Program:Inventory.Barley
+        return readDouble(6, "::Program:Inventory.Barley");
+    }
+
+    public double readHops() {
+        // Reads the current Hops amount
+        // Ns: 6
+        // ::Program:Inventory.Hops
+        return readDouble(6, "::Program:Inventory.Hops");
+    }
+
+    public double readMalt() {
+        // Reads the current Malt amount
+        // Ns: 6
+        // ::Program:Inventory.Malt
+        return readDouble(6, "::Program:Inventory.Malt");
+    }
+
+    public double readWheat() {
+        // Reads the current Wheat amount
+        // Ns: 6
+        // ::Program:Inventory.Wheat
+        return readDouble(6, "::Program:Inventory.Wheat");
+    }
+
+    public double readYeast() {
+        // Reads the current Yeast amount
+        // Ns: 6
+        // ::Program:Inventory.Yeast
+        return readDouble(6, "::Program:Inventory.Yeast");
+    }
+
+    //endregion
+
     private void saveBatch() {
         throw new UnsupportedOperationException();
     }
@@ -246,11 +285,20 @@ public class Machine {
         //temperature
         result.put("Temperatue", readTemperature());
         //ingredients
-        result.put("Ingredients",);
+        //Barley
+        result.put("Barley", readBarley());
+        //Hops
+        result.put("Hops", readHops());
+        //Malt
+        result.put("Malt", readMalt());
+        //Wheat
+        result.put("Wheat", readWheat());
+        //Yeast
+        result.put("Yeast", readYeast());
         //batch size
         result.put("Batch Size", readBatchSize());
         //produced
-        result.put("Produced", readProcessedCount())
+        result.put("Produced", readProcessedCount());
         //acceptable
         result.put("Acceptable",readProcessedCount() - readDefectiveCount());
         //defect
