@@ -1,35 +1,56 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route} from 'react-router-dom';
 import Header from "./components/layout/Header";
-import About from './components/pages/About';
-import Sample1 from './components/Sample1';
-import Sample2 from './components/Sample2';
-
+import MachineList from './components/MachineList';
+import Control from './components/Control';
 import './App.css';
 
 export class App extends Component {
+	//This is the global state that contains variables relevant to multiple components
+	state = { 
+		currentMachine: {
+			ip: "none",
+			id: ""
+		},
+		updated: false
+	};
+	
+	updateMachineList = () => {
+		this.setState({updated: true});
+	}
+
+	//Function to save the newly selected currentMachine in the state.
+	setCurrentMachine = (machine) => {
+		this.setState({ currentMachine: machine });
+	}
+
+	//Contains the HTML that is to be rendered for the user
+	//This really just contains references to all the different components
 	render() {
 		return (
 			<Router>
 				<div className="App">
-					<Header />
+					<Header 
+						machine={this.state.currentMachine}
+					/>
 					<div className="container">
+						
 						<Route exact path="/" render={props => (
 							<React.Fragment>
-								This is a comment
-								all your components go here
+								<MachineList 
+									setCurrentMachine = {this.setCurrentMachine}
+									updated = {this.state.updated}
+								/>
 							</React.Fragment>
 						)} />
-						<Route exact path="/contact" render={props => (
+
+						<Route exact path="/control" render={props => (
 							<React.Fragment>
-								<Sample1 />
-								<Sample2 />
+								<Control 
+									currentMachine={this.state.currentMachine}
+								/>
 							</React.Fragment>
 						)} />
-
-						<Route path="/about" component={About} />
-
-
 
 					</div>
 				</div>
