@@ -40,6 +40,8 @@ public class BrewMES implements iBrewMES {
 
         if (batch != null) {
             batch.setAverages();
+            batch.setMaxes();
+            batch.setMinimums();
         }
 
         return batch;

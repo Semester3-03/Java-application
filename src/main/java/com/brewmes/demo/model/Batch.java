@@ -3,6 +3,7 @@ package com.brewmes.demo.model;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
 
 
@@ -107,19 +108,15 @@ public class Batch {
 		this.humidity.put(time , humidity);
     }
 
-    public void setTimeInState(int index, int seconds) {
+    public void setTimeInState(int state, double seconds) {
       		if (timeInStates == null) {
 			timeInStates = new TreeMap<>();
-			for (int i = 0; i < 17; i++) {
-				timeInStates.add(i, 0);
-			}
 		}
 		//save current logged time for state and add new time.
-		int time = timeInStates.get(index) + seconds;
-		//remove entry from list
-		timeInStates.remove(index);
+		double time = timeInStates.get(state) + seconds;
+
 		//add new updated entry to list, at the index provided.
-		timeInStates.add(index, time);
+		timeInStates.put(state, time);
     }
 
     private double findAvgTemp() {
@@ -133,11 +130,40 @@ public class Batch {
     private double findAvgVibration() {
         return vibration.values().stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
     }
+    private double findMaxTemp() {
+        return temperature.values().stream().mapToDouble(Double::doubleValue).max().orElse(0.0);
+    }
+    private double findMaxVibration() {
+        return vibration.values().stream().mapToDouble(Double::doubleValue).max().orElse(0.0);
+    }
+    private double findMaxHumidity() {
+        return humidity.values().stream().mapToDouble(Double::doubleValue).max().orElse(0.0);
+    }
+    private double findMinTemp() {
+        return temperature.values().stream().mapToDouble(Double::doubleValue).min().orElse(0.0);
+    }
+    private double findMinVibration() {
+        return vibration.values().stream().mapToDouble(Double::doubleValue).min().orElse(0.0);
+    }
+    private double findMinHumidity() {
+        return humidity.values().stream().mapToDouble(Double::doubleValue).min().orElse(0.0);
+    }
 
     public void setAverages() {
         setAvgHumidity(findAvgHumidity());
         setAvgTemp(findAvgTemp());
         setAvgVibration(findAvgVibration());
+    }
+    public void setMaxes() {
+        setMaxTemp(findMaxTemp());
+        setMaxVibration(findMaxVibration());
+        setMaxHumidity(findMaxHumidity());
+    }
+
+    public void setMinimums(){
+        setMinTemp(findMinTemp());
+        setMinVibration(findMinVibration());
+        setMinHumidity(findMinHumidity());
     }
 
     public UUID getId() {
