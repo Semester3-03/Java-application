@@ -4,7 +4,8 @@ export class Control extends Component {
     state = { 
         beerType: "",
         batchSize: "",
-        speed: ""
+        speed: "",
+        validInput: true
     };
 
     //Handler method for the buttons.
@@ -28,6 +29,13 @@ export class Control extends Component {
                 method: "PUT",
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(variables)
+            })
+            .then(response => {
+                if (response.status !== 200) {
+                    this.setState({validInput: false});
+                } else {
+                    this.setState({validInput: true});
+                }
             })
 
         }
@@ -54,13 +62,30 @@ export class Control extends Component {
 
     //Contains the HTML that is to be rendered for the user
     render() {
+        let invalidInputMessage;
+
+        if(this.state.validInput){
+            invalidInputMessage = <p></p>
+        }else{
+            invalidInputMessage = <p>Invalid inputs</p>
+        }
+
         return (
             <div>
                 <div>
+                    {invalidInputMessage}
                     <form style={formStyle}>
-                        <input style={formStyle} placeholder = "Beer type" value={this.state.beerType} onChange={this.changeBeerType}></input> 
+                        <select style={formStyle} onChange={this.changeBeerType}>
+                            <option value="pilsner">Pilsner</option>
+                            <option value="wheat">Wheat</option>
+                            <option value="stout">Stout</option>
+                            <option value="ipa">IPA</option>
+                            <option value="ale">Ale</option>
+                            <option value="alcohol_free">Alcohol Free</option>
+                        </select>
+ 
                         <input style={formStyle} placeholder = "Amount" value={this.state.batchSize} onChange={this.changeAmount}></input>
-                        <input style={formStyle} placeholder = "Speed" value={this.state.speed} onChange={this.changeSpeed}></input>
+                        <input style={formStyle} placeholder = "Speed (%)" value={this.state.speed} onChange={this.changeSpeed}></input>
 
                     </form>
                 </div>
