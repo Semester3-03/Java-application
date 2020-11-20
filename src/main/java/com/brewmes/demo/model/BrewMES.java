@@ -2,6 +2,7 @@ package com.brewmes.demo.model;
 
 import com.brewmes.demo.Persistence.BatchRepository;
 import com.brewmes.demo.Persistence.MachineRepository;
+import com.google.gson.Gson;
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.sdk.client.api.config.OpcUaClientConfigBuilder;
 import org.eclipse.milo.opcua.stack.client.DiscoveryClient;
@@ -121,6 +122,10 @@ public class BrewMES implements iBrewMES {
             }
         });
         return machines;
+    }
+
+    public Gson getLiveData(Machine machine) {
+        return machine.makeJsonVariables();
     }
 
     public void setMachines(Map<UUID, Machine> machines) {

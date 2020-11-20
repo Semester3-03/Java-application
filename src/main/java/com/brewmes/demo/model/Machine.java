@@ -1,5 +1,6 @@
 package com.brewmes.demo.model;
 
+import com.google.gson.Gson;
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -39,14 +40,13 @@ public class Machine {
     @Transient
     private double vibration;
     @Transient
-    private double humidity;
+    private double humidity
 
     public Machine(String ipAddress, OpcUaClient connection) {
         this.id = UUID.randomUUID();
         this.ip = ipAddress;
         this.connection = connection;
     }
-
 
     public Machine() {
 
@@ -238,9 +238,20 @@ public class Machine {
         }
     }
 
-    public String makeJsonVariables() {
+    public Gson makeJsonVariables() {
+        //humidity
+        //temperature
+        //ingredients
+        //batch size
+        //produced
+        //acceptable
+        //defect
+        //batch id
+        //speed
+        //beer type
         throw new UnsupportedOperationException();
     }
+
 
     public UUID getId() {
         return id;

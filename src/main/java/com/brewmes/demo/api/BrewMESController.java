@@ -133,6 +133,16 @@ public class BrewMESController {
         }
     }
 
+    @GetMapping(value = "/machines/{id}/livedata")
+    public ResponseEntity<Object> getLiveData(@PathVariable("id") UUID id) {
+        brewMes.setCurrentMachine(id);
+        if (brewMes.getLiveData(brewMes.getCurrentMachine()) != null) {
+            return new ResponseEntity<>(brewMes.getLiveData(brewMes.getCurrentMachine()), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new StringResponse("No data found for that machine", HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
+        }
+    }
+
     //make this method handle the make report and return and return json with it's location
     @GetMapping(value = "/bathes/{id}/generate")
     public ResponseEntity<Object> makeBatchReport(@PathVariable("id") UUID id) {
