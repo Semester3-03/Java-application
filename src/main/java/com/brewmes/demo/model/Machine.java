@@ -48,6 +48,12 @@ public class Machine {
         this.connection = connection;
     }
 
+    public Machine(String ipAddress, OpcUaClient connection, UUID id) {
+        this.ip = ipAddress;
+        this.connection = connection;
+        this.id = id;
+    }
+
 
     public Machine() {
 
