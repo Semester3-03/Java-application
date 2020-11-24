@@ -135,9 +135,8 @@ public class BrewMESController {
 
     @GetMapping(value = "/machines/{id}/livedata")
     public ResponseEntity<Object> getLiveData(@PathVariable("id") UUID id) {
-        brewMes.setCurrentMachine(id);
-        if (brewMes.getLiveData(brewMes.getCurrentMachine()) != null) {
-            return new ResponseEntity<>(new StringResponse(brewMes.getLiveData(brewMes.getCurrentMachine()).toString(),HttpStatus.OK.value()), HttpStatus.OK);
+        if (brewMes.getLiveData(brewMes.getMachines().get(id)) != null) {
+            return new ResponseEntity<>(new StringResponse(brewMes.getLiveData(brewMes.getMachines().get(id)).toString(),HttpStatus.OK.value()), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(new StringResponse("No data found for that machine", HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
         }
