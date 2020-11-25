@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route} from 'react-router-dom';
 import Header from "./components/layout/Header";
 import MachineList from './components/MachineList';
 import Control from './components/Control';
+import Liveview from './components/Liveview'
 import './App.css';
 
 export class App extends Component {
@@ -46,7 +47,10 @@ export class App extends Component {
 
 						<Route exact path="/control" render={props => (
 							<React.Fragment>
-								<Control 
+								<Control
+									currentMachine={this.state.currentMachine}
+								/>
+								<Liveview
 									currentMachine={this.state.currentMachine}
 								/>
 							</React.Fragment>
