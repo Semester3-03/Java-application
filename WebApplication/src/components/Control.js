@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 export class Control extends Component {
     state = { 
-        beerType: "",
+        beerType: "pilsner",
         batchSize: "",
         speed: "",
         validInput: true
