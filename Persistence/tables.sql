@@ -18,13 +18,7 @@ CREATE TABLE Batch (
     machine_speed FLOAT,
     acceptable_products INT,
     defect_products INT,
-    total_products INT,
-    min_temp FLOAT,
-    max_temp FLOAT,
-    min_humidity FLOAT,
-    max_humidity FLOAT,
-    min_vibration FLOAT,
-    max_vibration FLOAT
+    total_products INT
 );
 
 CREATE TABLE Vibration (

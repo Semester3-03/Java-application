@@ -1,23 +1,35 @@
 package com.brewmes.demo.api;
 
-import com.brewmes.demo.model.BeerType;
-import com.brewmes.demo.model.Command;
-import com.brewmes.demo.model.iBrewMES;
+import com.brewmes.demo.model.Report;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import com.brewmes.demo.model.BeerType;
+
+import com.brewmes.demo.model.Command;
+import com.brewmes.demo.model.iBrewMES;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*")
 public class BrewMESController {
-
     //allow spring to inject bean to field
     @Autowired
     private iBrewMES brewMes;
@@ -53,7 +65,6 @@ public class BrewMESController {
     public ResponseEntity<Object> getCurrentMachine() {
         return new ResponseEntity<>(brewMes.getCurrentMachine(), HttpStatus.OK);
     }
-
     //Delete and disconnect a machine from the system by specifying it's id.
     @DeleteMapping(value = "/machines/{id}")
     public ResponseEntity<Object> deleteMachine(@PathVariable("id") UUID id) {
@@ -116,6 +127,7 @@ public class BrewMESController {
         return response;
     }
 
+
     //make this method return last 10 batches
     @GetMapping(value = "/batches")
     public ResponseEntity<Object> getBatches() {
@@ -125,17 +137,42 @@ public class BrewMESController {
     //make this method return a batch based on it's id
     @GetMapping(value = "/batches/{id}")
     public ResponseEntity<Object> getBatch(@PathVariable("id") UUID id) {
-
-        if(brewMes.getBatch(id) != null){
+          if(brewMes.getBatch(id) != null){
             return new ResponseEntity<>(brewMes.getBatch(id), HttpStatus.OK);
         }else{
             return new ResponseEntity<>(new StringResponse("No batch found with that ID", HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
         }
     }
+  
 
-    //make this method handle the make report and return and return json with it's location
-    @GetMapping(value = "/bathes/{id}/generate")
-    public ResponseEntity<Object> makeBatchReport(@PathVariable("id") UUID id) {
-        return new ResponseEntity<>(new StringResponse("Not Implemented yet", HttpStatus.NOT_IMPLEMENTED.value()), HttpStatus.NOT_IMPLEMENTED);
+
+    /**
+     *  returns ResponseEntity containing a InputStreamResource with the pdf file
+     *  coresponding to the filename.
+     *
+     * @param id the id on the id to be generated
+     * @return ResponseEntity with InputStreamResource containing the file
+     * @exception FileNotFoundException if thrown, return a ResponseEntity with 404 not found.
+     */
+    @GetMapping(value = "batches/{id}/get-report", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<Object> getBatchReport(@PathVariable UUID id)  {
+        Report.generatePDF(brewMes.getBatch(id));
+        String fileName =  "batch_report.pdf";
+        File file = new File(fileName);
+        InputStreamResource resource = null;
+        try {
+            resource = new InputStreamResource(new FileInputStream(fileName));
+
+            HttpHeaders headers = new HttpHeaders();
+
+            headers.add("Content-Disposition", String.format("attachment; filename=\"%s\"", file.getName()));
+            headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+            headers.add("Pragma", "no-cache");
+            headers.add("Expires", "0");
+            return ResponseEntity.ok().headers(headers).contentLength(file.length()).contentType(MediaType.parseMediaType("application/pdf")).body(resource);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(new StringResponse("File not found " + fileName, HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
+        }
     }
 }

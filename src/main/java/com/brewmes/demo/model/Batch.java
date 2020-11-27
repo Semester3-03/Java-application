@@ -1,9 +1,11 @@
 package com.brewmes.demo.model;
 
+
 import javax.persistence.*;
 import java.math.MathContext;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
 import java.math.BigDecimal;
 
@@ -64,47 +66,67 @@ public class Batch {
     @Column(name = "humidity")
     private Map<LocalDateTime, Double> humidity;
 
-    @Column(name = "min_temp")
+    @Transient
     private double minTemp;
 
-    @Column(name = "max_temp")
+    @Transient
     private double maxTemp;
 
     @Transient
     private double avgTemp;
 
-    @Column(name = "min_humidity")
+    @Transient
     private double minHumidity;
 
-    @Column(name = "max_humidity")
+    @Transient
     private double maxHumidity;
 
     @Transient
     private double avgHumidity;
 
-    @Column(name = "min_vibration")
+    @Transient
     private double minVibration;
 
-    @Column(name = "max_vibration")
+    @Transient
     private double maxVibration;
 
     @Transient
     private double avgVibration;
 
     public void addTemperature(LocalDateTime time, double temp) {
-
+      		if (temperature == null){
+			temperature = new TreeMap<>();
+		}
+		temperature.put(time, temp);
     }
 
     public void addVibration(LocalDateTime time, double vibration) {
-
+      		if (this.vibration == null){
+			this.vibration = new TreeMap<>();
+		}
+		this.vibration.put(time, vibration);
     }
 
     public void addHumidity(LocalDateTime time, double humidity) {
-
+		if (this.humidity == null) {
+			this.humidity = new TreeMap<>();
+		}
+		this.humidity.put(time , humidity);
     }
 
-    public void setTimeInState(int index, int seconds) {
+    public void setTimeInState(int state, double seconds) {
+      		if (timeInStates == null) {
+			timeInStates = new TreeMap<>();
+		}
+        if (timeInStates.get(state) == null) {
+            timeInStates.put(state, seconds);
+        } else {
+            //save current logged time for state and add new time.
+            double time = timeInStates.get(state) + seconds;
 
+            //add new updated entry to list, at the index provided.
+            timeInStates.put(state, time);
+        }
     }
 
     private double findAvgTemp() {
@@ -118,11 +140,40 @@ public class Batch {
     private double findAvgVibration() {
         return vibration.values().stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
     }
+    private double findMaxTemp() {
+        return temperature.values().stream().mapToDouble(Double::doubleValue).max().orElse(0.0);
+    }
+    private double findMaxVibration() {
+        return vibration.values().stream().mapToDouble(Double::doubleValue).max().orElse(0.0);
+    }
+    private double findMaxHumidity() {
+        return humidity.values().stream().mapToDouble(Double::doubleValue).max().orElse(0.0);
+    }
+    private double findMinTemp() {
+        return temperature.values().stream().mapToDouble(Double::doubleValue).min().orElse(0.0);
+    }
+    private double findMinVibration() {
+        return vibration.values().stream().mapToDouble(Double::doubleValue).min().orElse(0.0);
+    }
+    private double findMinHumidity() {
+        return humidity.values().stream().mapToDouble(Double::doubleValue).min().orElse(0.0);
+    }
 
     public void setAverages() {
         setAvgHumidity(findAvgHumidity());
         setAvgTemp(findAvgTemp());
         setAvgVibration(findAvgVibration());
+    }
+    public void setMaxes() {
+        setMaxTemp(findMaxTemp());
+        setMaxVibration(findMaxVibration());
+        setMaxHumidity(findMaxHumidity());
+    }
+
+    public void setMinimums(){
+        setMinTemp(findMinTemp());
+        setMinVibration(findMinVibration());
+        setMinHumidity(findMinHumidity());
     }
 
     public UUID getId() {
@@ -152,10 +203,6 @@ public class Batch {
     public int getAcceptableProducts() {
         return acceptableProducts;
     }
-
-//	public List<Integer> getTimeInStates() {
-//		return timeInStates;
-//	}
 
     public void setAcceptableProducts(int acceptableProducts) {
         this.acceptableProducts = acceptableProducts;
@@ -270,5 +317,7 @@ public class Batch {
         this.totalProducts = totalProducts;
     }
 
-    public Batch(){}
+    public Map<Integer, Double> getTimeInStates() {
+        return timeInStates;
+    }
 }
