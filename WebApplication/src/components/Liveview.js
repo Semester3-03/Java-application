@@ -79,22 +79,27 @@ export class Liveview extends Component {
                     <div style={{padding: "10px"}}>
                         <label for="barley">Barley</label> <br></br>
                         <progress id="barley" value={this.state.livedata.barley} max="35000"></progress> <br></br>
+                        <p>{this.state.livedata.barley}</p>
                     </div>
                     <div style={{padding: "10px"}}>
                         <label for="hops">Hops</label> <br></br>
                         <progress id="hops" value={this.state.livedata.barley} max="35000"></progress> <br></br>
-                        </div>
+                        {this.state.livedata.hops}
+                    </div>
                     <div style={{padding: "10px"}}>
                         <label for="malt">Malt</label> <br></br>
                         <progress id="malt" value={this.state.livedata.barley} max="35000"></progress> <br></br>
+                        {this.state.livedata.malt}
                     </div>
                     <div style={{padding: "10px"}}>
                         <label for="wheat">Wheat</label> <br></br>
                         <progress id="wheat" value={this.state.livedata.barley} max="35000"></progress> <br></br>
+                        {this.state.livedata.wheat}
                     </div>
                     <div style={{padding: "10px"}}>
                         <label for="yeast">Yeast</label> <br></br>
-                        <progress id="yeast" value={this.state.livedata.barley} max="35000"></progress>
+                        <progress id="yeast" value={this.state.livedata.barley} max="35000"></progress> <br></br>
+                        {this.state.livedata.yeast}
                     </div>
                 </div>
                 <br></br>
@@ -153,7 +158,7 @@ export class Liveview extends Component {
                     <div style={{padding: "25px"}}>
                         <Icon icon="cil-speedometer" style={{width: "80px", height: "80px"}}/>
                         <p>Speed</p>
-                        <h1>{Math.round(this.state.livedata.speed)}</h1>
+                        <h1>{Math.round(this.state.livedata.speed)}%</h1>
                     </div>
                     <div style={{padding: "25px"}}>
                         <Icon icon="jam-bottle-f" style={{width: "80px", height: "80px"}}/>
