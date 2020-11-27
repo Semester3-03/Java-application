@@ -2,11 +2,14 @@ import React, { Component } from 'react'
 
 export class Batches extends Component {
     //State contains all the variables of the class
+    
+
     state = {
         searchVar: "",
         selectedBatchID: "",
         selectSuccess: false,
-        errorMessage: ""
+        errorMessage: "",
+        link: ""
     };
 
     search = (e) => {
@@ -15,11 +18,11 @@ export class Batches extends Component {
                 let json = response.json();
                 json.then(data => {
                     if (response.status === 200) {
-                        this.setState({ selectedBatchID: data.id, selectSuccess: true, errorMessage: "" });
+                        this.setState({ selectedBatchID: data.id, selectSuccess: true, errorMessage: "", link: "http://localhost:8080/api/batches/" + data.id + "/get-report"});
                     } else if (response.status === 400) {
-                        this.setState({ selectedBatchID: "", selectSuccess: false, errorMessage: "Something went wrong, have you entered a valid UUID?" })
+                        this.setState({ selectedBatchID: "", selectSuccess: false, errorMessage: "Something went wrong, have you entered a valid UUID?", link: "" })
                     } else {
-                        this.setState({ selectedBatchID: "", selectSuccess: false, errorMessage: data.response });
+                        this.setState({ selectedBatchID: "", selectSuccess: false, errorMessage: data.response, link: "" });
                     }
                 })
             }
@@ -28,7 +31,7 @@ export class Batches extends Component {
     }
 
     generatePDF = (e) => {
-        fetch('http://localhost:8080/api/batches/' + this.state.selectedBatchID + '/generate')
+        window.location.href = this.state.link;
     }
 
     render() {
@@ -56,7 +59,7 @@ export class Batches extends Component {
                     <button onClick={this.search}>Search</button>
                 </div>
                 <div>
-                    {this.state.selectSuccess === true ? (<button onClick={this.generatePDF}>Generate PDF Report</button>) : (<p></p>)}
+                    {this.state.selectSuccess === true ? (<button onClick={this.generatePDF}>Generate Report</button>) : (<p></p>)}
                 </div>
 
             </div>
