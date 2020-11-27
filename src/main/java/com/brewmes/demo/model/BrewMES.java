@@ -58,17 +58,7 @@ public class BrewMES implements iBrewMES {
     public boolean connectMachine(String ipAddress) {
         try {
             //get all endpoints from the machine
-            List<EndpointDescription> endpoints = DiscoveryClient.getEndpoints(ipAddress).get();
-
-            //loading endpoints into configuration
-            OpcUaClientConfigBuilder cfg = new OpcUaClientConfigBuilder();
-            cfg.setEndpoint(endpoints.get(0));
-
-            //setting up machine client with config
-            OpcUaClient connection = OpcUaClient.create(cfg.build());
-
-            //connecting machine
-            connection.connect().get();
+            OpcUaClient connection = getOpcUaClient(ipAddress);
             if (machines == null) {
                 machines = new HashMap<>();
             }
@@ -83,6 +73,41 @@ public class BrewMES implements iBrewMES {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public boolean connectMachineWithID(String ipAddress, UUID id) {
+        try {
+            OpcUaClient connection = getOpcUaClient(ipAddress);
+            if (machines == null) {
+                machines = new HashMap<>();
+            }
+            Machine newMachine = new Machine(ipAddress, connection, id);
+            machineRepo.save(newMachine);
+            machines.put(newMachine.getId(), newMachine);
+            return true;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            Thread.currentThread().interrupt();
+        } catch (UaException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private OpcUaClient getOpcUaClient(String ipAddress) throws InterruptedException, ExecutionException, UaException {
+        //get all endpoints from the machine
+        List<EndpointDescription> endpoints = DiscoveryClient.getEndpoints(ipAddress).get();
+
+        //loading endpoints into configuration
+        OpcUaClientConfigBuilder cfg = new OpcUaClientConfigBuilder();
+        cfg.setEndpoint(endpoints.get(0));
+
+        //setting up machine client with config
+        OpcUaClient connection = OpcUaClient.create(cfg.build());
+
+        //connecting machine
+        connection.connect().get();
+        return connection;
     }
 
     /**
@@ -120,7 +145,7 @@ public class BrewMES implements iBrewMES {
         }
         machineRepo.findAll().forEach(machine -> {
             if (!machines.containsKey(machine.getId())) {
-                machines.put(machine.getId(), machine);
+                connectMachineWithID(machine.getIp(), machine.getId());
             }
         });
         return machines;
