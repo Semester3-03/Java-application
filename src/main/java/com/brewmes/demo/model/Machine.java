@@ -54,7 +54,7 @@ public class Machine {
     @Transient
     private double speed;
     @Transient
-    private String beerType;
+    private int beerType;
 
     public Machine(String ipAddress, OpcUaClient connection) {
         this.id = UUID.randomUUID();
@@ -377,11 +377,11 @@ public class Machine {
         this.speed = speed;
     }
 
-    public String getBeerType() {
+    public int getBeerType() {
         return beerType;
     }
 
-    public void setBeerType(String beerType) {
+    public void setBeerType(int beerType) {
         this.beerType = beerType;
     }
 
@@ -393,9 +393,19 @@ public class Machine {
     }
 
     public void readLiveData() {
-        this.temperature = readTemperature();
+        this.humidity = readHumidity();
         this.vibration = readVibration();
+        this.temperature = readTemperature();
         this.currentState = readState();
+
+        this.amountToProduce = readBatchSize();
+        this.totalProducts = readProcessedCount();
+        this.acceptableProducts = readProcessedCount() - readDefectiveCount();
+        this.defectProducts = readDefectiveCount();
+
+        this.batchID = readBatchCurrentId();
+        this.speed = readNormalizedMachineSpeed();
+        this.beerType = readBatchBeerType();
     }
 
     private void changeRequest() {
