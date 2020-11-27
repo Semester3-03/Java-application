@@ -104,7 +104,6 @@ class MachineTest {
     }
 
     @Test
-
     void readTemperature() {
         double temp = machine.readTemperature();
         assertTrue(temp >= 0.0 && temp <= 100.0);
@@ -115,7 +114,6 @@ class MachineTest {
         double vibration = machine.readVibration();
         assertTrue(vibration >= -50.0 && vibration <= 50.0);
     }
-
 
     @Test
     void setVariables() {

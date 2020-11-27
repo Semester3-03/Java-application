@@ -1,5 +1,6 @@
 package com.brewmes.demo.model;
 
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -112,11 +113,15 @@ public class Batch {
       		if (timeInStates == null) {
 			timeInStates = new TreeMap<>();
 		}
-		//save current logged time for state and add new time.
-		double time = timeInStates.get(state) + seconds;
+        if (timeInStates.get(state) == null) {
+            timeInStates.put(state, seconds);
+        } else {
+            //save current logged time for state and add new time.
+            double time = timeInStates.get(state) + seconds;
 
-		//add new updated entry to list, at the index provided.
-		timeInStates.put(state, time);
+            //add new updated entry to list, at the index provided.
+            timeInStates.put(state, time);
+        }
     }
 
     private double findAvgTemp() {
@@ -284,5 +289,9 @@ public class Batch {
 
     public void setAvgVibration(double avgVibration) {
         this.avgVibration = avgVibration;
+    }
+
+    public Map<Integer, Double> getTimeInStates() {
+        return timeInStates;
     }
 }

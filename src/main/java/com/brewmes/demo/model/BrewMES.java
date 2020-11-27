@@ -1,6 +1,5 @@
 package com.brewmes.demo.model;
 
-
 import com.brewmes.demo.Persistence.BatchRepository;
 import com.brewmes.demo.Persistence.MachineRepository;
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;

@@ -68,7 +68,6 @@ public class Machine {
         this.id = id;
     }
 
-
     public Machine() {
 
     }
@@ -101,7 +100,6 @@ public class Machine {
      * Reads an integer value from the machine via OPCUA
      *
      * @param ns      is the namespace
-
      * @param address is the address eg. "::Program:Cube.Status.StateCurrent"
      * @return the integer value if found and -1 otherwise
      */
@@ -284,7 +282,6 @@ public class Machine {
     public Batch getCurrentBatch() {
         return currentBatch;
     }
-
     public void setCurrentBatch(Batch currentBatch) {
         this.currentBatch = currentBatch;
     }
@@ -321,11 +318,9 @@ public class Machine {
         return acceptableProducts;
     }
 
-
     public void setAcceptableProducts(int acceptableProducts) {
         this.acceptableProducts = acceptableProducts;
     }
-
 
     public int getDefectProducts() {
         return defectProducts;
@@ -335,7 +330,6 @@ public class Machine {
         this.defectProducts = defectProducts;
     }
 
-
     public double getTemperature() {
         return temperature;
     }
@@ -343,7 +337,6 @@ public class Machine {
     public void setTemperature(double temperature) {
         this.temperature = temperature;
     }
-
 
     public double getVibration() {
         return vibration;
@@ -388,6 +381,7 @@ public class Machine {
     public double getHumidity() {
         return humidity;
     }
+  
     public void setHumidity(double humidity) {
         this.humidity = humidity;
     }
