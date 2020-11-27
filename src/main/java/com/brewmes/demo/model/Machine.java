@@ -50,16 +50,16 @@ public class Machine {
     @Transient
     private double humidity;
     @Transient
-    private int barley;
+    private double barley;
     @Transient
-    private int hops;
+    private double hops;
     @Transient
-    private int malt;
+    private double malt;
     @Transient
-    private int wheat;
+    private double wheat;
     @Transient
-    private int yeast;
-    @Transiset
+    private double yeast;
+    @Transient
     private int batchID;
     @Transient
     private double speed;
@@ -436,7 +436,53 @@ public class Machine {
         this.humidity = humidity;
     }
 
+    public double getBarley() {
+        return barley;
+    }
+
+    public void setBarley(double barley) {
+        this.barley = barley;
+    }
+
+    public double getHops() {
+        return hops;
+    }
+
+    public void setHops(double hops) {
+        this.hops = hops;
+    }
+
+    public double getMalt() {
+        return malt;
+    }
+
+    public void setMalt(double malt) {
+        this.malt = malt;
+    }
+
+    public double getWheat() {
+        return wheat;
+    }
+
+    public void setWheat(double wheat) {
+        this.wheat = wheat;
+    }
+
+    public double getYeast() {
+        return yeast;
+    }
+
+    public void setYeast(double yeast) {
+        this.yeast = yeast;
+    }
+
     public void readLiveData() {
+        this.barley = readBarley();
+        this.malt = readMalt();
+        this.hops = readHops();
+        this.wheat = readWheat();
+        this.yeast = readYeast();
+
         this.humidity = readHumidity();
         this.vibration = readVibration();
         this.temperature = readTemperature();

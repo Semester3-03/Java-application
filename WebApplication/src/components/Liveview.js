@@ -35,6 +35,7 @@ export class Liveview extends Component {
         //Initialize socket and stomp client.
         let socket = new SockJS('http://localhost:8080/websocket')
         let stompClient = Stomp.over(socket);
+        stompClient.debug = null
 
         //Save machineID -> then socket -> then stomp client -> then connect
         this.setState({machineID: this.props.currentMachine.id}, () => 
@@ -69,8 +70,6 @@ export class Liveview extends Component {
         let json = JSON.parse(data);
         if (this.state.livedata !== json)
             this.setState({livedata: json});
-
-        console.log("DATA:", this.state.livedata)
     }
 
     render() {
@@ -154,7 +153,7 @@ export class Liveview extends Component {
                     <div style={{padding: "25px"}}>
                         <Icon icon="cil-speedometer" style={{width: "80px", height: "80px"}}/>
                         <p>Speed</p>
-                        <h1>{this.state.livedata.speed}</h1>
+                        <h1>{Math.round(this.state.livedata.speed)}</h1>
                     </div>
                     <div style={{padding: "25px"}}>
                         <Icon icon="jam-bottle-f" style={{width: "80px", height: "80px"}}/>
