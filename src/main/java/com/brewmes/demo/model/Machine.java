@@ -50,6 +50,16 @@ public class Machine {
     @Transient
     private double humidity;
     @Transient
+    private int barley;
+    @Transient
+    private int hops;
+    @Transient
+    private int malt;
+    @Transient
+    private int wheat;
+    @Transient
+    private int yeast;
+    @Transiset
     private int batchID;
     @Transient
     private double speed;
@@ -222,6 +232,46 @@ public class Machine {
         return readDouble(6, "::Program:Cube.Status.Parameter[4].Value");
     }
     //endregion
+
+    //region READ INGREDIENT ADDRESSES
+
+    public double readBarley() {
+        // Reads the current Barley amount
+        // Ns: 6
+        // ::Program:Inventory.Barley
+        return readDouble(6, "::Program:Inventory.Barley");
+    }
+
+    public double readHops() {
+        // Reads the current Hops amount
+        // Ns: 6
+        // ::Program:Inventory.Hops
+        return readDouble(6, "::Program:Inventory.Hops");
+    }
+
+    public double readMalt() {
+        // Reads the current Malt amount
+        // Ns: 6
+        // ::Program:Inventory.Malt
+        return readDouble(6, "::Program:Inventory.Malt");
+    }
+
+    public double readWheat() {
+        // Reads the current Wheat amount
+        // Ns: 6
+        // ::Program:Inventory.Wheat
+        return readDouble(6, "::Program:Inventory.Wheat");
+    }
+
+    public double readYeast() {
+        // Reads the current Yeast amount
+        // Ns: 6
+        // ::Program:Inventory.Yeast
+        return readDouble(6, "::Program:Inventory.Yeast");
+    }
+
+    //endregion
+
 
     private void saveBatch() {
         throw new UnsupportedOperationException();

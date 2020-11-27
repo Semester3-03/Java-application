@@ -17,7 +17,11 @@ export class Header extends Component {
             <header style={headerStyle}>
                 <h1>BrewMES</h1>
                 <p>Current machine: <i style={this.textStyle()}>{this.props.machine.ip}</i></p>
-                <Link style={linkStyle} to="/">Home</Link>                  
+                <div>
+                    <Link style={linkStyle} to="/">Home</Link>
+                    <Link style={linkStyle} to="/batch">Batches</Link>
+                </div>
+
             </header>
         )
     }

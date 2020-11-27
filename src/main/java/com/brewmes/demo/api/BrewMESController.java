@@ -115,13 +115,13 @@ public class BrewMESController {
         ResponseEntity<Object> response = new ResponseEntity<>(new StringResponse("Variables set.", HttpStatus.OK.value()), HttpStatus.OK);
         brewMes.setCurrentMachine(id);
         switch (beerType) {
-            case "pilsner" -> brewMes.setMachineVariables(speed, BeerType.PILSNER, batchSize);
-            case "wheat" -> brewMes.setMachineVariables(speed, BeerType.WHEAT, batchSize);
-            case "stout" -> brewMes.setMachineVariables(speed, BeerType.STOUT, batchSize);
-            case "ipa" -> brewMes.setMachineVariables(speed, BeerType.IPA, batchSize);
+            case "pilsner" -> brewMes.setMachineVariables(speed*600/100, BeerType.PILSNER, batchSize);
+            case "wheat" -> brewMes.setMachineVariables(speed*300/100, BeerType.WHEAT, batchSize);
+            case "stout" -> brewMes.setMachineVariables(speed*150/100, BeerType.STOUT, batchSize);
+            case "ipa" -> brewMes.setMachineVariables(speed*200/100, BeerType.IPA, batchSize);
             case "ale" -> brewMes.setMachineVariables(speed, BeerType.ALE, batchSize);
-            case "alcohol_free" -> brewMes.setMachineVariables(speed, BeerType.ALCHOL_FREE, batchSize);
-            default -> new ResponseEntity<>(new StringResponse("I do not know that beer typer.", HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
+            case "alcohol_free" -> brewMes.setMachineVariables(speed*125/100, BeerType.ALCHOL_FREE, batchSize);
+            default -> new ResponseEntity<>(new StringResponse("I do not know that beer type.", HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
         }
 
         return response;
