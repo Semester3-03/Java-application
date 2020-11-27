@@ -263,7 +263,6 @@ public class Machine {
     public Batch getCurrentBatch() {
         return currentBatch;
     }
-  
     public void setCurrentBatch(Batch currentBatch) {
         this.currentBatch = currentBatch;
     }
