@@ -251,7 +251,6 @@ public class Machine {
         this.id = id;
     }
 
-
     public String getIp() {
         return ip;
     }
@@ -263,7 +262,6 @@ public class Machine {
     public Batch getCurrentBatch() {
         return currentBatch;
     }
-  
     public void setCurrentBatch(Batch currentBatch) {
         this.currentBatch = currentBatch;
     }
