@@ -2,10 +2,12 @@ package com.brewmes.demo.model;
 
 
 import javax.persistence.*;
+import java.math.MathContext;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.math.BigDecimal;
 
 
 @Entity
@@ -22,8 +24,14 @@ public class Batch {
     @Column(name = "machine_id")
     private UUID machineId;
 
+    @Column(name = "normalized_machine_speed")
+    private double normalizedMachineSpeed;
+
+    @Column(name = "machine_speed")
+    private double machineSpeed;
+
     @Column(name = "product_type_id")
-    private String productType;
+    private int productType;
 
     @Column(name = "total_products")
     private int totalProducts;
@@ -183,8 +191,12 @@ public class Batch {
         return machineId;
     }
 
-    public String getProductType() {
+    public int getProductType() {
         return productType;
+    }
+
+    public void setProductType(int productType) {
+        this.productType = productType;
     }
 
     public int getTotalProducts() {
@@ -291,11 +303,48 @@ public class Batch {
         return avgVibration;
     }
 
+    public double getMachineSpeed() {
+        return machineSpeed;
+    }
+
+    public void setMachineSpeed(double machineSpeed) {
+        this.machineSpeed = machineSpeed;
+    }
+
     public void setAvgVibration(double avgVibration) {
         this.avgVibration = avgVibration;
     }
 
+    public double calculateOee() {
+        double goodCount = this.acceptableProducts;
+        double idealCycleTime = 1.0 / (double)BeerType.valueOfLabel(this.productType).maxSpeed;
+        double plannedProductionTime = 1.0/ (this.machineSpeed / (double)totalProducts);
+
+        BigDecimal bd = new BigDecimal((((goodCount * idealCycleTime) / plannedProductionTime)*100));
+        bd = bd.round(new MathContext(5));
+        return bd.doubleValue();
+    }
+
+    public Batch(int acceptableProducts, int productType, double machineSpeed, int totalProducts){
+        this.acceptableProducts = acceptableProducts;
+        this.productType = productType;
+        this.machineSpeed = machineSpeed;
+        this.totalProducts = totalProducts;
+    }
+
+    public Batch(){
+
+    }
+
     public Map<Integer, Double> getTimeInStates() {
         return timeInStates;
+    }
+
+    public double getNormalizedMachineSpeed() {
+        return normalizedMachineSpeed;
+    }
+
+    public void setNormalizedMachineSpeed(double normalizedMachineSpeed) {
+        this.normalizedMachineSpeed = normalizedMachineSpeed;
     }
 }

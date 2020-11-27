@@ -15,6 +15,8 @@ CREATE TABLE Batch (
     id UUID PRIMARY KEY,
     product_type_id INT REFERENCES Product_type(id),
     machine_id UUID REFERENCES Machine(id),
+    normalized_machine_speed FLOAT,
+    machine_speed FLOAT,
     acceptable_products INT,
     defect_products INT,
     total_products INT
