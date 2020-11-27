@@ -10,14 +10,10 @@ import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.*;
-import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
-
-import org.jfree.chart.axis.NumberTickUnit;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -35,6 +31,10 @@ public class Report {
     private static final Font textFontBold = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
     private static PdfWriter pdfWriter;
     private static Batch currentBatch;
+
+    private Report() {
+
+    }
 
     public static void generatePDF(Batch batch) {
         try {
@@ -92,11 +92,6 @@ public class Report {
             e.printStackTrace();
         }
     }
-    private Report() {
-
-    }
-
-
 
     private static void addTitlePage(Document document) throws DocumentException {
         Paragraph preface = new Paragraph();
@@ -152,19 +147,19 @@ public class Report {
         XYSeriesCollection dataset = new XYSeriesCollection();
         XYSeries series = new XYSeries("Vibration");
         long totalTime = 0L;
-		if (currentBatch.getVibration().keySet().stream().findFirst().isPresent()) {
-			LocalDateTime startTime;
-			startTime = currentBatch.getVibration().keySet().stream().findFirst().get();
-			for (LocalDateTime time : currentBatch.getVibration().keySet()) {
-			    long timeElapsed = Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - time.toEpochSecond(ZoneOffset.MAX));
+        if (currentBatch.getVibration().keySet().stream().findFirst().isPresent()) {
+            LocalDateTime startTime;
+            startTime = currentBatch.getVibration().keySet().stream().findFirst().get();
+            for (LocalDateTime time : currentBatch.getVibration().keySet()) {
+                long timeElapsed = Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - time.toEpochSecond(ZoneOffset.MAX));
                 if (totalTime < timeElapsed) {
                     totalTime = timeElapsed;
                 }
 
-				series.add((Number)(Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - time.toEpochSecond(ZoneOffset.MAX))), currentBatch.getVibration().get(time));
-			}
-		}
-		dataset.addSeries(series);
+                series.add((Number) (Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - time.toEpochSecond(ZoneOffset.MAX))), currentBatch.getVibration().get(time));
+            }
+        }
+        dataset.addSeries(series);
         JFreeChart lineChart = ChartFactory.createXYLineChart("Vibration", "Time", "Vibration"
                 , dataset, PlotOrientation.VERTICAL, true, true, false);
         makeTables(document, vibration, width, height, lineChart, currentBatch.getAvgVibration(), currentBatch.getMinVibration(), currentBatch.getMaxVibration(), totalTime);
@@ -174,10 +169,10 @@ public class Report {
 
         NumberAxis domain = (NumberAxis) lineChart.getXYPlot().getDomainAxis();
         NumberAxis range = (NumberAxis) lineChart.getXYPlot().getRangeAxis();
-        domain.setTickUnit(new NumberTickUnit(totalTime/10));
+        domain.setTickUnit(new NumberTickUnit(totalTime / 10));
         domain.setRange(0, totalTime);
         range.setRange(0, max);
-        range.setTickUnit(new NumberTickUnit(max/2));
+        range.setTickUnit(new NumberTickUnit(max / 2));
 
         PdfContentByte contentByte = pdfWriter.getDirectContent();
         PdfTemplate template = contentByte.createTemplate(width, height);
@@ -214,18 +209,18 @@ public class Report {
         XYSeriesCollection dataset = new XYSeriesCollection();
         XYSeries series = new XYSeries("Temperature");
         long totalTime = 0;
-		if (currentBatch.getTemperature().keySet().stream().findFirst().isPresent()) {
-			LocalDateTime startTime;
-			startTime = currentBatch.getTemperature().keySet().stream().findFirst().get();
-			for (LocalDateTime time : currentBatch.getTemperature().keySet()) {
+        if (currentBatch.getTemperature().keySet().stream().findFirst().isPresent()) {
+            LocalDateTime startTime;
+            startTime = currentBatch.getTemperature().keySet().stream().findFirst().get();
+            for (LocalDateTime time : currentBatch.getTemperature().keySet()) {
                 long timeElapsed = Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - time.toEpochSecond(ZoneOffset.MAX));
                 if (totalTime < timeElapsed) {
                     totalTime = timeElapsed;
                 }
-				series.add((Number) Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - time.toEpochSecond(ZoneOffset.MAX)), currentBatch.getTemperature().get(time));
-			}
-		}
-		dataset.addSeries(series);
+                series.add((Number) Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - time.toEpochSecond(ZoneOffset.MAX)), currentBatch.getTemperature().get(time));
+            }
+        }
+        dataset.addSeries(series);
         JFreeChart lineChart = ChartFactory.createXYLineChart("Temperature", "Time", "Temperature"
                 , dataset, PlotOrientation.VERTICAL, true, true, false);
         makeTables(document, temperature, width, height, lineChart, currentBatch.getAvgTemp(), currentBatch.getMinTemp(), currentBatch.getMaxTemp(), totalTime);
