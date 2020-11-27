@@ -4,6 +4,7 @@ import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.Variant;
+
 import org.eclipse.milo.opcua.stack.core.types.enumerated.TimestampsToReturn;
 
 import java.util.UUID;
@@ -18,16 +19,22 @@ public class Machine {
     @Id
     @Column(name = "id")
     private UUID id;
+
     @Column(name = "ip")
     private String ip;
+
     @Transient
     private OpcUaClient connection;
+
     @Transient
     private Batch currentBatch;
+
     @Transient
     private double oee;
+
     @Transient
     private int currentState;
+
     @Transient
     private int totalProducts;
     @Transient
@@ -35,11 +42,19 @@ public class Machine {
     @Transient
     private int defectProducts;
     @Transient
+    private int amountToProduce;
+    @Transient
     private double temperature;
     @Transient
     private double vibration;
     @Transient
     private double humidity;
+    @Transient
+    private int batchID;
+    @Transient
+    private double speed;
+    @Transient
+    private int beerType;
 
     public Machine(String ipAddress, OpcUaClient connection) {
         this.id = UUID.randomUUID();
@@ -47,6 +62,11 @@ public class Machine {
         this.connection = connection;
     }
 
+    public Machine(String ipAddress, OpcUaClient connection, UUID id) {
+        this.ip = ipAddress;
+        this.connection = connection;
+        this.id = id;
+    }
 
     public Machine() {
 
@@ -76,7 +96,6 @@ public class Machine {
 
 
     //region READ HELPER METHODS
-
     /**
      * Reads an integer value from the machine via OPCUA
      *
@@ -212,6 +231,7 @@ public class Machine {
         throw new UnsupportedOperationException();
     }
 
+
     /**
      * This writes the variables to the machine. The machine will not be started automatically.
      *
@@ -246,6 +266,7 @@ public class Machine {
         return id;
     }
 
+
     public void setId(UUID id) {
         this.id = id;
     }
@@ -261,10 +282,10 @@ public class Machine {
     public Batch getCurrentBatch() {
         return currentBatch;
     }
-
     public void setCurrentBatch(Batch currentBatch) {
         this.currentBatch = currentBatch;
     }
+
 
     public double getOee() {
         return oee;
@@ -274,6 +295,7 @@ public class Machine {
         this.oee = oee;
     }
 
+
     public int getCurrentState() {
         return currentState;
     }
@@ -282,6 +304,7 @@ public class Machine {
         this.currentState = currentState;
     }
 
+
     public int getTotalProducts() {
         return totalProducts;
     }
@@ -289,6 +312,7 @@ public class Machine {
     public void setTotalProducts(int totalProducts) {
         this.totalProducts = totalProducts;
     }
+
 
     public int getAcceptableProducts() {
         return acceptableProducts;
@@ -322,12 +346,60 @@ public class Machine {
         this.vibration = vibration;
     }
 
+    public int getAmountToProduce() {
+        return amountToProduce;
+    }
+
+    public void setAmountToProduce(int amountToProduce) {
+        this.amountToProduce = amountToProduce;
+    }
+
+    public int getBatchID() {
+        return batchID;
+    }
+
+    public void setBatchID(int batchID) {
+        this.batchID = batchID;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public int getBeerType() {
+        return beerType;
+    }
+
+    public void setBeerType(int beerType) {
+        this.beerType = beerType;
+    }
+
     public double getHumidity() {
         return humidity;
     }
-
+  
     public void setHumidity(double humidity) {
         this.humidity = humidity;
+    }
+
+    public void readLiveData() {
+        this.humidity = readHumidity();
+        this.vibration = readVibration();
+        this.temperature = readTemperature();
+        this.currentState = readState();
+
+        this.amountToProduce = readBatchSize();
+        this.totalProducts = readProcessedCount();
+        this.acceptableProducts = readProcessedCount() - readDefectiveCount();
+        this.defectProducts = readDefectiveCount();
+
+        this.batchID = readBatchCurrentId();
+        this.speed = readNormalizedMachineSpeed();
+        this.beerType = readBatchBeerType();
     }
 
     private void changeRequest() {
