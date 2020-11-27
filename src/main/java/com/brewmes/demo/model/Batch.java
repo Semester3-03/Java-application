@@ -24,6 +24,9 @@ public class Batch {
     @Column(name = "machine_id")
     private UUID machineId;
 
+    @Column(name = "normalized_machine_speed")
+    private double normalizedMachineSpeed;
+
     @Column(name = "machine_speed")
     private double machineSpeed;
 
@@ -296,6 +299,14 @@ public class Batch {
         return avgVibration;
     }
 
+    public double getMachineSpeed() {
+        return machineSpeed;
+    }
+
+    public void setMachineSpeed(double machineSpeed) {
+        this.machineSpeed = machineSpeed;
+    }
+
     public void setAvgVibration(double avgVibration) {
         this.avgVibration = avgVibration;
     }
@@ -317,7 +328,19 @@ public class Batch {
         this.totalProducts = totalProducts;
     }
 
+    public Batch(){
+
+    }
+
     public Map<Integer, Double> getTimeInStates() {
         return timeInStates;
+    }
+
+    public double getNormalizedMachineSpeed() {
+        return normalizedMachineSpeed;
+    }
+
+    public void setNormalizedMachineSpeed(double normalizedMachineSpeed) {
+        this.normalizedMachineSpeed = normalizedMachineSpeed;
     }
 }
