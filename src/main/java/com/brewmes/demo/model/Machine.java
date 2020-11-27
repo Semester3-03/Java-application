@@ -98,6 +98,8 @@ public class Machine {
             //request change
             changeRequest();
 
+            this.currentBatch = new Batch(UUID.randomUUID());
+
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
             Thread.currentThread().interrupt();

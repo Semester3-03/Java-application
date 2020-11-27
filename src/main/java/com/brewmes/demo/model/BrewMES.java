@@ -65,6 +65,7 @@ public class BrewMES implements iBrewMES {
             Machine newMachine = new Machine(ipAddress, connection);
             machineRepo.save(newMachine);
             machines.put(newMachine.getId(), newMachine);
+            makeBatchSaveThread(newMachine.getId());
             return true;
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -84,6 +85,7 @@ public class BrewMES implements iBrewMES {
             Machine newMachine = new Machine(ipAddress, connection, id);
             machineRepo.save(newMachine);
             machines.put(newMachine.getId(), newMachine);
+            makeBatchSaveThread(id);
             return true;
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -118,6 +120,31 @@ public class BrewMES implements iBrewMES {
     public void disconnectMachine(UUID id) {
         machines.remove(id);
         machineRepo.deleteById(id);
+    }
+
+    private Thread makeBatchSaveThread(UUID id){
+        Thread thread = new Thread(new Runnable() {
+            private final Machine machine = machines.get(id);
+
+            @Override
+            public void run() {
+                while(true){
+                    if(machine.getCurrentState() == 17){
+                        batchRepo.save(machine.getCurrentBatch());
+                    }
+
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        thread.setDaemon(true);
+        return thread;
     }
 
     public void setMachineVariables(int speed, BeerType beerType, int batchSize) {

@@ -88,6 +88,10 @@ public class Batch {
     @Transient
     private double avgVibration;
 
+    public Batch(UUID id){
+        this.id = id;
+    }
+
     public void addTemperature(LocalDateTime time, double temp) {
       		if (temperature == null){
 			temperature = new TreeMap<>();
