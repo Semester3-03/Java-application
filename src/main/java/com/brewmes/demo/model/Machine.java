@@ -4,6 +4,7 @@ import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.Variant;
+
 import org.eclipse.milo.opcua.stack.core.types.enumerated.TimestampsToReturn;
 
 import java.util.UUID;
@@ -47,7 +48,6 @@ public class Machine {
         this.connection = connection;
     }
 
-
     public Machine() {
 
     }
@@ -76,7 +76,6 @@ public class Machine {
 
 
     //region READ HELPER METHODS
-
     /**
      * Reads an integer value from the machine via OPCUA
      *
@@ -212,6 +211,7 @@ public class Machine {
         throw new UnsupportedOperationException();
     }
 
+
     /**
      * This writes the variables to the machine. The machine will not be started automatically.
      *
@@ -246,6 +246,7 @@ public class Machine {
         return id;
     }
 
+
     public void setId(UUID id) {
         this.id = id;
     }
@@ -261,10 +262,10 @@ public class Machine {
     public Batch getCurrentBatch() {
         return currentBatch;
     }
-
     public void setCurrentBatch(Batch currentBatch) {
         this.currentBatch = currentBatch;
     }
+
 
     public double getOee() {
         return oee;
@@ -274,6 +275,7 @@ public class Machine {
         this.oee = oee;
     }
 
+
     public int getCurrentState() {
         return currentState;
     }
@@ -282,6 +284,7 @@ public class Machine {
         this.currentState = currentState;
     }
 
+
     public int getTotalProducts() {
         return totalProducts;
     }
@@ -289,6 +292,7 @@ public class Machine {
     public void setTotalProducts(int totalProducts) {
         this.totalProducts = totalProducts;
     }
+
 
     public int getAcceptableProducts() {
         return acceptableProducts;
@@ -322,13 +326,15 @@ public class Machine {
         this.vibration = vibration;
     }
 
+
     public double getHumidity() {
         return humidity;
     }
-
+  
     public void setHumidity(double humidity) {
         this.humidity = humidity;
     }
+
 
     private void changeRequest() {
         try {
