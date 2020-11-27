@@ -51,21 +51,26 @@ public class Report {
             // Add title and timestamp
             addTitlePage(document);
 
-            // Create a table with 5 columns
-            PdfPTable table = new PdfPTable(5);
+            // Create a table with 6 columns
+            PdfPTable table = new PdfPTable(6);
             // Create the table content
             table.addCell("Beer type");
             table.addCell("Amount to produce");
             table.addCell("Total produced");
             table.addCell("Acceptable products");
             table.addCell("Defect products");
-            table.addCell(batch.getProductType());
+            table.addCell("Machine speed");
+            table.addCell(String.valueOf(batch.getProductType()));
             table.addCell(String.valueOf(batch.getTotalProducts()));
             table.addCell(String.valueOf(batch.getTotalProducts()));
             table.addCell(String.valueOf(batch.getAcceptableProducts()));
             table.addCell(String.valueOf(batch.getDefectProducts()));
+            table.addCell(String.valueOf(batch.getNormalizedMachineSpeed()));
             // Add table to document
             document.add(table);
+
+            //add OEE
+            addOEESection(document);
 
             // Add bar chart over time in states
             addTimeSection(document);
@@ -91,6 +96,18 @@ public class Report {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void addOEESection(Document document) throws DocumentException{
+        Paragraph OEE = new Paragraph();
+
+        addEmptyLine(OEE, 1);
+
+        OEE.add(new Paragraph("The Overall Equipment Effectiveness (OEE) of the batch is: " + currentBatch.calculateOee() + "%"));
+
+        addEmptyLine(OEE, 1);
+
+        document.add(OEE);
     }
 
     private static void addTitlePage(Document document) throws DocumentException {
