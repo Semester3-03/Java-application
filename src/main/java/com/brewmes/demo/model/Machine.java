@@ -251,7 +251,6 @@ public class Machine {
         this.id = id;
     }
 
-
     public String getIp() {
         return ip;
     }
