@@ -24,21 +24,22 @@ export class MachineList extends Component {
         this.setState({machines: []})
 
         fetch('http://localhost:8080/api/machines')
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 200) {
-                //Loops through and add all machines to the list of machines
-                data.forEach(element => {
-                    this.setState({ machines: [...this.state.machines, {label: element.ip, value: element.id}] });
-                });
+        .then(response => {
+            if (response.status === 200) {
+                response.json().then(data => {
+                    //Loops through and add all machines to the list of machines
+                    data.forEach(element => {
+                        this.setState({ machines: [...this.state.machines, {label: element.ip, value: element.id}] });
+                    });
 
-                //Sets first machine as default as the list will have it selected initially
-                if (this.state.machines.length !== 0) {
-                    this.setState({selectedMachine: {
-                        ip: this.state.machines[0].label,
-                        id: this.state.machines[0].value
-                    }})
-                }
+                    //Sets first machine as default as the list will have it selected initially
+                    if (this.state.machines.length !== 0) {
+                        this.setState({selectedMachine: {
+                            ip: this.state.machines[0].label,
+                            id: this.state.machines[0].value
+                        }})
+                    }
+                })
             }
         });
     }

@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import * as SockJS from 'sockjs-client';
 import * as Stomp from 'stompjs';
+import { Icon } from '@iconify/react-with-api';
+
+
 
 export class Liveview extends Component {
 
@@ -8,13 +11,31 @@ export class Liveview extends Component {
         machineID: "",
         socket: null,
         stompClient: null, 
-        livedata: {}
+        livedata: {
+            barley: 0,
+            hops: 0,
+            malt: 0,
+            wheat: 0,
+            yeast: 0,
+            humidity: 0.0,
+            vibration: 0.0,
+            temperature: 0.0,
+            amountToProduce: 0,
+            totalProducts: 0,
+            acceptableProducts: 0,
+            defectProducts: 0,
+            batchID: 0,
+            speed: 0,
+            beerType: 0,
+            currentState: 0
+        }
     };
 
     componentDidMount() {
         //Initialize socket and stomp client.
         let socket = new SockJS('http://localhost:8080/websocket')
         let stompClient = Stomp.over(socket);
+        stompClient.debug = null
 
         //Save machineID -> then socket -> then stomp client -> then connect
         this.setState({machineID: this.props.currentMachine.id}, () => 
@@ -53,14 +74,108 @@ export class Liveview extends Component {
 
     render() {
         return (
-            // TODO: ADD LIVEDATA VIEW HERE.
-            // DATA CAN BE FOUND IN THE VARIABLE STATE.
-            // GET IT WITH this.state.livedata.{variablename}
             <div>
-               
+                <div style={{display: "inline-flex", align: "center", padding: "10px"}}>
+                    <div style={{padding: "10px"}}>
+                        <label for="barley">Barley</label> <br></br>
+                        <progress id="barley" value={this.state.livedata.barley} max="35000"></progress> <br></br>
+                        <p>{this.state.livedata.barley}</p>
+                    </div>
+                    <div style={{padding: "10px"}}>
+                        <label for="hops">Hops</label> <br></br>
+                        <progress id="hops" value={this.state.livedata.barley} max="35000"></progress> <br></br>
+                        {this.state.livedata.hops}
+                    </div>
+                    <div style={{padding: "10px"}}>
+                        <label for="malt">Malt</label> <br></br>
+                        <progress id="malt" value={this.state.livedata.barley} max="35000"></progress> <br></br>
+                        {this.state.livedata.malt}
+                    </div>
+                    <div style={{padding: "10px"}}>
+                        <label for="wheat">Wheat</label> <br></br>
+                        <progress id="wheat" value={this.state.livedata.barley} max="35000"></progress> <br></br>
+                        {this.state.livedata.wheat}
+                    </div>
+                    <div style={{padding: "10px"}}>
+                        <label for="yeast">Yeast</label> <br></br>
+                        <progress id="yeast" value={this.state.livedata.barley} max="35000"></progress> <br></br>
+                        {this.state.livedata.yeast}
+                    </div>
+                </div>
+                <br></br>
+                <div style={{display: "inline-flex", align: "center", padding: "0px"}}>
+                    <div style={{padding: "25px"}}>
+                        <Icon icon="carbon-humidity" style={{width: "80px", height: "80px", color: "#42a7f5"}}/>
+                        <p>Humidity</p>
+                        <h1>{this.state.livedata.humidity}</h1>
+                    </div>
+
+                    <div style={{padding: "25px"}}>
+                        <Icon icon="ph-vibrate" style={{width: "80px", height: "80px"}}/>
+                        <p>Vibration</p>
+                        <h1>{this.state.livedata.vibration}</h1>
+                    </div>
+
+                    <div style={{padding: "25px"}}>
+                        <Icon icon="emojione-v1:thermometer" style={{width: "80px", height: "80px"}}/>
+                        <p>Temperature</p>
+                        <h1>{this.state.livedata.temperature}</h1>
+                    </div>
+                </div>
+                <br></br>
+                <div style={{display: "inline-flex", align: "center", padding: "10px"}}>
+                    <div style={{padding: "25px"}}>
+                        <Icon icon="bx-bxs-flag-checkered" style={{width: "80px", height: "80px"}}/> <br></br>
+                        <p>Amount to produce</p>
+                        <h1>{this.state.livedata.amountToProduce}</h1>
+                    </div>
+
+                    <div style={{padding: "25px"}}>
+                        <Icon icon="jam-bottle" style={{width: "80px", height: "80px", color: "#148432"}}/>
+                        <p>Produced</p>
+                        <h1>{this.state.livedata.totalProducts}</h1>
+                    </div>
+
+                    <div style={{padding: "25px"}}>
+                        <Icon icon="subway-tick" style={{width: "80px", height: "80px", color: "#11a839"}}/>
+                        <p>Acceptable</p>
+                        <h1>{this.state.livedata.acceptableProducts}</h1>
+                    </div>
+
+                    <div style={{padding: "25px"}}>
+                        <Icon icon="emojione-cross-mark" style={{width: "80px", height: "80px"}}/>
+                        <p>Defect</p>
+                        <h1>{this.state.livedata.defectProducts}</h1>
+                    </div>
+                </div>
+                <br></br>
+                <div style={{display: "inline-flex", align: "center", padding: "10px"}}>
+                    <div style={{padding: "25px"}}>
+                        <Icon icon="mdi-archive" style={{width: "80px", height: "80px", color: "#dbd202"}}/>
+                        <p>Batch id</p>
+                        <h1>{this.state.livedata.batchID}</h1>
+                    </div>
+                    <div style={{padding: "25px"}}>
+                        <Icon icon="cil-speedometer" style={{width: "80px", height: "80px"}}/>
+                        <p>Speed</p>
+                        <h1>{Math.round(this.state.livedata.speed)}%</h1>
+                    </div>
+                    <div style={{padding: "25px"}}>
+                        <Icon icon="jam-bottle-f" style={{width: "80px", height: "80px"}}/>
+                        <p>Beer type</p>
+                        <h1>{this.state.livedata.beerType}</h1>
+                    </div>
+                    <div style={{padding: "25px"}}>
+                        <Icon icon="mdi-state-machine" style={{width: "80px", height: "80px"}}/>
+                        <p>State</p>
+                        <h1>{this.state.livedata.currentState}</h1>
+                    </div>
+                </div>
             </div>
         )
     }
 }
+
+
 
 export default Liveview
