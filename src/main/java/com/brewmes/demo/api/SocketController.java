@@ -1,5 +1,6 @@
 package com.brewmes.demo.api;
 
+import com.brewmes.demo.model.Machine;
 import com.brewmes.demo.model.iBrewMES;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -21,9 +22,12 @@ public class SocketController {
     @MessageMapping("/connect/{id}")
     @SendTo("/topic/{id}/livedata")
     @CrossOrigin(origins = "*")
-    public Livedata livedata(@DestinationVariable("id") UUID id) throws Exception {
-        Livedata result = new Livedata(brewMes.getMachines().get(id));
-        Thread.sleep(5000); // simulated delay
-        return result;
+    public Machine livedata(@DestinationVariable("id") UUID id) throws Exception {
+
+        Machine machine = brewMes.getMachines().get(id);
+        machine.readLiveData();
+
+        Thread.sleep(1000); // simulated delay
+        return machine;
     }
 }

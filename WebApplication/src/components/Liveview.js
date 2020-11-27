@@ -47,7 +47,8 @@ export class Liveview extends Component {
     //Convert data to json and store it in the state variable
     storeData = (data) => {
         let json = JSON.parse(data);
-        this.setState({livedata: json});
+        if (this.state.livedata !== json)
+            this.setState({livedata: json});
     }
 
     render() {

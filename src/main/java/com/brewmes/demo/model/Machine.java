@@ -19,16 +19,22 @@ public class Machine {
     @Id
     @Column(name = "id")
     private UUID id;
+
     @Column(name = "ip")
     private String ip;
+
     @Transient
     private OpcUaClient connection;
+
     @Transient
     private Batch currentBatch;
+
     @Transient
     private double oee;
+
     @Transient
     private int currentState;
+
     @Transient
     private int totalProducts;
     @Transient
@@ -36,11 +42,19 @@ public class Machine {
     @Transient
     private int defectProducts;
     @Transient
+    private int amountToProduce;
+    @Transient
     private double temperature;
     @Transient
     private double vibration;
     @Transient
     private double humidity;
+    @Transient
+    private int batchID;
+    @Transient
+    private double speed;
+    @Transient
+    private String beerType;
 
     public Machine(String ipAddress, OpcUaClient connection) {
         this.id = UUID.randomUUID();
@@ -339,6 +353,37 @@ public class Machine {
         this.vibration = vibration;
     }
 
+    public int getAmountToProduce() {
+        return amountToProduce;
+    }
+
+    public void setAmountToProduce(int amountToProduce) {
+        this.amountToProduce = amountToProduce;
+    }
+
+    public int getBatchID() {
+        return batchID;
+    }
+
+    public void setBatchID(int batchID) {
+        this.batchID = batchID;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public String getBeerType() {
+        return beerType;
+    }
+
+    public void setBeerType(String beerType) {
+        this.beerType = beerType;
+    }
 
     public double getHumidity() {
         return humidity;
@@ -347,6 +392,11 @@ public class Machine {
         this.humidity = humidity;
     }
 
+    public void readLiveData() {
+        this.temperature = readTemperature();
+        this.vibration = readVibration();
+        this.currentState = readState();
+    }
 
     private void changeRequest() {
         try {
