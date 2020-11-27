@@ -1,11 +1,5 @@
 CREATE DATABASE brewmes;
 
-
-CREATE TABLE Product_type (
-    id SERIAL PRIMARY KEY,
-    product_type INT
-);
-
 CREATE TABLE Machine (
     id UUID PRIMARY KEY,
     ip varchar(100)
@@ -13,10 +7,11 @@ CREATE TABLE Machine (
 
 CREATE TABLE Batch (
     id UUID PRIMARY KEY,
-    product_type_id INT REFERENCES Product_type(id),
     machine_id UUID REFERENCES Machine(id),
+    product_type INT,
     normalized_machine_speed FLOAT,
     machine_speed FLOAT,
+    processed_products INT,
     acceptable_products INT,
     defect_products INT,
     total_products INT

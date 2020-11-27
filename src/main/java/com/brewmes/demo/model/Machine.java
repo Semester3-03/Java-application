@@ -7,10 +7,13 @@ import org.eclipse.milo.opcua.stack.core.types.builtin.Variant;
 
 import org.eclipse.milo.opcua.stack.core.types.enumerated.TimestampsToReturn;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import javax.persistence.*;
+
+import static java.time.temporal.ChronoUnit.SECONDS;
 
 @Entity
 @Table(name = "Machine")
@@ -34,6 +37,9 @@ public class Machine {
 
     @Transient
     private int currentState;
+
+    @Transient
+    private LocalDateTime stateTimestamp;
 
     @Transient
     private int totalProducts;
@@ -70,12 +76,16 @@ public class Machine {
         this.id = UUID.randomUUID();
         this.ip = ipAddress;
         this.connection = connection;
+
+        this.stateTimestamp = LocalDateTime.now();
     }
 
     public Machine(String ipAddress, OpcUaClient connection, UUID id) {
         this.ip = ipAddress;
         this.connection = connection;
         this.id = id;
+
+        this.stateTimestamp = LocalDateTime.now();
     }
 
     public Machine() {
@@ -98,7 +108,12 @@ public class Machine {
             //request change
             changeRequest();
 
-            this.currentBatch = new Batch(UUID.randomUUID());
+            //Starts a new batch if the machine is commanded to start a new batch.
+            if (command == Command.START) {
+                this.currentBatch = new Batch(UUID.randomUUID());
+                this.stateTimestamp = LocalDateTime.now();
+            }
+
 
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
@@ -108,6 +123,7 @@ public class Machine {
 
 
     //region READ HELPER METHODS
+
     /**
      * Reads an integer value from the machine via OPCUA
      *
@@ -295,15 +311,15 @@ public class Machine {
         try {
             //Set beertype on the machine
             NodeId SetBeerType = new NodeId(6, "::Program:Cube.Command.Parameter[1].Value");
-            connection.writeValue(SetBeerType, DataValue.valueOnly(new Variant((float)beerType.label))).get();
+            connection.writeValue(SetBeerType, DataValue.valueOnly(new Variant((float) beerType.label))).get();
 
             //Set speed on the machine
             NodeId SetSpeed = new NodeId(6, "::Program:Cube.Command.MachSpeed");
-            connection.writeValue(SetSpeed, DataValue.valueOnly(new Variant((float)speed))).get();
+            connection.writeValue(SetSpeed, DataValue.valueOnly(new Variant((float) speed))).get();
 
             //Set batch size on the machine
             NodeId SetBatchSize = new NodeId(6, "::Program:Cube.Command.Parameter[2].Value");
-            connection.writeValue(SetBatchSize, DataValue.valueOnly(new Variant((float)batchSize))).get();
+            connection.writeValue(SetBatchSize, DataValue.valueOnly(new Variant((float) batchSize))).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             Thread.currentThread().interrupt();
@@ -334,6 +350,7 @@ public class Machine {
     public Batch getCurrentBatch() {
         return currentBatch;
     }
+
     public void setCurrentBatch(Batch currentBatch) {
         this.currentBatch = currentBatch;
     }
@@ -433,7 +450,7 @@ public class Machine {
     public double getHumidity() {
         return humidity;
     }
-  
+
     public void setHumidity(double humidity) {
         this.humidity = humidity;
     }
@@ -488,16 +505,49 @@ public class Machine {
         this.humidity = readHumidity();
         this.vibration = readVibration();
         this.temperature = readTemperature();
-        this.currentState = readState();
 
         this.amountToProduce = readBatchSize();
         this.totalProducts = readProcessedCount();
-        this.acceptableProducts = readProcessedCount() - readDefectiveCount();
         this.defectProducts = readDefectiveCount();
+        this.acceptableProducts = readProcessedCount() - this.defectProducts;
 
         this.batchID = readBatchCurrentId();
         this.speed = readNormalizedMachineSpeed();
         this.beerType = readBatchBeerType();
+
+        //checks that the batch is not null. It can be null if the program has just been started.
+        if (this.currentBatch != null) {
+            updateBatch();
+        }
+        this.currentState = readState();
+    }
+
+    /**
+     * Writes all the values to the machines current batch.
+     * Only writes values to the batch if the state is not 17,
+     * as this overwhelms the time in state 17 making the graph ugly and displaying irrelevant data.
+     */
+    private void updateBatch() {
+        if(this.currentState != 17) {
+            currentBatch.addHumidity(LocalDateTime.now(), this.humidity);
+            currentBatch.addVibration(LocalDateTime.now(), this.vibration);
+            currentBatch.addTemperature(LocalDateTime.now(), this.vibration);
+
+            currentBatch.setTotalProducts(this.amountToProduce);
+            currentBatch.setProcessedProducts(this.totalProducts);
+            currentBatch.setAcceptableProducts(this.acceptableProducts);
+            currentBatch.setDefectProducts(this.acceptableProducts);
+
+            currentBatch.setMachineSpeed(this.readMachineSpeed());
+            currentBatch.setNormalizedMachineSpeed(this.speed);
+            currentBatch.setProductType(beerType);
+
+            //Checks the difference in time between last state change and the recent state change
+            currentBatch.setTimeInState(this.currentState, stateTimestamp.until(LocalDateTime.now(), SECONDS));
+            this.stateTimestamp = LocalDateTime.now();
+
+            currentBatch.setMachineId(this.id);
+        }
     }
 
     private void changeRequest() {

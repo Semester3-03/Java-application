@@ -30,11 +30,14 @@ public class Batch {
     @Column(name = "machine_speed")
     private double machineSpeed;
 
-    @Column(name = "product_type_id")
+    @Column(name = "product_type")
     private int productType;
 
     @Column(name = "total_products")
     private int totalProducts;
+
+    @Column(name = "processed_products")
+    private int processedProducts;
 
     @Column(name = "acceptable_products")
     private int acceptableProducts;
@@ -98,6 +101,10 @@ public class Batch {
 
     public Batch(UUID id){
         this.id = id;
+    }
+
+    public Batch(){
+
     }
 
     public void addTemperature(LocalDateTime time, double temp) {
@@ -332,10 +339,6 @@ public class Batch {
         this.totalProducts = totalProducts;
     }
 
-    public Batch(){
-
-    }
-
     public Map<Integer, Double> getTimeInStates() {
         return timeInStates;
     }
@@ -346,5 +349,17 @@ public class Batch {
 
     public void setNormalizedMachineSpeed(double normalizedMachineSpeed) {
         this.normalizedMachineSpeed = normalizedMachineSpeed;
+    }
+
+    public int getProcessedProducts() {
+        return processedProducts;
+    }
+
+    public void setProcessedProducts(int processedProducts) {
+        this.processedProducts = processedProducts;
+    }
+
+    public void setMachineId(UUID machineId) {
+        this.machineId = machineId;
     }
 }
