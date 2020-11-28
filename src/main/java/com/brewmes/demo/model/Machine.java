@@ -536,7 +536,7 @@ public class Machine {
             currentBatch.setTotalProducts(this.amountToProduce);
             currentBatch.setProcessedProducts(this.totalProducts);
             currentBatch.setAcceptableProducts(this.acceptableProducts);
-            currentBatch.setDefectProducts(this.acceptableProducts);
+            currentBatch.setDefectProducts(this.defectProducts);
 
             currentBatch.setMachineSpeed(this.readMachineSpeed());
             currentBatch.setNormalizedMachineSpeed(this.speed);
