@@ -136,15 +136,20 @@ public class BrewMES implements iBrewMES {
                         for (Machine machine : machines.values()) {
                             if (machine.getCurrentState() == 17) {
                                 if (machine.getCurrentBatch() != null) {
-                                    machine.setCurrentBatch(batchRepo.save(machine.getCurrentBatch()));
+                                    if (!machine.getCurrentBatch().isSaved()) {
+                                        machine.setCurrentBatch(batchRepo.save(machine.getCurrentBatch()));
+                                        machine.getCurrentBatch().setSaved(true);
+                                    }
                                 }
+
                             }
                         }
 
                         try {
-                            Thread.sleep(5000);
+                            Thread.currentThread().sleep(5000);
                         } catch (InterruptedException e) {
                             Thread.currentThread().interrupt();
+                            batchSaveThread = null;
                             e.printStackTrace();
                         }
                     }

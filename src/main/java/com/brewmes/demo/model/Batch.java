@@ -99,6 +99,9 @@ public class Batch {
     @Transient
     private double avgVibration;
 
+    @Transient
+    private boolean saved = false;
+
     public Batch(UUID id){
         this.id = id;
     }
@@ -362,4 +365,14 @@ public class Batch {
     public void setMachineId(UUID machineId) {
         this.machineId = machineId;
     }
+
+    public boolean isSaved() {
+        return saved;
+    }
+
+    public void setSaved(boolean saved) {
+        this.saved = saved;
+    }
+
+
 }
