@@ -66,6 +66,8 @@ public class Machine {
     @Transient
     private double yeast;
     @Transient
+    private int yeast;
+    @Transient
     private int batchID;
     @Transient
     private double speed;

@@ -28,9 +28,7 @@ public class BrewMES implements iBrewMES {
 
     @Autowired
     private BatchRepository batchRepo;
-
     private Map<UUID, Machine> machines;
-    private Machine currentMachine;
     private Batch selectedBatch;
     private List<Batch> latestBatches;
     private Thread batchSaveThread;
@@ -161,13 +159,13 @@ public class BrewMES implements iBrewMES {
         }
     }
 
-    public void setMachineVariables(int speed, BeerType beerType, int batchSize) {
-        this.currentMachine.setVariables(speed, beerType, batchSize);
+    public void setMachineVariables(int speed, BeerType beerType, int batchSize, UUID id) {
+        machines.get(id).setVariables(speed, beerType, batchSize);
     }
 
     //Parsing the command to the current selected machine.
-    public void controlMachine(Command command) {
-        currentMachine.controlMachine(command);
+    public void controlMachine(Command command, UUID id) {
+        machines.get(id).controlMachine(command);
     }
 
     public String getMachineVariables() {
@@ -195,15 +193,6 @@ public class BrewMES implements iBrewMES {
 
     public void setMachines(Map<UUID, Machine> machines) {
         this.machines = machines;
-    }
-
-    public Machine getCurrentMachine() {
-        return currentMachine;
-    }
-
-    // picks based on MachineId
-    public void setCurrentMachine(UUID machineId) {
-        this.currentMachine = machines.get(machineId);
     }
 
     public Batch getSelectedBatch() {

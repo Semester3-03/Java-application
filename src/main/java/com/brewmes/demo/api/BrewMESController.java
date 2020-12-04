@@ -50,21 +50,7 @@ public class BrewMESController {
         }
     }
 
-    //Set a machine as the currently selected machine
-    @PutMapping(value = "/currentmachine")
-    public ResponseEntity<Object> setCurrentMachine(@RequestBody String input) {
-        JsonObject o = JsonParser.parseString(input).getAsJsonObject();
-        String s = o.get("id").getAsString();
-        UUID id = UUID.fromString(s);
-        brewMes.setCurrentMachine(id);
-        return new ResponseEntity<>(new StringResponse("Machine is set as current machine", HttpStatus.OK.value()), HttpStatus.OK);
-    }
 
-    //Get the current machine
-    @GetMapping(value = "/currentmachine")
-    public ResponseEntity<Object> getCurrentMachine() {
-        return new ResponseEntity<>(brewMes.getCurrentMachine(), HttpStatus.OK);
-    }
     //Delete and disconnect a machine from the system by specifying it's id.
     @DeleteMapping(value = "/machines/{id}")
     public ResponseEntity<Object> deleteMachine(@PathVariable("id") UUID id) {
@@ -113,14 +99,13 @@ public class BrewMESController {
         String beerType = o.get("beerType").getAsString();
         int batchSize = o.get("batchSize").getAsInt();
         ResponseEntity<Object> response = new ResponseEntity<>(new StringResponse("Variables set.", HttpStatus.OK.value()), HttpStatus.OK);
-        brewMes.setCurrentMachine(id);
         switch (beerType) {
-            case "pilsner" -> brewMes.setMachineVariables((speed*600)/100, BeerType.PILSNER, batchSize);
-            case "wheat" -> brewMes.setMachineVariables((speed*300)/100, BeerType.WHEAT, batchSize);
-            case "ipa" -> brewMes.setMachineVariables((speed*150)/100, BeerType.IPA, batchSize);
-            case "stout" -> brewMes.setMachineVariables((speed*200)/100, BeerType.STOUT, batchSize);
-            case "ale" -> brewMes.setMachineVariables(speed, BeerType.ALE, batchSize);
-            case "alcohol_free" -> brewMes.setMachineVariables((speed*125)/100, BeerType.ALCHOL_FREE, batchSize);
+            case "pilsner" -> brewMes.setMachineVariables(speed*600/100, BeerType.PILSNER, batchSize, id);
+            case "wheat" -> brewMes.setMachineVariables(speed*300/100, BeerType.WHEAT, batchSize, id);
+            case "stout" -> brewMes.setMachineVariables(speed*150/100, BeerType.STOUT, batchSize, id);
+            case "ipa" -> brewMes.setMachineVariables(speed*200/100, BeerType.IPA, batchSize, id);
+            case "ale" -> brewMes.setMachineVariables(speed, BeerType.ALE, batchSize, id);
+            case "alcohol_free" -> brewMes.setMachineVariables(speed*125/100, BeerType.ALCHOL_FREE, batchSize, id);
             default -> new ResponseEntity<>(new StringResponse("I do not know that beer type.", HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
         }
 

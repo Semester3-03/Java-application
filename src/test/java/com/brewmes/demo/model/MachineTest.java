@@ -22,7 +22,6 @@ class MachineTest {
     void setUp() {
         brewMES.connectMachine("opc.tcp://127.0.0.1:4840");
         Machine[] machines = brewMES.getMachines().values().toArray(Machine[]::new);
-        brewMES.setCurrentMachine(machines[0].getId());
         machine = brewMES.getMachines().get(machines[0].getId());
     }
 

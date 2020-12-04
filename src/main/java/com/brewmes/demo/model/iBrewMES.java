@@ -5,13 +5,9 @@ import java.util.UUID;
 
 public interface iBrewMES {
 
-    public abstract void controlMachine(Command command);
+    public abstract void controlMachine(Command command, UUID id);
 
-    public abstract void setMachineVariables(int speed, BeerType beerType, int batchSize);
-
-    public Machine getCurrentMachine();
-
-    public void setCurrentMachine(UUID machine);
+    public abstract void setMachineVariables(int speed, BeerType beerType, int batchSize, UUID id);
 
 	public Batch getBatch(UUID id);
 
