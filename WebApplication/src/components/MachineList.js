@@ -23,7 +23,10 @@ export class MachineList extends Component {
     updateMachineList = () =>{
         this.setState({machines: []})
 
-        fetch('http://localhost:8080/api/machines')
+        fetch('http://localhost:8080/api/machines', {
+            method : "GET",
+            headers : {'Authorization': localStorage.getItem("token")}
+        })
         .then(response => {
             if (response.status === 200) {
                 response.json().then(data => {
@@ -47,22 +50,26 @@ export class MachineList extends Component {
     addMachineHandler = (e) =>{
         e.preventDefault(); 
         let data = {ip: this.state.machineIP};
-
-        fetch("http://localhost:8080/api/machines/",{
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(data)
-        }).then(response => {
-            if(response.status !== 200){
-                this.setState({success: false});
-            }else{
-                this.setState({success: true});
-                this.updateMachineList();
-            }
-
-            return response.text();
-        }).then(data => JSON.parse(data))
-        .then(json => this.setState({statusMessage: json.response, machineIP: ""}));
+        if(localStorage.getItem("token") != null){
+            fetch("http://localhost:8080/api/machines/",{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem("token")
+            },
+                body: JSON.stringify(data)
+            }).then(response => {
+                if(response.status !== 200){
+                    this.setState({success: false});
+                }else{
+                    this.setState({success: true});
+                    this.updateMachineList();
+                }
+    
+                return response.text();
+            }).then(data => JSON.parse(data))
+            .then(json => this.setState({statusMessage: json.response, machineIP: ""}));
+        }
     }
 
     ipChanged = (e) =>{

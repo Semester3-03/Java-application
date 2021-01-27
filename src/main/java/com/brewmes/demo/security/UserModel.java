@@ -1,4 +1,4 @@
-package com.brewmes.demo.model;
+package com.brewmes.demo.security;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

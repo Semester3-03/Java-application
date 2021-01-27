@@ -2,13 +2,15 @@ package com.brewmes.demo.api;
 
 
 import com.brewmes.demo.Persistence.UserRepository;
-import com.brewmes.demo.model.UserModel;
+import com.brewmes.demo.security.UserModel;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+//@CrossOrigin(origins = "*")
 public class UserController
 {
     private UserRepository userRepository;

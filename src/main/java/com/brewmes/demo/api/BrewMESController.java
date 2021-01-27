@@ -19,7 +19,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 public class BrewMESController {
     //allow spring to inject bean to field
     @Autowired

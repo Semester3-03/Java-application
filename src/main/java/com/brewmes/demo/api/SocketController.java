@@ -18,7 +18,7 @@ public class SocketController {
 
     @MessageMapping("/connect/{id}")
     @SendTo("/topic/{id}/livedata")
-    @CrossOrigin(origins = "*")
+    @CrossOrigin(origins = "http://localhost:3000")
     public Object livedata(@DestinationVariable("id") UUID id) throws Exception {
 
         brewMes.getMachines().get(id).readLiveData();

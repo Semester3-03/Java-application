@@ -21,7 +21,10 @@ export class Batches extends Component {
     }
 
     search = (e) => {
-        fetch('http://localhost:8080/api/batches/' + document.getElementById("searchField").value)
+        fetch('http://localhost:8080/api/batches/' + document.getElementById("searchField").value, {
+            method : "GET",
+            headers : {'Authorization': localStorage.getItem("token")}
+        })
             .then(response => {
                 let json = response.json();
                 json.then(data => {
@@ -59,7 +62,12 @@ export class Batches extends Component {
         });
         console.log("fetching.. ", this.state.page)
         this.setState({page: page})
-        fetch('http://localhost:8080/api/batches?page=' + page +'&size=10')
+        fetch('http://localhost:8080/api/batches?page=' + page +'&size=10', {
+            methold: "GET", 
+            headers: {
+                'Authorization': localStorage.getItem("token")
+            }
+        })
         .then(response => {
             if(response.status === 200){
                 response.json().then(data => {

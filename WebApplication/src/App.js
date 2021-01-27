@@ -6,6 +6,7 @@ import Control from './components/Control';
 import Batches from "./components/Batches"
 import Liveview from './components/Liveview'
 import './App.css';
+import AuthorizationService from './components/authorization';
 
 export class App extends Component {
 	//This is the global state that contains variables relevant to multiple components
@@ -36,7 +37,14 @@ export class App extends Component {
 						machine={this.state.currentMachine}
 					/>
 					<div className="container">
+						<Route exact path="/login" render={props => (
+							<React.Fragment>
+								<AuthorizationService/>
+							</React.Fragment>
+						)}/>
 						
+
+
 						<Route exact path="/" render={props => (
 							<React.Fragment>
 								<MachineList 

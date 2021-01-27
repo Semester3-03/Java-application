@@ -1,6 +1,5 @@
 package com.brewmes.demo.security;
 
-import com.brewmes.demo.model.UserModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -29,6 +28,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     {
         this.authenticationManager = authenticationManager;
         setFilterProcessesUrl("/login");
+
     }
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException
@@ -46,6 +46,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain, Authentication authentication)
     {
+        System.out.println("loginAttempt");
         String token = Jwts.builder()
                 .setSubject(((User) authentication.getPrincipal()).getUsername())
                 .setExpiration(new Date(System.currentTimeMillis() + 864_000_000))

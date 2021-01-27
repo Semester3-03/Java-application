@@ -20,7 +20,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter
     private UserDetailsService userDetailsService;
 
     private static final String[] AUTH_WHITELIST = {
-
             /*
             "/v2/api-docs",
             "/swagger-resources",
@@ -45,6 +44,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter
         httpSecurity.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers(HttpMethod.POST, "/signup").permitAll()
+                .antMatchers(HttpMethod.POST, "/login").permitAll()
+                .antMatchers("/websocket/**").permitAll()
+                .antMatchers("/app/**").permitAll()
+                .antMatchers("/topic/**").permitAll()
+                .antMatchers("/api/batches/*/get-report").permitAll()
+                .antMatchers("/api/machines/*/**").permitAll()
                 .anyRequest().authenticated()
                 .and().addFilter(new AuthenticationFilter(authenticationManager()))
                 .addFilter(new AuthorizationFilter(authenticationManager()))
@@ -60,7 +65,19 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter
     CorsConfigurationSource corsConfigurationSource()
     {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**",new CorsConfiguration().applyPermitDefaultValues());
+        CorsConfiguration config = new CorsConfiguration().applyPermitDefaultValues();
+        config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedMethod("*");
+        config.addExposedHeader("Authorization");
+        config.addAllowedHeader("Authorization");
+        config.addAllowedHeader("Content-Type");
+        config.addAllowedHeader("Origin");
+        config.setAllowCredentials(true);
+        source.registerCorsConfiguration( "/api/machines/**",config);
+        source.registerCorsConfiguration( "/api/batches/**",config);
+        source.registerCorsConfiguration("/login", config);
+        source.registerCorsConfiguration("/signup", config);
+        source.registerCorsConfiguration("/websocket/**", config);
         return source;
     }
 }

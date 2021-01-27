@@ -1,7 +1,6 @@
 package com.brewmes.demo.security;
 
 import com.brewmes.demo.Persistence.UserRepository;
-import com.brewmes.demo.model.UserModel;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

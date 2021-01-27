@@ -1,6 +1,6 @@
 package com.brewmes.demo.Persistence;
 
-import com.brewmes.demo.model.UserModel;
+import com.brewmes.demo.security.UserModel;
 import org.springframework.data.repository.CrudRepository;
 
 public interface UserRepository extends CrudRepository<UserModel, Long> {
