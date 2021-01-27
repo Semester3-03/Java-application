@@ -28,6 +28,7 @@ export class AuthorizationService extends Component {
                         username: '',
                         password: ''
                     });
+                    window.location.href = "/"
                 } else {
 
                 }

@@ -44,3 +44,10 @@ CREATE TABLE Time_in_states (
     time FLOAT,
     batch_id UUID references Batch(id)
 );
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username varchar (255) not null,
+    password varchar(255) not null,
+    created_at date 
+)
