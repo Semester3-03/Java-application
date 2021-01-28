@@ -27,7 +27,7 @@ export class Control extends Component {
             //Fetch the api with the variables as body
             fetch("http://localhost:8080/api/machines/" + this.props.currentMachine.id + "/variables", {
                 method: "PUT",
-                headers: {'Content-Type': 'application/json'},
+                headers: {'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token")},
                 body: JSON.stringify(variables)
             })
             //Gets the response and sets a variable true or false depending on it
@@ -44,7 +44,7 @@ export class Control extends Component {
         //Sends the HTTP request to the API
         fetch("http://localhost:8080/api/machines/" + this.props.currentMachine.id + "/command", {
             method: "PUT",
-            headers: {'Content-Type': 'application/json'},
+            headers: {'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token")},
             body: JSON.stringify(data)
         })
 

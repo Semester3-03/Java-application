@@ -25,8 +25,13 @@ public class UserController
     @PostMapping("/signup")
     public void signUp(@RequestBody UserModel userModel)
     {
-        userModel.setPassword(bCryptPasswordEncoder.encode(userModel.getPassword()));
-        userRepository.save(userModel);
+        if (userRepository.findByUsername(userModel.getUsername()) == null) {
+            userModel.setPassword(bCryptPasswordEncoder.encode(userModel.getPassword()));
+            userRepository.save(userModel);
+        } else {
+            System.out.println("user already created...");
+        }
+
     }
 
 }

@@ -15,7 +15,10 @@ export class App extends Component {
 			ip: "none",
 			id: ""
 		},
-		updated: false
+		updated: false,
+		currentUser: "", 
+		loggedIn: false
+		
 	};
 	
 	updateMachineList = () => {
@@ -26,6 +29,15 @@ export class App extends Component {
 	setCurrentMachine = (machine) => {
 		this.setState({ currentMachine: machine });
 	}
+	//sets current user
+	setCurrentUser = (username) => {
+		this.setState({currentUser : username, loggedIn : true})
+		console.log(username)
+	}
+	
+	setLoggenIn = (bool) => {
+		this.setState({loggedIn : false})
+	}
 
 	//Contains the HTML that is to be rendered for the user
 	//This really just contains references to all the different components
@@ -35,11 +47,15 @@ export class App extends Component {
 				<div className="App">
 					<Header 
 						machine={this.state.currentMachine}
+						user={this.state.currentUser}
+						loggedInSucces={this.state.loggedIn}
+						setCurrentUser={this.setCurrentUser}
+						setLoggedIn={this.setLoggenIn}
 					/>
 					<div className="container">
 						<Route exact path="/login" render={props => (
 							<React.Fragment>
-								<AuthorizationService/>
+								<AuthorizationService setCurrentUser = {this.setCurrentUser}/>
 							</React.Fragment>
 						)}/>
 						

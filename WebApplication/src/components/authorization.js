@@ -9,6 +9,11 @@ export class AuthorizationService extends Component {
         password: ''
     };
 
+
+    selectUserHandler = () => {
+        this.props.setCurrentUser(this.state.username)
+    }
+
     //sends a request to the api /login with the user credentials.
     login = (username, password, clicked) => {
         if(clicked){ 
@@ -23,12 +28,11 @@ export class AuthorizationService extends Component {
                     //pulls out the jwt token payload and saves it in localstorage for later use.
                     let token = response.headers.get("Authorization");
                     localStorage.setItem("token", token);
+                    this.selectUserHandler();
                     this.setState({
                         LoginSucces: true,
-                        username: '',
-                        password: ''
                     });
-                    window.location.href = "/"
+                   // window.location.href = "/"
                 } else {
 
                 }

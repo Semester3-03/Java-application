@@ -112,6 +112,7 @@
 			<artifactId>spring-web</artifactId>
 			<version>5.2.10.RELEASE</version>
 		</dependency>
+		<!-- security dependencies -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>

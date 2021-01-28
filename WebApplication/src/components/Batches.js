@@ -58,7 +58,7 @@ export class Batches extends Component {
 
     getBatches(page){
         this.setState({
-            Pagebatches: []
+            Pagebatches: [] 
         });
         console.log("fetching.. ", this.state.page)
         this.setState({page: page})

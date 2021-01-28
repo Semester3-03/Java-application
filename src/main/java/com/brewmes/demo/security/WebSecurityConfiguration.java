@@ -20,16 +20,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter
     private UserDetailsService userDetailsService;
 
     private static final String[] AUTH_WHITELIST = {
-            /*
-            "/v2/api-docs",
-            "/swagger-resources",
-            "/swagger-resources/**",
-            "/configuration/ui",
-            "/configuration/security",
-            "/swagger-ui.html",
-            "/webjars/**",
-            "/api"
-             */
+            "/websocket/**",
+            "/app/**",
+            "/topic/**",
+            "/api/batches/*/get-report",
+            "/api/machines/*/**"
     };
 
     public WebSecurityConfiguration(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder)
@@ -45,11 +40,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers(HttpMethod.POST, "/signup").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
-                .antMatchers("/websocket/**").permitAll()
-                .antMatchers("/app/**").permitAll()
-                .antMatchers("/topic/**").permitAll()
-                .antMatchers("/api/batches/*/get-report").permitAll()
-                .antMatchers("/api/machines/*/**").permitAll()
+               // .antMatchers("/websocket/**").permitAll()
+               // .antMatchers("/app/**").permitAll()
+                //.antMatchers("/topic/**").permitAll()
+               // .antMatchers("/api/batches/*/get-report").permitAll()
+               // .antMatchers("/api/machines/*/**").permitAll()
                 .anyRequest().authenticated()
                 .and().addFilter(new AuthenticationFilter(authenticationManager()))
                 .addFilter(new AuthorizationFilter(authenticationManager()))

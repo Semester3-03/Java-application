@@ -10,6 +10,13 @@ export class Header extends Component {
             "#fc0303" : "#00bf06"
         }
     }
+
+    userStyle = () => {
+        return {
+            color: this.props.loggedInSucces === false ? "#fc0303" : "#00bf06"
+        }
+    }
+
     
     //Contains the HTML that is to be rendered for the user
     render() {
@@ -17,12 +24,19 @@ export class Header extends Component {
             <header style={headerStyle}>
                 <h1>BrewMES</h1>
                 <p>Current machine: <i style={this.textStyle()}>{this.props.machine.ip}</i></p>
+                <p>Current user: <i style={this.userStyle()}>{this.props.user}</i></p>
                 <div>
                     <Link style={linkStyle} to="/">Home</Link>
                     <Link style={linkStyle} to="/control">Control</Link>
                     <Link style={linkStyle} to="/batch">Batches</Link>
                     <Link style={linkStyle} to="/login">Login</Link>
+                    <Link style={linkStyle} to="/login" onClick={() => {
+                        localStorage.clear(); 
+                        this.props.setCurrentUser("");
+                        this.props.setLoggedIn(false);
+                        }}>Logout </Link>
                 </div>
+                
 
             </header>
         )

@@ -3,6 +3,7 @@ package com.brewmes.demo.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.eclipse.milo.opcua.stack.core.types.builtin.DateTime;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -40,13 +41,13 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         }
         catch(IOException e)
         {
-            throw new RuntimeException("Could not read request " + e);
+            throw new RuntimeException("Whooops... Something went wrong with that request... " + e);
         }
     }
 
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain, Authentication authentication)
     {
-        System.out.println("loginAttempt");
+        System.out.println("LOGIN ATTEMPT || USER: " + ((User) authentication.getPrincipal()).getUsername() + " TIME: " + DateTime.now().getJavaDate().toString());
         String token = Jwts.builder()
                 .setSubject(((User) authentication.getPrincipal()).getUsername())
                 .setExpiration(new Date(System.currentTimeMillis() + 864_000_000))
