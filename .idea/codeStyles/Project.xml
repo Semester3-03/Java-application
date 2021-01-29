@@ -1,10 +1,7 @@
 <component name="ProjectCodeStyleConfiguration">
   <code_scheme name="Project" version="173">
     <DB2CodeStyleSettings version="5">
-      <option name="USE_GENERAL_STYLE" value="false" />
-      <option name="KEYWORD_CASE" value="2" />
-      <option name="TYPE_CASE" value="2" />
-      <option name="CUSTOM_TYPE_CASE" value="2" />
+      <option name="myVersion" value="5" />
       <option name="QUERY_IN_ONE_STRING" value="3" />
       <option name="QUERY_ALIGN_LINE_COMMENTS" value="false" />
       <option name="SET_ALIGN_EQUAL_SIGN" value="false" />
@@ -25,10 +22,7 @@
       <option name="CORTEGE_SPACE_BEFORE_L_PAREN" value="false" />
     </DB2CodeStyleSettings>
     <DerbyCodeStyleSettings version="5">
-      <option name="USE_GENERAL_STYLE" value="false" />
-      <option name="KEYWORD_CASE" value="2" />
-      <option name="TYPE_CASE" value="2" />
-      <option name="CUSTOM_TYPE_CASE" value="2" />
+      <option name="myVersion" value="5" />
       <option name="QUERY_IN_ONE_STRING" value="3" />
       <option name="QUERY_ALIGN_LINE_COMMENTS" value="false" />
       <option name="SET_ALIGN_EQUAL_SIGN" value="false" />
@@ -49,10 +43,7 @@
       <option name="CORTEGE_SPACE_BEFORE_L_PAREN" value="false" />
     </DerbyCodeStyleSettings>
     <H2CodeStyleSettings version="5">
-      <option name="USE_GENERAL_STYLE" value="false" />
-      <option name="KEYWORD_CASE" value="2" />
-      <option name="TYPE_CASE" value="2" />
-      <option name="CUSTOM_TYPE_CASE" value="2" />
+      <option name="myVersion" value="5" />
       <option name="QUERY_IN_ONE_STRING" value="3" />
       <option name="QUERY_ALIGN_LINE_COMMENTS" value="false" />
       <option name="SET_ALIGN_EQUAL_SIGN" value="false" />
@@ -70,10 +61,7 @@
       <option name="CORTEGE_SPACE_BEFORE_L_PAREN" value="false" />
     </H2CodeStyleSettings>
     <HSQLCodeStyleSettings version="5">
-      <option name="USE_GENERAL_STYLE" value="false" />
-      <option name="KEYWORD_CASE" value="2" />
-      <option name="TYPE_CASE" value="2" />
-      <option name="CUSTOM_TYPE_CASE" value="2" />
+      <option name="myVersion" value="5" />
       <option name="QUERY_IN_ONE_STRING" value="3" />
       <option name="QUERY_ALIGN_LINE_COMMENTS" value="false" />
       <option name="SET_ALIGN_EQUAL_SIGN" value="false" />
@@ -95,10 +83,7 @@
       <option name="USE_EXTERNAL_ANNOTATIONS" value="true" />
     </JavaCodeStyleSettings>
     <MSSQLCodeStyleSettings version="5">
-      <option name="USE_GENERAL_STYLE" value="false" />
-      <option name="KEYWORD_CASE" value="2" />
-      <option name="TYPE_CASE" value="2" />
-      <option name="CUSTOM_TYPE_CASE" value="2" />
+      <option name="myVersion" value="5" />
       <option name="QUERY_IN_ONE_STRING" value="3" />
       <option name="QUERY_ALIGN_LINE_COMMENTS" value="false" />
       <option name="SET_ALIGN_EQUAL_SIGN" value="false" />
@@ -119,13 +104,11 @@
       <option name="CORTEGE_SPACE_BEFORE_L_PAREN" value="false" />
     </MSSQLCodeStyleSettings>
     <MySQLCodeStyleSettings version="5">
+      <option name="myVersion" value="5" />
       <option name="USE_GENERIC_STYLE" value="true" />
     </MySQLCodeStyleSettings>
     <OracleCodeStyleSettings version="5">
-      <option name="USE_GENERAL_STYLE" value="false" />
-      <option name="KEYWORD_CASE" value="2" />
-      <option name="TYPE_CASE" value="2" />
-      <option name="CUSTOM_TYPE_CASE" value="2" />
+      <option name="myVersion" value="5" />
       <option name="QUERY_IN_ONE_STRING" value="3" />
       <option name="QUERY_ALIGN_LINE_COMMENTS" value="false" />
       <option name="SET_ALIGN_EQUAL_SIGN" value="false" />
@@ -146,15 +129,13 @@
       <option name="CORTEGE_SPACE_BEFORE_L_PAREN" value="false" />
     </OracleCodeStyleSettings>
     <PostgresCodeStyleSettings version="5">
+      <option name="myVersion" value="5" />
+      <option name="USE_GENERIC_STYLE" value="true" />
       <option name="TABLE_OPENING" value="1" />
       <option name="TABLE_CONTENT" value="2" />
-      <option name="USE_GENERIC_STYLE" value="true" />
     </PostgresCodeStyleSettings>
     <SQLiteCodeStyleSettings version="5">
-      <option name="USE_GENERAL_STYLE" value="false" />
-      <option name="KEYWORD_CASE" value="2" />
-      <option name="TYPE_CASE" value="2" />
-      <option name="CUSTOM_TYPE_CASE" value="2" />
+      <option name="myVersion" value="5" />
       <option name="QUERY_IN_ONE_STRING" value="3" />
       <option name="QUERY_ALIGN_LINE_COMMENTS" value="false" />
       <option name="SET_ALIGN_EQUAL_SIGN" value="false" />
@@ -172,9 +153,7 @@
       <option name="CORTEGE_SPACE_BEFORE_L_PAREN" value="false" />
     </SQLiteCodeStyleSettings>
     <SqlCodeStyleSettings version="5">
-      <option name="KEYWORD_CASE" value="2" />
-      <option name="TYPE_CASE" value="2" />
-      <option name="CUSTOM_TYPE_CASE" value="2" />
+      <option name="myVersion" value="5" />
       <option name="QUERY_IN_ONE_STRING" value="3" />
       <option name="QUERY_ALIGN_LINE_COMMENTS" value="false" />
       <option name="SET_ALIGN_EQUAL_SIGN" value="false" />
@@ -197,10 +176,7 @@
       <option name="CORTEGE_SPACE_BEFORE_L_PAREN" value="false" />
     </SqlCodeStyleSettings>
     <SybaseCodeStyleSettings version="5">
-      <option name="USE_GENERAL_STYLE" value="false" />
-      <option name="KEYWORD_CASE" value="2" />
-      <option name="TYPE_CASE" value="2" />
-      <option name="CUSTOM_TYPE_CASE" value="2" />
+      <option name="myVersion" value="5" />
       <option name="QUERY_IN_ONE_STRING" value="3" />
       <option name="QUERY_ALIGN_LINE_COMMENTS" value="false" />
       <option name="SET_ALIGN_EQUAL_SIGN" value="false" />

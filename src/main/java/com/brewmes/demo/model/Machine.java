@@ -9,6 +9,7 @@ import org.eclipse.milo.opcua.stack.core.types.enumerated.TimestampsToReturn;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -18,28 +19,23 @@ import static java.time.temporal.ChronoUnit.SECONDS;
 @Table(name = "Machine")
 public class Machine {
 
+    @Transient
+    private final LinkedList<Production> queue = new LinkedList<>();
     @Id
     @Column(name = "id")
     private UUID id;
-
     @Column(name = "ip")
     private String ip;
-
     @Transient
     private OpcUaClient connection;
-
     @Transient
     private Batch currentBatch;
-
     @Transient
     private double oee;
-
     @Transient
     private int currentState;
-
     @Transient
     private LocalDateTime stateTimestamp;
-
     @Transient
     private int totalProducts;
     @Transient
@@ -72,6 +68,12 @@ public class Machine {
     private int beerType;
     @Transient
     private int maintenance;
+    @Transient
+    private Thread autoPilotThread;
+
+    public LinkedList<Production> getQueue() {
+        return queue;
+    }
 
     public Machine(String ipAddress, OpcUaClient connection) {
         this.id = UUID.randomUUID();
@@ -571,6 +573,52 @@ public class Machine {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             Thread.currentThread().interrupt();
+        }
+    }
+
+    public void addProductionToQueue(Production production) {
+        queue.add(production);
+    }
+
+    public void makeAutopilotThread() {
+        if (autoPilotThread == null && !queue.isEmpty()) {
+            autoPilotThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    autopilot();
+                    autoPilotThread = null;
+                }
+            });
+            autoPilotThread.setDaemon(true);
+            autoPilotThread.start();
+
+        }
+        }
+
+
+    public void stopAutopilot() {
+        autoPilotThread.interrupt();
+        autoPilotThread = null;
+    }
+
+    private void autopilot() {
+        while (!queue.isEmpty()) {
+            if (readState() != 6) {
+                if (readState() == 4) {
+                    Production production = queue.removeFirst();
+                    setVariables(production.getSpeed(), production.getType(), production.getAmount());
+                    controlMachine(Command.START);
+                }
+                if (readState() == 17) {
+                    controlMachine(Command.RESET);
+                }
+            }
+            try {
+                Thread.sleep(2_000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 }

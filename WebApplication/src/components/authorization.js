@@ -73,7 +73,7 @@ export class AuthorizationService extends Component {
                     <form>
                     <input style={inputStyle} placeholder="Username" onChange={this.usernameChanged} type="text"></input>
                         <br></br>
-                       <input style={inputStyle} placeholder="Passowrd" onChange={this.passwordChanged} type="password"></input>
+                       <input style={inputStyle} placeholder="Password" onChange={this.passwordChanged} type="password"></input>
                        </form>
                    <form>
                     <br></br>

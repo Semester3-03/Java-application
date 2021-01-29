@@ -28,7 +28,8 @@ export class Liveview extends Component {
             batchID: 0,
             speed: 0,
             beerType: 0,
-            currentState: 0
+            currentState: 0,
+            queue : [{ type : "" , speed : 0, amount : 0}]
         }
     };
 
@@ -83,6 +84,28 @@ export class Liveview extends Component {
     render() {
         return (
             <div>
+                     <div style={{padding: "0px 1500px 0px 0px"}}>
+                        <label>queue</label>
+                        <table>
+                            <tr>
+                                <th style={{padding : "0px 10px 0px 10px", backgroundColor: "#808080", border: "1px solid #ddd"}}>index</th>
+                                <th style={{padding : "0px 10px 0px 10px", backgroundColor: "#808080", border: "1px solid #ddd"}}>type</th>
+                                <th style={{padding : "0px 10px 0px 10px", backgroundColor: "#808080", border: "1px solid #ddd"}}>speed</th>
+                                <th style={{padding : "0px 10px 0px 10px", backgroundColor: "#808080", border: "1px solid #ddd"}}>amount</th>
+                            </tr>
+                            {this.state.livedata.queue.map((item, index) => {
+                                console.log(index);
+                               return (
+                                   <tr>
+                                       <td>{index+1}</td>
+                                       <td>{item.type}</td>
+                                       <td>{item.speed}</td>
+                                       <td>{item.amount}</td>
+                                   </tr>
+                               );
+                            })}
+                        </table>
+                    </div>
                 <div style={{display: "inline-flex", align: "center", padding: "10px"}}>
                     <div style={{padding: "0px 10px"}}>
                         <label for="barley">Barley</label> <br></br>

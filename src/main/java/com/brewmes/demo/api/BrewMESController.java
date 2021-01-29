@@ -1,6 +1,8 @@
 package com.brewmes.demo.api;
 
+import com.brewmes.demo.model.BeerType;
 import com.brewmes.demo.model.IBrewMES;
+import com.brewmes.demo.model.Production;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,6 +146,36 @@ public class BrewMESController {
             e.printStackTrace();
             return new ResponseEntity<>(new StringResponse("File not found " + fileName, HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PostMapping(value = "machines/{id}/autopilot")
+    public ResponseEntity<Object> addProductionToQueue(@RequestBody String input, @PathVariable UUID id) {
+        JsonObject o = JsonParser.parseString(input).getAsJsonObject();
+        brewMes.getMachines().get(id).addProductionToQueue(
+                new Production(
+                        BeerType.valueOf(o.get("type").getAsString().toUpperCase()),
+                        o.get("speed").getAsInt(),
+                        o.get("amount").getAsInt()
+                ));
+        System.out.println(input);
+        return new ResponseEntity<>(new StringResponse("added", HttpStatus.OK.value()), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "machines/{id}/autopilot")
+    public ResponseEntity<Object> controlAutopilot(@PathVariable UUID id, @RequestBody String input) {
+        JsonObject o = JsonParser.parseString(input).getAsJsonObject();
+        String command = o.get("command").getAsString();
+        System.out.println("autopilot endpoint reached.." + command);
+        if (command.equals("start")) {
+            brewMes.getMachines().get(id).makeAutopilotThread();
+            return new ResponseEntity<>(new StringResponse("started", HttpStatus.OK.value()), HttpStatus.OK);
+        } else if (command.equals("stop")) {
+            brewMes.getMachines().get(id).stopAutopilot();
+            return new ResponseEntity<>(new StringResponse("stopped", HttpStatus.OK.value()), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new StringResponse("I did not understand that", HttpStatus.NOT_ACCEPTABLE.value()), HttpStatus.NOT_ACCEPTABLE);
+        }
+
     }
 
 }

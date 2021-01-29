@@ -53,6 +53,34 @@ export class Control extends Component {
         this.setState({batchSize: ""});
     }
 
+    autopilotPress  = (e) => {
+        let data = {
+            command: e.target.value
+        }
+            fetch("http://localhost:8080/api/machines/" + this.props.currentMachine.id + "/autopilot", {
+                method: "PUT",
+                headers: {'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token")},
+                body: JSON.stringify(data)
+            })
+            console.log(JSON.stringify(data))
+    }
+
+    addToQueuePress = (e) => {
+        let variables = {
+            type: this.state.beerType,
+            amount: this.state.batchSize,
+            speed: this.state.speed
+        }
+        console.log(JSON.stringify(variables));
+        fetch("http://localhost:8080/api/machines/" + this.props.currentMachine.id + "/autopilot", {
+            method: "POST",
+            headers: {'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token")},
+            body: JSON.stringify(variables)
+        });
+
+
+    }
+
     changeBeerType = (e) => {
         this.setState({beerType: e.target.value});
     }
@@ -96,6 +124,27 @@ export class Control extends Component {
                     </form>
                 </div>
                 <div>
+                <button 
+                        style={btnStyle} 
+                        value="stop"
+                        onClick={this.autopilotPress}
+                    >
+                        autopilot off
+                    </button>
+                    <button 
+                        style={btnStyle} 
+                        value="start"
+                        onClick={this.autopilotPress}
+                    >
+                        auto on
+                    </button>
+                    <button 
+                        style={btnStyle} 
+                        value="add_to_queue"
+                        onClick={this.addToQueuePress}
+                    >
+                        queue
+                    </button>
                     <button 
                         style={btnStyle} 
                         value="start"
